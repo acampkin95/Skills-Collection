@@ -1,0 +1,66 @@
+# AI Working Directories
+.aistore/
+.archive/
+.omc/
+.omo/
+.sisyphus/
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+.vim/
+
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+.env.local
+
+# Environment & Secrets
+*.key
+*.pem
+*.pfx
+*.p12
+.aws/
+.azure/
+.gcp/
+.credentials
+secrets.json
+api-keys.env
+cloud-api-keys.env
+
+# Build & Dist
+dist/
+build/
+*.log
+.cache/
+.temp/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.bak
+*.tmp
+.env.example
+skills_master/
+skills_staging/

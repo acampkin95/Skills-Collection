@@ -1,0 +1,2390 @@
+{
+  "generated": "2026-06-02T01:58:33.694128",
+  "total_skills": 157,
+  "summary": {
+    "production": 78,
+    "staging": 78,
+    "development": 1,
+    "agent_specific": {
+      "Scripts": 0
+    }
+  },
+  "skills": {
+    "production": [
+      {
+        "name": "accessibility-testing",
+        "display_name": "accessibility-testing",
+        "description": "Comprehensive accessibility (a11y) testing and WCAG 2.2 compliance automation for React/Next.js. Use",
+        "status": "production",
+        "path": "skills_master/accessibility-testing",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "api-design-testing",
+        "display_name": "api-design-testing",
+        "description": "REST API design, type-safe validation, OpenAPI specs, and contract testing with Hono, Zod, and MSW. ",
+        "status": "production",
+        "path": "skills_master/api-design-testing",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "biome-linting",
+        "display_name": "biome-linting",
+        "description": "Biome v2.4.16 \u2014 ultrafast Rust-based all-in-one linter, formatter, and import sorter for JavaScript,",
+        "status": "production",
+        "path": "skills_master/biome-linting",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "brand-creativebuilder",
+        "display_name": "brand-creativebuilder",
+        "description": "End-to-end brand identity builder with Pantone colour systems, SVG logos, favicons, interactive HTML",
+        "status": "production",
+        "path": "skills_master/brand-creativebuilder",
+        "files": 9,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "bun-runtime",
+        "display_name": "bun-runtime",
+        "description": "Bun v1.3.14 \u2014 high-performance all-in-one JavaScript/TypeScript runtime, package manager, bundler, a",
+        "status": "production",
+        "path": "skills_master/bun-runtime",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "caching-redis",
+        "display_name": "caching-redis",
+        "description": "High-performance Redis caching with cache-aside, write-through, TTL management, and cache invalidati",
+        "status": "production",
+        "path": "skills_master/caching-redis",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "claude-code",
+        "display_name": "claude-code",
+        "description": "Claude Code CLI configuration, MCP server setup, and multi-agent orchestration (OMC) automation. Use",
+        "status": "production",
+        "path": "skills_master/claude-code",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "clerk",
+        "display_name": "clerk",
+        "description": "Clerk v7.4.2 authentication platform for Next.js 16+ with async auth() API, React 19 compatibility, ",
+        "status": "production",
+        "path": "skills_master/clerk",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "cli-tool-development",
+        "display_name": "cli-tool-development",
+        "description": "Use this skill when CLI tool, command line, commander.js, clap, argparse, CLI app, terminal tool, in",
+        "status": "production",
+        "path": "skills_master/cli-tool-development",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "cloud-api-management",
+        "display_name": "cloud-api-management",
+        "description": "Cloud infrastructure and API management for Cloudflare, Tailscale, S3 storage, and GitHub automation",
+        "status": "production",
+        "path": "skills_master/cloud-api-management",
+        "files": 26,
+        "subdirs": [
+          "references",
+          "scripts",
+          ".omc"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "cloudapi",
+        "display_name": "cloudapi",
+        "description": "Alias/alternate path for cloud-api-management \u2014 Cloud infrastructure orchestration for Cloudflare DN",
+        "status": "production",
+        "path": "skills_master/cloudapi",
+        "files": 24,
+        "subdirs": [
+          "references",
+          "scripts",
+          ".omc"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "code-audit",
+        "display_name": "code-audit",
+        "description": "Comprehensive security audits, vulnerability scanning, and code quality assessment for production de",
+        "status": "production",
+        "path": "skills_master/code-audit",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "workflows",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "compliance-gdpr-privacy",
+        "display_name": "compliance-gdpr-privacy",
+        "description": "GDPR, CCPA/CPRA, and ePrivacy compliance implementation with consent management and data protection.",
+        "status": "production",
+        "path": "skills_master/compliance-gdpr-privacy",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "crawl4ai",
+        "display_name": "crawl4ai",
+        "description": "Use this skill when working with crawl4ai, web scraping, async scraping, playwright scraping, LLM ex",
+        "status": "production",
+        "path": "skills_master/crawl4ai",
+        "files": 66,
+        "subdirs": [
+          "docker",
+          "references",
+          "tests",
+          "examples",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": true,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "creative-strategy",
+        "display_name": "creative-strategy",
+        "description": "2025 brand strategy, creative direction, and marketing campaigns with community-first positioning. U",
+        "status": "production",
+        "path": "skills_master/creative-strategy",
+        "files": 17,
+        "subdirs": [
+          "references",
+          "workflows",
+          "assets"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "crewai-setup",
+        "display_name": "crewai-setup",
+        "description": "CrewAI multi-agent framework setup, configuration, and development. Use this skill when CrewAI, crew",
+        "status": "production",
+        "path": "skills_master/crewai-setup",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-03-20",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "data-visualization",
+        "display_name": "data-visualization",
+        "description": "Data Visualization",
+        "status": "production",
+        "path": "skills_master/data-visualization",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "database-orm",
+        "display_name": "database-orm",
+        "description": "PostgreSQL database design with Prisma and Drizzle ORM for TypeScript/Next.js applications. Use this",
+        "status": "production",
+        "path": "skills_master/database-orm",
+        "files": 6,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "deepinfra-ocr",
+        "display_name": "deepinfra-ocr",
+        "description": "DeepInfra vision-language model OCR for extracting text from PDFs, scanned documents, images, handwr",
+        "status": "production",
+        "path": "skills_master/deepinfra-ocr",
+        "files": 7,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "docker-compose",
+        "display_name": "docker-compose",
+        "description": "Docker Compose orchestration for local development and production deployment with multi-container se",
+        "status": "production",
+        "path": "skills_master/docker-compose",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "documentation-site",
+        "display_name": "documentation-site",
+        "description": "Documentation site generation with Docusaurus, Nextra, Starlight, and VitePress for technical docs. ",
+        "status": "production",
+        "path": "skills_master/documentation-site",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "email-notifications",
+        "display_name": "email-notifications",
+        "description": "Transactional email sending with Resend, React Email templates, and multi-channel notification syste",
+        "status": "production",
+        "path": "skills_master/email-notifications",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "engram",
+        "display_name": "engram",
+        "description": "Master router for Engram Platform operations \u2014 architecture, Docker, memory, MCP, server administrat",
+        "status": "production",
+        "path": "skills_master/engram",
+        "files": 62,
+        "subdirs": [
+          "engram-mcp-integration",
+          "engram-server-administration",
+          "engram-docker-services",
+          "references",
+          "engram-maintenance-schedules",
+          "engram-hooks-tests",
+          "engram-system-architecture",
+          "engram-weaviate-memory",
+          ".omc",
+          "weaviate",
+          "engram-deploy"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "feature-flags",
+        "display_name": "feature-flags",
+        "description": "Feature flag systems for gradual rollouts, A/B testing, and operational control with LaunchDarkly/St",
+        "status": "production",
+        "path": "skills_master/feature-flags",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl",
+        "display_name": "firecrawl",
+        "description": "Master router for Firecrawl CLI work \u2014 web search, scraping, URL mapping, crawling, download, page i",
+        "status": "production",
+        "path": "skills_master/firecrawl",
+        "files": 5,
+        "subdirs": [
+          "scripts",
+          "rules"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "firecrawl-agent",
+        "display_name": "firecrawl-agent",
+        "description": "CLI autonomous structured extraction from complex sites or schemas.",
+        "status": "production",
+        "path": "skills_master/firecrawl-agent",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build",
+        "display_name": "firecrawl-build",
+        "description": "Master router for Firecrawl app integration \u2014 credentials, SDK setup, and endpoint selection.",
+        "status": "production",
+        "path": "skills_master/firecrawl-build",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-interact",
+        "display_name": "firecrawl-build-interact",
+        "description": "Use Firecrawl interact in product code when browser actions are required after scraping.",
+        "status": "production",
+        "path": "skills_master/firecrawl-build-interact",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-onboarding",
+        "display_name": "firecrawl-build-onboarding",
+        "description": "Set up Firecrawl credentials, SDKs, and project config for app integration.",
+        "status": "production",
+        "path": "skills_master/firecrawl-build-onboarding",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-scrape",
+        "display_name": "firecrawl-build-scrape",
+        "description": "Use Firecrawl scrape in product code when integration starts from a known URL.",
+        "status": "production",
+        "path": "skills_master/firecrawl-build-scrape",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-search",
+        "display_name": "firecrawl-build-search",
+        "description": "Use Firecrawl search in product code when integration starts from a query.",
+        "status": "production",
+        "path": "skills_master/firecrawl-build-search",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-cli-installation",
+        "display_name": "firecrawl-cli-installation",
+        "description": "Install, update, authenticate, or verify the Firecrawl CLI.",
+        "status": "production",
+        "path": "skills_master/firecrawl-cli-installation",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-crawl",
+        "display_name": "firecrawl-crawl",
+        "description": "CLI bulk extraction across a site section or docs subtree.",
+        "status": "production",
+        "path": "skills_master/firecrawl-crawl",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-download",
+        "display_name": "firecrawl-download",
+        "description": "CLI download of site pages to local files.",
+        "status": "production",
+        "path": "skills_master/firecrawl-download",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-interact",
+        "display_name": "firecrawl-interact",
+        "description": "CLI browser control after scraping when clicks, forms, login, or pagination are required.",
+        "status": "production",
+        "path": "skills_master/firecrawl-interact",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-map",
+        "display_name": "firecrawl-map",
+        "description": "CLI URL discovery for a known site when you need page locations, not page content.",
+        "status": "production",
+        "path": "skills_master/firecrawl-map",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-parse",
+        "display_name": "firecrawl-parse",
+        "description": "CLI parsing of local files on disk into markdown or QA output.",
+        "status": "production",
+        "path": "skills_master/firecrawl-parse",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-scrape",
+        "display_name": "firecrawl-scrape",
+        "description": "CLI extraction from one or more already-known URLs.",
+        "status": "production",
+        "path": "skills_master/firecrawl-scrape",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-search",
+        "display_name": "firecrawl-search",
+        "description": "CLI web search that starts from a query and returns sources or hydrated results.",
+        "status": "production",
+        "path": "skills_master/firecrawl-search",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-security",
+        "display_name": "firecrawl-security",
+        "description": "Safe handling of fetched Firecrawl web content and output.",
+        "status": "production",
+        "path": "skills_master/firecrawl-security",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "frontend-specialist",
+        "display_name": "frontend-specialist",
+        "description": "Expert Next.js 16/React 19/Tailwind v4 development. Use when scaffolding projects, building UI compo",
+        "status": "production",
+        "path": "skills_master/frontend-specialist",
+        "files": 22,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-04-12",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "git-advanced-workflows",
+        "display_name": "git-advanced-workflows",
+        "description": "Advanced Git workflows with Conventional Commits, semantic versioning, and automated release pipelin",
+        "status": "production",
+        "path": "skills_master/git-advanced-workflows",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "github-actions-ci",
+        "display_name": "github-actions-ci",
+        "description": "GitHub Actions CI/CD Skill",
+        "status": "production",
+        "path": "skills_master/github-actions-ci",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "i18n-localization",
+        "display_name": "i18n-localization",
+        "description": "Use this skill when i18n, internationalization, localization, next-intl, translations, locale, plura",
+        "status": "production",
+        "path": "skills_master/i18n-localization",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "legal-matter-ops",
+        "display_name": "legal-matter-ops",
+        "description": "Use when managing Australian legal matter operations, especially WA litigation workflows involving i",
+        "status": "production",
+        "path": "skills_master/legal-matter-ops",
+        "files": 17,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "macos",
+        "display_name": "macos",
+        "description": "Use this skill when working with macOS, macos automation, AppleScript, Homebrew, Mac shortcuts, Mac ",
+        "status": "production",
+        "path": "skills_master/macos",
+        "files": 14,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "maestri",
+        "display_name": "maestri",
+        "description": "Master router for Maestri canvas work \u2014 inter-agent communication, sticky notes, team orchestration,",
+        "status": "production",
+        "path": "skills_master/maestri",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "maestri-manager",
+        "display_name": "maestri-manager",
+        "description": "Create new connected agent terminals on the Maestri canvas and assign them roles. Use when the user ",
+        "status": "production",
+        "path": "skills_master/maestri-manager",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "maestri-portal",
+        "display_name": "maestri-portal",
+        "description": "Automate browser portals in Maestri \u2014 navigate pages, click elements, fill forms, take screenshots, ",
+        "status": "production",
+        "path": "skills_master/maestri-portal",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "modern-web-design",
+        "display_name": "modern-web-design",
+        "description": "Use this skill when working with web design, UI components, WCAG, accessibility, ShadCN, responsive ",
+        "status": "production",
+        "path": "skills_master/modern-web-design",
+        "files": 8,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "monitoring-observability",
+        "display_name": "monitoring-observability",
+        "description": "Monitoring and observability for TypeScript applications with Pino structured logging, Sentry v9.17.",
+        "status": "production",
+        "path": "skills_master/monitoring-observability",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "monorepo-turborepo",
+        "display_name": "monorepo-turborepo",
+        "description": "Turborepo monorepo build system and workspace orchestration. Use this skill when Turborepo, monorepo",
+        "status": "production",
+        "path": "skills_master/monorepo-turborepo",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "multi-agent-planner",
+        "display_name": "multi-agent-planner",
+        "description": "Multi-agent planning, agent orchestration, task decomposition, parallel agents, complex workflows, P",
+        "status": "production",
+        "path": "skills_master/multi-agent-planner",
+        "files": 18,
+        "subdirs": [
+          "references",
+          "examples",
+          "scripts"
+        ],
+        "last_modified": "2026-04-12",
+        "has_examples": true,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "nextjs",
+        "display_name": "nextjs",
+        "description": "Master router for Next.js work \u2014 implementation, audits, CMS integration, and core reference.",
+        "status": "production",
+        "path": "skills_master/nextjs",
+        "files": 23,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "nextjs-code-audit",
+        "display_name": "nextjs-code-audit",
+        "description": "Next.js codebase audit and code quality analysis. Use this skill when code audit Next.js, review nex",
+        "status": "production",
+        "path": "skills_master/nextjs-code-audit",
+        "files": 20,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-30",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "nextjs16-fullstack",
+        "display_name": "nextjs16-fullstack",
+        "description": "Next.js 16.2.6+ full-stack development with React 19, Tailwind CSS v4, Zustand v5, TanStack Query, S",
+        "status": "production",
+        "path": "skills_master/nextjs16-fullstack",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "ovhcloud-dedicated",
+        "display_name": "ovhcloud-dedicated",
+        "description": "OVHcloud dedicated server remote administration via API \u2014 server lifecycle, IPMI/KVM console access,",
+        "status": "production",
+        "path": "skills_master/ovhcloud-dedicated",
+        "files": 6,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-03-19",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "pdfkit-node",
+        "display_name": "pdfkit-node",
+        "description": "PDFKit \u2014 Node.js PDF document generation with a chainable API for text, vector graphics, images, tab",
+        "status": "production",
+        "path": "skills_master/pdfkit-node",
+        "files": 2,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-09",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "performance-profiling",
+        "display_name": "performance-profiling",
+        "description": "Web performance profiling and Core Web Vitals optimization. Use this skill when profiling, performan",
+        "status": "production",
+        "path": "skills_master/performance-profiling",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "prompt-engineering",
+        "display_name": "prompt-engineering",
+        "description": "Prompt Engineering",
+        "status": "production",
+        "path": "skills_master/prompt-engineering",
+        "files": 6,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "pwa-offline-first",
+        "display_name": "pwa-offline-first",
+        "description": "Progressive Web App and offline-first development with service workers. Use this skill when PWA, ser",
+        "status": "production",
+        "path": "skills_master/pwa-offline-first",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "python-fastapi",
+        "display_name": "python-fastapi",
+        "description": "FastAPI is a modern Python web framework for building fast, type-safe REST APIs with automatic OpenA",
+        "status": "production",
+        "path": "skills_master/python-fastapi",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "quality-control",
+        "display_name": "quality-control",
+        "description": "Code quality control with linting, formatting, and testing integration. Use this skill when QA, qual",
+        "status": "production",
+        "path": "skills_master/quality-control",
+        "files": 13,
+        "subdirs": [
+          "references",
+          "workflows",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "realtime-websockets",
+        "display_name": "realtime-websockets",
+        "description": "Real-time communication with WebSockets and Server-Sent Events. Use this skill when WebSocket, socke",
+        "status": "production",
+        "path": "skills_master/realtime-websockets",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "regex-text-processing",
+        "display_name": "regex-text-processing",
+        "description": "Regular expressions and text processing across all languages. Use this skill when regex, regular exp",
+        "status": "production",
+        "path": "skills_master/regex-text-processing",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "relationship-analysis",
+        "display_name": "relationship-analysis",
+        "description": "Use when analysing relationship communication patterns from SMS, iMessage, chat exports, or SQLite m",
+        "status": "production",
+        "path": "skills_master/relationship-analysis",
+        "files": 11,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-04-15",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "reportlab-python",
+        "display_name": "reportlab-python",
+        "description": "ReportLab \u2014 Python PDF generation using Canvas (low-level drawing) and Platypus (high-level document",
+        "status": "production",
+        "path": "skills_master/reportlab-python",
+        "files": 2,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-09",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "ripgrep",
+        "display_name": "ripgrep",
+        "description": "Fastest recursive text search tool for files and codebases using ripgrep (rg). Use this skill when g",
+        "status": "production",
+        "path": "skills_master/ripgrep",
+        "files": 2,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-26",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "sanity-nextjs",
+        "display_name": "sanity-nextjs",
+        "description": "Headless CMS integration with Sanity and Next.js. Use this skill when Sanity CMS, GROQ, portable tex",
+        "status": "production",
+        "path": "skills_master/sanity-nextjs",
+        "files": 14,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-30",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "search-implementation",
+        "display_name": "search-implementation",
+        "description": "Search engine architecture and full-text search implementation. Use this skill when search, full-tex",
+        "status": "production",
+        "path": "skills_master/search-implementation",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "sftp",
+        "display_name": "sftp",
+        "description": "High-speed SFTP/rsync file transfer and deployment automation for Tailscale-connected ACDev infrastr",
+        "status": "production",
+        "path": "skills_master/sftp",
+        "files": 8,
+        "subdirs": [],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "sonar-scanner",
+        "display_name": "sonar-scanner",
+        "description": "SonarScanner CLI setup, configuration, and execution for code quality analysis. Use when setting up ",
+        "status": "production",
+        "path": "skills_master/sonar-scanner",
+        "files": 3,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "tapestry",
+        "display_name": "tapestry",
+        "description": "Content extraction and actionable implementation planning from any source. Use this skill when tapes",
+        "status": "production",
+        "path": "skills_master/tapestry",
+        "files": 6,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "typescript-advanced",
+        "display_name": "typescript-advanced",
+        "description": "Advanced TypeScript patterns and type-safe abstractions. Use this skill when TypeScript, generics, t",
+        "status": "production",
+        "path": "skills_master/typescript-advanced",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "wa-legal",
+        "display_name": "wa-legal",
+        "description": "Master router for Western Australian legal operations \u2014 FVRO, teacher misconduct, case file manageme",
+        "status": "production",
+        "path": "skills_master/wa-legal",
+        "files": 45,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "wa-legal-letter-docx",
+        "display_name": "wa-legal-letter-docx",
+        "description": "Produces court-ready B&W .docx legal correspondence for WA residential tenancy disputes and SRL matt",
+        "status": "production",
+        "path": "skills_master/wa-legal-letter-docx",
+        "files": 3,
+        "subdirs": [
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "weaviate",
+        "display_name": "weaviate",
+        "description": "Weaviate vector database implementation for AI agent memory systems, RAG pipelines, and semantic sea",
+        "status": "production",
+        "path": "skills_master/weaviate",
+        "files": 30,
+        "subdirs": [
+          "references",
+          "tests",
+          "examples",
+          "weaviate_memory"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": true,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "windows-ps-admin",
+        "display_name": "windows-ps-admin",
+        "description": "Windows 11 PowerShell scripting, automation, and system administration for developers and DevOps eng",
+        "status": "production",
+        "path": "skills_master/windows-ps-admin",
+        "files": 5,
+        "subdirs": [
+          "evals",
+          "references"
+        ],
+        "last_modified": "2026-03-10",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      }
+    ],
+    "staging": [
+      {
+        "name": "accessibility-testing",
+        "display_name": "accessibility-testing",
+        "description": "Comprehensive accessibility (a11y) testing and WCAG 2.2 compliance automation for React/Next.js. Use",
+        "status": "staging",
+        "path": "skills_staging/accessibility-testing",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "api-design-testing",
+        "display_name": "api-design-testing",
+        "description": "REST API design, type-safe validation, OpenAPI specs, and contract testing with Hono, Zod, and MSW. ",
+        "status": "staging",
+        "path": "skills_staging/api-design-testing",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "biome-linting",
+        "display_name": "biome-linting",
+        "description": "Biome v2.4.16 \u2014 ultrafast Rust-based all-in-one linter, formatter, and import sorter for JavaScript,",
+        "status": "staging",
+        "path": "skills_staging/biome-linting",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "brand-creativebuilder",
+        "display_name": "brand-creativebuilder",
+        "description": "End-to-end brand identity builder with Pantone colour systems, SVG logos, favicons, interactive HTML",
+        "status": "staging",
+        "path": "skills_staging/brand-creativebuilder",
+        "files": 9,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "bun-runtime",
+        "display_name": "bun-runtime",
+        "description": "Bun v1.3.14 \u2014 high-performance all-in-one JavaScript/TypeScript runtime, package manager, bundler, a",
+        "status": "staging",
+        "path": "skills_staging/bun-runtime",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "caching-redis",
+        "display_name": "caching-redis",
+        "description": "High-performance Redis caching with cache-aside, write-through, TTL management, and cache invalidati",
+        "status": "staging",
+        "path": "skills_staging/caching-redis",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "claude-code",
+        "display_name": "claude-code",
+        "description": "Claude Code CLI configuration, MCP server setup, and multi-agent orchestration (OMC) automation. Use",
+        "status": "staging",
+        "path": "skills_staging/claude-code",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "clerk",
+        "display_name": "clerk",
+        "description": "Clerk v7.4.2 authentication platform for Next.js 16+ with async auth() API, React 19 compatibility, ",
+        "status": "staging",
+        "path": "skills_staging/clerk",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "cli-tool-development",
+        "display_name": "cli-tool-development",
+        "description": "Use this skill when CLI tool, command line, commander.js, clap, argparse, CLI app, terminal tool, in",
+        "status": "staging",
+        "path": "skills_staging/cli-tool-development",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "cloud-api-management",
+        "display_name": "cloud-api-management",
+        "description": "Cloud infrastructure and API management for Cloudflare, Tailscale, S3 storage, and GitHub automation",
+        "status": "staging",
+        "path": "skills_staging/cloud-api-management",
+        "files": 26,
+        "subdirs": [
+          "references",
+          "scripts",
+          ".omc"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "cloudapi",
+        "display_name": "cloudapi",
+        "description": "Alias/alternate path for cloud-api-management \u2014 Cloud infrastructure orchestration for Cloudflare DN",
+        "status": "staging",
+        "path": "skills_staging/cloudapi",
+        "files": 24,
+        "subdirs": [
+          "references",
+          "scripts",
+          ".omc"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "code-audit",
+        "display_name": "code-audit",
+        "description": "Comprehensive security audits, vulnerability scanning, and code quality assessment for production de",
+        "status": "staging",
+        "path": "skills_staging/code-audit",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "workflows",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "compliance-gdpr-privacy",
+        "display_name": "compliance-gdpr-privacy",
+        "description": "GDPR, CCPA/CPRA, and ePrivacy compliance implementation with consent management and data protection.",
+        "status": "staging",
+        "path": "skills_staging/compliance-gdpr-privacy",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "crawl4ai",
+        "display_name": "crawl4ai",
+        "description": "Use this skill when working with crawl4ai, web scraping, async scraping, playwright scraping, LLM ex",
+        "status": "staging",
+        "path": "skills_staging/crawl4ai",
+        "files": 66,
+        "subdirs": [
+          "docker",
+          "references",
+          "tests",
+          "examples",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": true,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "creative-strategy",
+        "display_name": "creative-strategy",
+        "description": "2025 brand strategy, creative direction, and marketing campaigns with community-first positioning. U",
+        "status": "staging",
+        "path": "skills_staging/creative-strategy",
+        "files": 17,
+        "subdirs": [
+          "references",
+          "workflows",
+          "assets"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "crewai-setup",
+        "display_name": "crewai-setup",
+        "description": "CrewAI multi-agent framework setup, configuration, and development. Use this skill when CrewAI, crew",
+        "status": "staging",
+        "path": "skills_staging/crewai-setup",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-03-20",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "data-visualization",
+        "display_name": "data-visualization",
+        "description": "Data Visualization",
+        "status": "staging",
+        "path": "skills_staging/data-visualization",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "database-orm",
+        "display_name": "database-orm",
+        "description": "PostgreSQL database design with Prisma and Drizzle ORM for TypeScript/Next.js applications. Use this",
+        "status": "staging",
+        "path": "skills_staging/database-orm",
+        "files": 6,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "deepinfra-ocr",
+        "display_name": "deepinfra-ocr",
+        "description": "DeepInfra vision-language model OCR for extracting text from PDFs, scanned documents, images, handwr",
+        "status": "staging",
+        "path": "skills_staging/deepinfra-ocr",
+        "files": 7,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "docker-compose",
+        "display_name": "docker-compose",
+        "description": "Docker Compose orchestration for local development and production deployment with multi-container se",
+        "status": "staging",
+        "path": "skills_staging/docker-compose",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "documentation-site",
+        "display_name": "documentation-site",
+        "description": "Documentation site generation with Docusaurus, Nextra, Starlight, and VitePress for technical docs. ",
+        "status": "staging",
+        "path": "skills_staging/documentation-site",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "email-notifications",
+        "display_name": "email-notifications",
+        "description": "Transactional email sending with Resend, React Email templates, and multi-channel notification syste",
+        "status": "staging",
+        "path": "skills_staging/email-notifications",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "engram",
+        "display_name": "engram",
+        "description": "Master router for Engram Platform operations \u2014 architecture, Docker, memory, MCP, server administrat",
+        "status": "staging",
+        "path": "skills_staging/engram",
+        "files": 62,
+        "subdirs": [
+          "engram-mcp-integration",
+          "engram-server-administration",
+          "engram-docker-services",
+          "references",
+          "engram-maintenance-schedules",
+          "engram-hooks-tests",
+          "engram-system-architecture",
+          "engram-weaviate-memory",
+          ".omc",
+          "weaviate",
+          "engram-deploy"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "feature-flags",
+        "display_name": "feature-flags",
+        "description": "Feature flag systems for gradual rollouts, A/B testing, and operational control with LaunchDarkly/St",
+        "status": "staging",
+        "path": "skills_staging/feature-flags",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl",
+        "display_name": "firecrawl",
+        "description": "Master router for Firecrawl CLI work \u2014 web search, scraping, URL mapping, crawling, download, page i",
+        "status": "staging",
+        "path": "skills_staging/firecrawl",
+        "files": 5,
+        "subdirs": [
+          "scripts",
+          "rules"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "firecrawl-agent",
+        "display_name": "firecrawl-agent",
+        "description": "CLI autonomous structured extraction from complex sites or schemas.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-agent",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build",
+        "display_name": "firecrawl-build",
+        "description": "Master router for Firecrawl app integration \u2014 credentials, SDK setup, and endpoint selection.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-build",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-interact",
+        "display_name": "firecrawl-build-interact",
+        "description": "Use Firecrawl interact in product code when browser actions are required after scraping.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-build-interact",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-onboarding",
+        "display_name": "firecrawl-build-onboarding",
+        "description": "Set up Firecrawl credentials, SDKs, and project config for app integration.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-build-onboarding",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-scrape",
+        "display_name": "firecrawl-build-scrape",
+        "description": "Use Firecrawl scrape in product code when integration starts from a known URL.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-build-scrape",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-build-search",
+        "display_name": "firecrawl-build-search",
+        "description": "Use Firecrawl search in product code when integration starts from a query.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-build-search",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-cli-installation",
+        "display_name": "firecrawl-cli-installation",
+        "description": "Install, update, authenticate, or verify the Firecrawl CLI.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-cli-installation",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-crawl",
+        "display_name": "firecrawl-crawl",
+        "description": "CLI bulk extraction across a site section or docs subtree.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-crawl",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-download",
+        "display_name": "firecrawl-download",
+        "description": "CLI download of site pages to local files.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-download",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-interact",
+        "display_name": "firecrawl-interact",
+        "description": "CLI browser control after scraping when clicks, forms, login, or pagination are required.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-interact",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-map",
+        "display_name": "firecrawl-map",
+        "description": "CLI URL discovery for a known site when you need page locations, not page content.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-map",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-parse",
+        "display_name": "firecrawl-parse",
+        "description": "CLI parsing of local files on disk into markdown or QA output.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-parse",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-scrape",
+        "display_name": "firecrawl-scrape",
+        "description": "CLI extraction from one or more already-known URLs.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-scrape",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-search",
+        "display_name": "firecrawl-search",
+        "description": "CLI web search that starts from a query and returns sources or hydrated results.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-search",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "firecrawl-security",
+        "display_name": "firecrawl-security",
+        "description": "Safe handling of fetched Firecrawl web content and output.",
+        "status": "staging",
+        "path": "skills_staging/firecrawl-security",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "frontend-specialist",
+        "display_name": "frontend-specialist",
+        "description": "Expert Next.js 16/React 19/Tailwind v4 development. Use when scaffolding projects, building UI compo",
+        "status": "staging",
+        "path": "skills_staging/frontend-specialist",
+        "files": 22,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-04-12",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "git-advanced-workflows",
+        "display_name": "git-advanced-workflows",
+        "description": "Advanced Git workflows with Conventional Commits, semantic versioning, and automated release pipelin",
+        "status": "staging",
+        "path": "skills_staging/git-advanced-workflows",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "github-actions-ci",
+        "display_name": "github-actions-ci",
+        "description": "GitHub Actions CI/CD Skill",
+        "status": "staging",
+        "path": "skills_staging/github-actions-ci",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "i18n-localization",
+        "display_name": "i18n-localization",
+        "description": "Use this skill when i18n, internationalization, localization, next-intl, translations, locale, plura",
+        "status": "staging",
+        "path": "skills_staging/i18n-localization",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "legal-matter-ops",
+        "display_name": "legal-matter-ops",
+        "description": "Use when managing Australian legal matter operations, especially WA litigation workflows involving i",
+        "status": "staging",
+        "path": "skills_staging/legal-matter-ops",
+        "files": 17,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "macos",
+        "display_name": "macos",
+        "description": "Use this skill when working with macOS, macos automation, AppleScript, Homebrew, Mac shortcuts, Mac ",
+        "status": "staging",
+        "path": "skills_staging/macos",
+        "files": 14,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "maestri",
+        "display_name": "maestri",
+        "description": "Master router for Maestri canvas work \u2014 inter-agent communication, sticky notes, team orchestration,",
+        "status": "staging",
+        "path": "skills_staging/maestri",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "maestri-manager",
+        "display_name": "maestri-manager",
+        "description": "Create new connected agent terminals on the Maestri canvas and assign them roles. Use when the user ",
+        "status": "staging",
+        "path": "skills_staging/maestri-manager",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "maestri-portal",
+        "display_name": "maestri-portal",
+        "description": "Automate browser portals in Maestri \u2014 navigate pages, click elements, fill forms, take screenshots, ",
+        "status": "staging",
+        "path": "skills_staging/maestri-portal",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "modern-web-design",
+        "display_name": "modern-web-design",
+        "description": "Use this skill when working with web design, UI components, WCAG, accessibility, ShadCN, responsive ",
+        "status": "staging",
+        "path": "skills_staging/modern-web-design",
+        "files": 8,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "monitoring-observability",
+        "display_name": "monitoring-observability",
+        "description": "Monitoring and observability for TypeScript applications with Pino structured logging, Sentry v9.17.",
+        "status": "staging",
+        "path": "skills_staging/monitoring-observability",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "monorepo-turborepo",
+        "display_name": "monorepo-turborepo",
+        "description": "Turborepo monorepo build system and workspace orchestration. Use this skill when Turborepo, monorepo",
+        "status": "staging",
+        "path": "skills_staging/monorepo-turborepo",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "multi-agent-planner",
+        "display_name": "multi-agent-planner",
+        "description": "Multi-agent planning, agent orchestration, task decomposition, parallel agents, complex workflows, P",
+        "status": "staging",
+        "path": "skills_staging/multi-agent-planner",
+        "files": 18,
+        "subdirs": [
+          "references",
+          "examples",
+          "scripts"
+        ],
+        "last_modified": "2026-04-12",
+        "has_examples": true,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "nextjs",
+        "display_name": "nextjs",
+        "description": "Master router for Next.js work \u2014 implementation, audits, CMS integration, and core reference.",
+        "status": "staging",
+        "path": "skills_staging/nextjs",
+        "files": 23,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "nextjs-code-audit",
+        "display_name": "nextjs-code-audit",
+        "description": "Next.js codebase audit and code quality analysis. Use this skill when code audit Next.js, review nex",
+        "status": "staging",
+        "path": "skills_staging/nextjs-code-audit",
+        "files": 20,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-30",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "nextjs16-fullstack",
+        "display_name": "nextjs16-fullstack",
+        "description": "Next.js 16.2.6+ full-stack development with React 19, Tailwind CSS v4, Zustand v5, TanStack Query, S",
+        "status": "staging",
+        "path": "skills_staging/nextjs16-fullstack",
+        "files": 9,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "ovhcloud-dedicated",
+        "display_name": "ovhcloud-dedicated",
+        "description": "OVHcloud dedicated server remote administration via API \u2014 server lifecycle, IPMI/KVM console access,",
+        "status": "staging",
+        "path": "skills_staging/ovhcloud-dedicated",
+        "files": 6,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-03-19",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "pdfkit-node",
+        "display_name": "pdfkit-node",
+        "description": "PDFKit \u2014 Node.js PDF document generation with a chainable API for text, vector graphics, images, tab",
+        "status": "staging",
+        "path": "skills_staging/pdfkit-node",
+        "files": 2,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-09",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "performance-profiling",
+        "display_name": "performance-profiling",
+        "description": "Web performance profiling and Core Web Vitals optimization. Use this skill when profiling, performan",
+        "status": "staging",
+        "path": "skills_staging/performance-profiling",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "prompt-engineering",
+        "display_name": "prompt-engineering",
+        "description": "Prompt Engineering",
+        "status": "staging",
+        "path": "skills_staging/prompt-engineering",
+        "files": 6,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-13",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "pwa-offline-first",
+        "display_name": "pwa-offline-first",
+        "description": "Progressive Web App and offline-first development with service workers. Use this skill when PWA, ser",
+        "status": "staging",
+        "path": "skills_staging/pwa-offline-first",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "python-fastapi",
+        "display_name": "python-fastapi",
+        "description": "FastAPI is a modern Python web framework for building fast, type-safe REST APIs with automatic OpenA",
+        "status": "staging",
+        "path": "skills_staging/python-fastapi",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "quality-control",
+        "display_name": "quality-control",
+        "description": "Code quality control with linting, formatting, and testing integration. Use this skill when QA, qual",
+        "status": "staging",
+        "path": "skills_staging/quality-control",
+        "files": 13,
+        "subdirs": [
+          "references",
+          "workflows",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "realtime-websockets",
+        "display_name": "realtime-websockets",
+        "description": "Real-time communication with WebSockets and Server-Sent Events. Use this skill when WebSocket, socke",
+        "status": "staging",
+        "path": "skills_staging/realtime-websockets",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "regex-text-processing",
+        "display_name": "regex-text-processing",
+        "description": "Regular expressions and text processing across all languages. Use this skill when regex, regular exp",
+        "status": "staging",
+        "path": "skills_staging/regex-text-processing",
+        "files": 4,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "relationship-analysis",
+        "display_name": "relationship-analysis",
+        "description": "Use when analysing relationship communication patterns from SMS, iMessage, chat exports, or SQLite m",
+        "status": "staging",
+        "path": "skills_staging/relationship-analysis",
+        "files": 11,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-04-15",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "reportlab-python",
+        "display_name": "reportlab-python",
+        "description": "ReportLab \u2014 Python PDF generation using Canvas (low-level drawing) and Platypus (high-level document",
+        "status": "staging",
+        "path": "skills_staging/reportlab-python",
+        "files": 2,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-04-09",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "ripgrep",
+        "display_name": "ripgrep",
+        "description": "Fastest recursive text search tool for files and codebases using ripgrep (rg). Use this skill when g",
+        "status": "staging",
+        "path": "skills_staging/ripgrep",
+        "files": 2,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-26",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "sanity-nextjs",
+        "display_name": "sanity-nextjs",
+        "description": "Headless CMS integration with Sanity and Next.js. Use this skill when Sanity CMS, GROQ, portable tex",
+        "status": "staging",
+        "path": "skills_staging/sanity-nextjs",
+        "files": 14,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-30",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "search-implementation",
+        "display_name": "search-implementation",
+        "description": "Search engine architecture and full-text search implementation. Use this skill when search, full-tex",
+        "status": "staging",
+        "path": "skills_staging/search-implementation",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "sftp",
+        "display_name": "sftp",
+        "description": "High-speed SFTP/rsync file transfer and deployment automation for Tailscale-connected ACDev infrastr",
+        "status": "staging",
+        "path": "skills_staging/sftp",
+        "files": 8,
+        "subdirs": [],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "sonar-scanner",
+        "display_name": "sonar-scanner",
+        "description": "SonarScanner CLI setup, configuration, and execution for code quality analysis. Use when setting up ",
+        "status": "staging",
+        "path": "skills_staging/sonar-scanner",
+        "files": 3,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "tapestry",
+        "display_name": "tapestry",
+        "description": "Content extraction and actionable implementation planning from any source. Use this skill when tapes",
+        "status": "staging",
+        "path": "skills_staging/tapestry",
+        "files": 6,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "typescript-advanced",
+        "display_name": "typescript-advanced",
+        "description": "Advanced TypeScript patterns and type-safe abstractions. Use this skill when TypeScript, generics, t",
+        "status": "staging",
+        "path": "skills_staging/typescript-advanced",
+        "files": 5,
+        "subdirs": [
+          "references"
+        ],
+        "last_modified": "2026-02-25",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "wa-legal",
+        "display_name": "wa-legal",
+        "description": "Master router for Western Australian legal operations \u2014 FVRO, teacher misconduct, case file manageme",
+        "status": "staging",
+        "path": "skills_staging/wa-legal",
+        "files": 45,
+        "subdirs": [
+          "references",
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "wa-legal-letter-docx",
+        "display_name": "wa-legal-letter-docx",
+        "description": "Produces court-ready B&W .docx legal correspondence for WA residential tenancy disputes and SRL matt",
+        "status": "staging",
+        "path": "skills_staging/wa-legal-letter-docx",
+        "files": 3,
+        "subdirs": [
+          "scripts"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": true
+      },
+      {
+        "name": "weaviate",
+        "display_name": "weaviate",
+        "description": "Weaviate vector database implementation for AI agent memory systems, RAG pipelines, and semantic sea",
+        "status": "staging",
+        "path": "skills_staging/weaviate",
+        "files": 30,
+        "subdirs": [
+          "references",
+          "tests",
+          "examples",
+          "weaviate_memory"
+        ],
+        "last_modified": "2026-05-31",
+        "has_examples": true,
+        "has_reference": false,
+        "has_scripts": false
+      },
+      {
+        "name": "windows-ps-admin",
+        "display_name": "windows-ps-admin",
+        "description": "Windows 11 PowerShell scripting, automation, and system administration for developers and DevOps eng",
+        "status": "staging",
+        "path": "skills_staging/windows-ps-admin",
+        "files": 5,
+        "subdirs": [
+          "evals",
+          "references"
+        ],
+        "last_modified": "2026-03-10",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      }
+    ],
+    "development": [
+      {
+        "name": "test-skill",
+        "display_name": "test-skill",
+        "description": "Example test skill for demonstration and validation testing.",
+        "status": "development",
+        "path": "skills_devtesting/test-skill",
+        "files": 1,
+        "subdirs": [],
+        "last_modified": "2026-06-02",
+        "has_examples": false,
+        "has_reference": false,
+        "has_scripts": false
+      }
+    ],
+    "agent_specific": {
+      "Scripts": []
+    }
+  },
+  "errors": [
+    "Cannot parse ai-project-management: substring not found",
+    "Cannot parse tailwind: mapping values are not allowed here\n  in \"<unicode string>\", line 2, column 250:\n     ... , @tailwind, utility classes, tw: syntax, CSS frameworks, respon ... \n                                         ^",
+    "Cannot parse ai-project-management: substring not found",
+    "Cannot parse tailwind: mapping values are not allowed here\n  in \"<unicode string>\", line 2, column 250:\n     ... , @tailwind, utility classes, tw: syntax, CSS frameworks, respon ... \n                                         ^"
+  ]
+}

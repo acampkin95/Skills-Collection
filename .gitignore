@@ -1,9 +1,12 @@
-# AI Working Directories
-.aistore/
-.archive/
-.omc/
-.omo/
-.sisyphus/
+# AI Working Directories (within any folder)
+**/.aistore/
+**/.archive/
+**/.omc/
+**/.omo/
+**/.sisyphus/
+**/.system/
+**/.maintenance/
+**/.CLAUDE.md
 
 # OS Files
 .DS_Store
@@ -62,5 +65,4 @@ coverage/
 *.bak
 *.tmp
 .env.example
-skills_master/
-skills_staging/
+# Don't exclude skill directories, only their working subdirectories (handled above)

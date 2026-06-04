@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  crawl4ai:
+    image: unclecode/crawl4ai:latest
+    container_name: crawl4ai
+    ports:
+      - "11235:11235"    # API and Playground UI
+    volumes:
+      - ./data:/data
+      - ./cache:/home/appuser/.cache
+      - ./logs:/app/logs
+    environment:
+      # LLM API Keys
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      
+      # Crawl4AI Configuration
+      - MAX_CONCURRENT_TASKS=10
+      - CRAWL4AI_DOWNLOAD_DIR=/data/downloads
+      - CRAWL4AI_CACHE_DIR=/home/appuser/.cache
+      
+      # Redis Configuration (if using job queue)
+      - REDIS_URL=redis://redis:6379
+      
+      # Logging
+      - LOG_LEVEL=INFO
+      
+    shm_size: '3gb'  # Important for browser operations
+    restart: unless-stopped
+    networks:
+      - crawl4ai-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11235/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  redis:
+    image: redis:7-alpine
+    container_name: crawl4ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    networks:
+      - crawl4ai-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # Optional: Redis Commander for monitoring
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: crawl4ai-redis-commander
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - redis
+    networks:
+      - crawl4ai-network
+    profiles:
+      - monitoring
+
+volumes:
+  redis-data:
+    driver: local
+
+networks:
+  crawl4ai-network:
+    driver: bridge

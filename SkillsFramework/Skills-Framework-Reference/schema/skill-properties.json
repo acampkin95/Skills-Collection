@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Skill Properties",
+  "description": "Frontmatter properties for a SKILL.md file in Agent Skills format",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Skill name in kebab-case. Must match the directory name."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "description": "A clear description of what the skill does and when to use it."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "SKILL.md format version (semantic versioning). Recommended for future compatibility."
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier (e.g., MIT, Apache-2.0, GPL-3.0)"
+    },
+    "compatibility": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Compatibility requirements or dependencies (e.g., Requires Python 3.11+)"
+    },
+    "allowed-tools": {
+      "type": "string",
+      "description": "Tool patterns required by the skill (experimental feature, format: Tool(pattern:*) Tool(pattern:*))"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Arbitrary key-value pairs for client-specific properties."
+    }
+  },
+  "additionalProperties": false,
+  "examples": [
+    {
+      "name": "hello-world",
+      "description": "Responds with a friendly greeting"
+    },
+    {
+      "name": "data-processor",
+      "description": "Processes and transforms CSV data files",
+      "compatibility": "Requires Python 3.9+ with pandas",
+      "allowed-tools": "Bash(python:*) Read(.*)",
+      "metadata": {
+        "author": "Data Team",
+        "version": "2.1.0"
+      }
+    }
+  ]
+}

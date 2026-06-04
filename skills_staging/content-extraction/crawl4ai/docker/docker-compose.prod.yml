@@ -1,0 +1,159 @@
+version: '3.8'
+
+services:
+  crawl4ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: crawl4ai:latest
+    container_name: crawl4ai-prod
+    ports:
+      - "8000:8000"
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data
+      - ${OUTPUT_DIR:-./outputs}:/app/outputs
+      - ${LOG_DIR:-./logs}:/app/logs
+    environment:
+      - CRAWL4AI_HOST=0.0.0.0
+      - CRAWL4AI_PORT=8000
+      - REDIS_URL=redis://redis:6379
+      - CACHE_MODE=${CACHE_MODE:-enabled}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MAX_CONCURRENT_CRAWLS=${MAX_CONCURRENT:-20}
+      - RATE_LIMIT_REQUESTS_PER_MINUTE=${RATE_LIMIT:-120}
+      - CIRCUIT_BREAKER_FAILURE_THRESHOLD=5
+      - CIRCUIT_BREAKER_RESET_TIMEOUT=60
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - LLM_MODEL=${LLM_MODEL:-gpt-4o-mini}
+    env_file:
+      - .env.production
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:8000/health", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+        reservations:
+          cpus: '2.0'
+          memory: 4G
+
+  crawl4ai-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: crawl4ai:latest
+    container_name: crawl4ai-worker
+    command: ["python", "-m", "crawl4ai", "worker"]
+    volumes:
+      - ${DATA_DIR:-./data}:/app/data
+      - ${OUTPUT_DIR:-./outputs}:/app/outputs
+      - ${LOG_DIR:-./logs}:/app/logs
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - CACHE_MODE=${CACHE_MODE:-enabled}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MAX_CONCURRENT_CRAWLS=${MAX_CONCURRENT:-20}
+      - WORKER_MODE=true
+    env_file:
+      - .env.production
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+  redis:
+    image: redis:7-alpine
+    container_name: crawl4ai-redis-prod
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: >
+      redis-server
+      --maxmemory 2gb
+      --maxmemory-policy allkeys-lru
+      --appendonly yes
+      --appendfsync everysec
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: crawl4ai-prometheus-prod
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: crawl4ai-grafana-prod
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager:v0.25.0
+    container_name: crawl4ai-alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - alertmanager-data:/alertmanager
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  prometheus-data:
+  grafana-data:
+  alertmanager-data:
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

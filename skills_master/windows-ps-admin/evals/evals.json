@@ -1,0 +1,90 @@
+{
+  "skill_name": "windows-ps-admin",
+  "evals": [
+    {
+      "id": 0,
+      "prompt": "Write me a PowerShell script that monitors GPU temperature every 10 seconds and sends a Windows toast notification if it goes above 85°C. I'm running an RTX 4090 on Windows 11, using pwsh 7. Need it to run silently in the background.",
+      "expected_output": "A complete, runnable PS7 script using nvidia-smi for temperature polling, Windows toast notifications (WinRT API or BurntToast, or fallback to NotifyIcon), proper loop with error handling, and instructions to run it as a background job or scheduled task.",
+      "assertions": [
+        {
+          "name": "uses_nvidia_smi",
+          "description": "Script calls nvidia-smi to read temperature (not WMI VideoController which doesn't give accurate GPU temp)"
+        },
+        {
+          "name": "has_notification_mechanism",
+          "description": "Script implements a toast notification or system tray balloon tip — not just Write-Host"
+        },
+        {
+          "name": "has_error_handling",
+          "description": "Script includes try/catch or -ErrorAction handling, especially for nvidia-smi not being found"
+        },
+        {
+          "name": "configurable_threshold",
+          "description": "Temperature threshold is a parameter or named variable, not hardcoded mid-script"
+        },
+        {
+          "name": "background_run_instructions",
+          "description": "Includes how to run silently in background (Start-Job, -WindowStyle Hidden, scheduled task, etc.)"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "prompt": "I need a PowerShell function that takes a list of hostnames and checks: (1) whether the machine is online, (2) which local admins are on it, (3) what OS build it's on. Should output a structured object I can pipe to Export-Csv. Running in a domain environment, have admin creds for the remote machines.",
+      "expected_output": "A PS function with proper param block, uses Test-Connection or Test-WSMan, Invoke-Command for remote queries, returns PSCustomObject array with Online/Offline handling, exports cleanly to CSV.",
+      "assertions": [
+        {
+          "name": "returns_pscustomobject",
+          "description": "Function returns [PSCustomObject] or array of them — not Write-Host or formatted strings"
+        },
+        {
+          "name": "handles_offline_hosts",
+          "description": "Gracefully handles unreachable hosts (marks as offline, doesn't throw terminating error for the whole batch)"
+        },
+        {
+          "name": "uses_invoke_command_or_cim",
+          "description": "Uses Invoke-Command or Get-CimInstance -ComputerName to retrieve remote data, not Get-WmiObject"
+        },
+        {
+          "name": "gets_local_admins",
+          "description": "Retrieves local Administrators group members on remote machine"
+        },
+        {
+          "name": "gets_os_build",
+          "description": "Retrieves OS version/build number (Win32_OperatingSystem or [environment]::OSVersion or similar)"
+        },
+        {
+          "name": "pipeline_compatible",
+          "description": "Output can be piped to Export-Csv without additional transformation"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "My dev machine is a Windows 11 laptop with an RTX 3070 Ti and an Intel iGPU. Chrome and Electron apps keep rendering on the iGPU instead of the NVIDIA card, which makes everything sluggish. How do I force them to use the dGPU via PowerShell? Also want to understand why Windows keeps switching back.",
+      "expected_output": "Explains the Windows Graphics Settings preference mechanism, provides PS commands to set GpuPreference=2 in the registry for specific apps, explains Optimus/hybrid graphics behaviour, notes MUX switch if applicable, and explains why the setting doesn't always stick (app reinstalls, per-exe path changes).",
+      "assertions": [
+        {
+          "name": "registry_path_correct",
+          "description": "References the correct registry path: HKCU:\\SOFTWARE\\Microsoft\\DirectX\\UserGpuPreferences"
+        },
+        {
+          "name": "gpupreference_value_explained",
+          "description": "Explains GpuPreference values (0=default, 1=power save/iGPU, 2=high performance/dGPU)"
+        },
+        {
+          "name": "handles_electron_path_issue",
+          "description": "Notes that Electron/Chrome use the exe path as the key — explains why path must match exactly"
+        },
+        {
+          "name": "explains_why_it_reverts",
+          "description": "Explains at least one reason the setting can revert (app update changes exe path, etc.)"
+        },
+        {
+          "name": "provides_working_ps_commands",
+          "description": "Provides actual PowerShell commands to set the registry value, not just GUI instructions"
+        }
+      ]
+    }
+  ]
+}

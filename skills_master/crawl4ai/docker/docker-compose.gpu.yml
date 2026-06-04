@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  crawl4ai-gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    container_name: crawl4ai-gpu
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./logs:/app/logs
+    environment:
+      - CRAWL4AI_HOST=0.0.0.0
+      - CRAWL4AI_PORT=8000
+      - REDIS_URL=redis://redis:6379
+      - CACHE_MODE=enabled
+      - LOG_LEVEL=INFO
+      - MAX_CONCURRENT_CRAWLS=10
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: crawl4ai-redis-gpu
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data-gpu:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  redis-data-gpu:

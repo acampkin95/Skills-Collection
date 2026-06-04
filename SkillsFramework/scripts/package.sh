@@ -20,9 +20,10 @@
 # =============================================================================
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
-SKILLS_DIR="$REPO_ROOT/master"
-OUT_DIR="$REPO_ROOT/packaged"
+# Resolve REPO_ROOT: SkillsFramework/scripts/ -> repo root (go up 2 levels)
+REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+SKILLS_DIR="$REPO_ROOT/skills_master"
+OUT_DIR="$REPO_ROOT/skills_conversions/Claude-Desktop"
 
 mkdir -p "$OUT_DIR"
 

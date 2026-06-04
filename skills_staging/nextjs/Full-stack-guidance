@@ -1,0 +1,353 @@
+# Next.js full-stack project initialization in 2025
+
+Modern Next.js project scaffolding has evolved dramatically with **Turbopack becoming the default bundler in Next.js 16**, **Tailwind CSS v4 adopting CSS-first configuration**, and **Biome emerging as a faster alternative to ESLint + Prettier**. The best initialization scripts now leverage these advances while providing sensible defaults for auth (Auth.js v5), database (Prisma with connection pooling), and testing (Vitest over Jest). This report covers concrete patterns and configuration snippets for each area.
+
+---
+
+## CLI scaffolding tools compared
+
+The official `create-next-app` has added significant options in 2024-2025, including **React Compiler support** (`--react-compiler`), **Biome as a linter option** (`--biome`), and **Turbopack enabled by default**. Running `npx create-next-app@latest` now presents these choices interactively:
+
+```bash
+npx create-next-app@latest my-app \
+  --typescript --tailwind --eslint --app \
+  --src-dir --turbopack --react-compiler
+```
+
+**create-t3-app** remains the gold standard for full-stack type-safe applications, offering modular selection of **tRPC**, **Prisma or Drizzle**, **NextAuth.js**, and **Tailwind CSS**. The key innovation is generating only what you select—not a monolithic template. For production SaaS applications, **next-forge** provides the most comprehensive starting point with Clerk auth, Prisma + Neon, Stripe payments, React Email, and monitoring pre-configured across multiple apps (main app, docs site, marketing site).
+
+Turborepo starters structure monorepos with `apps/` for Next.js applications and `packages/` for shared code like `@repo/ui` (component library), `@repo/eslint-config`, and `@repo/typescript-config`. This pattern separates concerns while enabling efficient caching.
+
+---
+
+## Next.js 15/16 configuration essentials
+
+Turbopack is **stable for development in Next.js 15** and becomes the **default bundler in Next.js 16** for both dev and build. The configuration namespace moves from `experimental.turbo` to a top-level `turbopack` key:
+
+```typescript
+// next.config.ts (Next.js 16)
+import type { NextConfig } from 'next'
+
+const nextConfig: NextConfig = {
+  turbopack: {
+    rules: {
+      '*.svg': { loaders: ['@svgr/webpack'], as: '*.js' },
+    },
+    resolveAlias: {
+      '@': './src',
+    },
+  },
+  reactCompiler: true,  // Stable in Next.js 16
+  cacheComponents: true, // Replaces experimental.ppr
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: '**.example.com' },
+    ],
+  },
+  serverActions: {
+    bodySizeLimit: '5mb',
+  },
+}
+export default nextConfig
+```
+
+The **React Compiler** (previously React Forget) requires `babel-plugin-react-compiler` and automatically memoizes components. In Next.js 15 it's under `experimental.reactCompiler`; in Next.js 16 it's stable and top-level.
+
+Critical breaking changes from Next.js 14 to 15 include **async dynamic APIs**—`cookies()`, `headers()`, `params`, and `searchParams` now return Promises:
+
+```typescript
+// Next.js 15+ pattern
+export default async function Page(props: PageProps) {
+  const { slug } = await props.params
+  const cookieStore = await cookies()
+  const token = cookieStore.get('token')
+}
+```
+
+---
+
+## Auth.js v5 setup patterns
+
+Auth.js v5 centralizes configuration in a root `auth.ts` file that exports `auth`, `handlers`, `signIn`, and `signOut`. The handlers pattern simplifies route setup:
+
+```typescript
+// auth.ts
+import NextAuth from "next-auth"
+import GitHub from "next-auth/providers/github"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { prisma } from "@/lib/prisma"
+
+export const { auth, handlers, signIn, signOut } = NextAuth({
+  adapter: PrismaAdapter(prisma),
+  session: { strategy: "jwt" }, // Required for Credentials provider
+  providers: [
+    GitHub, // Auto-infers AUTH_GITHUB_ID and AUTH_GITHUB_SECRET
+  ],
+  callbacks: {
+    jwt({ token, user }) {
+      if (user) {
+        token.id = user.id
+        token.role = user.role
+      }
+      return token
+    },
+    session({ session, token }) {
+      session.user.id = token.id as string
+      session.user.role = token.role as string
+      return session
+    },
+  },
+})
+
+// app/api/auth/[...nextauth]/route.ts
+export { GET, POST } from "@/auth"
+```
+
+For **Edge runtime compatibility**, split configuration into `auth.config.ts` (Edge-safe, no database) and `auth.ts` (full config with adapter). Middleware uses only the Edge-safe config:
+
+```typescript
+// middleware.ts
+import NextAuth from "next-auth"
+import authConfig from "./auth.config"
+
+export default NextAuth(authConfig).auth((req) => {
+  if (!req.auth && req.nextUrl.pathname !== "/login") {
+    return Response.redirect(new URL("/login", req.nextUrl))
+  }
+})
+```
+
+Session access in Server Components and Server Actions uses the `auth()` function directly—no more `getServerSession(authOptions)` boilerplate.
+
+---
+
+## Prisma configuration for serverless
+
+The **singleton pattern is mandatory** for Next.js development to prevent connection pool exhaustion from hot reloading:
+
+```typescript
+// lib/prisma.ts
+import { PrismaClient } from '@prisma/client'
+
+const prismaClientSingleton = () => new PrismaClient()
+
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>
+} & typeof global
+
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+export default prisma
+
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prismaGlobal = prisma
+}
+```
+
+For serverless and Edge deployments, **Prisma Accelerate** provides HTTP-based connection pooling with global caching. Configure it with separate URLs for runtime (pooled) and CLI (direct):
+
+```
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=__KEY__"
+DIRECT_URL="postgresql://user:password@host:5432/db"
+```
+
+Schema conventions should use **PascalCase models** (`User`, `Post`) mapped to **snake_case tables** via `@@map`. Include `createdAt`, `updatedAt` timestamps, and use `cuid()` for IDs over autoincrement in distributed systems:
+
+```prisma
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  posts     Post[]
+  
+  @@map("users")
+}
+```
+
+---
+
+## Tailwind CSS v4 eliminates JavaScript config
+
+Tailwind v4 (released January 2025) introduces **CSS-first configuration** using the `@theme` directive, eliminating `tailwind.config.js` for most projects:
+
+```css
+/* app/globals.css */
+@import "tailwindcss";
+
+@theme {
+  --color-primary: oklch(0.53 0.12 118.34);
+  --font-display: "Satoshi", sans-serif;
+  --breakpoint-3xl: 1920px;
+}
+```
+
+PostCSS setup is minimal with `@tailwindcss/postcss`:
+
+```js
+// postcss.config.mjs
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+}
+```
+
+New features include **native container queries** (`@container`, `@sm:grid-cols-3`), **3D transforms** (`rotate-x-12`, `perspective-distant`), and **OKLCH gradients** with color space interpolation (`bg-linear-to-r/oklch`). Custom utilities now use `@utility` instead of `@layer utilities`.
+
+---
+
+## ESLint flat config and Biome adoption
+
+Next.js 15+ supports ESLint's new **flat config format** (`eslint.config.mjs`). Note that `next lint` is removed in Next.js 16—run ESLint directly:
+
+```js
+// eslint.config.mjs
+import { defineConfig, globalIgnores } from 'eslint/config'
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import nextTs from 'eslint-config-next/typescript'
+
+export default defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  globalIgnores(['.next/**', 'out/**']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/consistent-type-imports': 'error',
+    },
+  },
+])
+```
+
+**Biome** is gaining adoption as a Rust-based all-in-one formatter and linter that's **25x faster** than Prettier + ESLint combined. For Next.js projects:
+
+```json
+{
+  "formatter": {
+    "indentStyle": "space",
+    "lineWidth": 100
+  },
+  "linter": {
+    "rules": {
+      "recommended": true,
+      "correctness": { "noUnusedImports": "warn" }
+    }
+  },
+  "javascript": {
+    "formatter": { "quoteStyle": "single", "semicolons": "always" }
+  }
+}
+```
+
+---
+
+## Testing with Vitest over Jest
+
+**Vitest is the recommended choice for new projects** due to native ESM support, faster startup (2-4x), and simpler configuration. The setup is minimal:
+
+```typescript
+// vitest.config.mts
+import { defineConfig } from 'vitest/config'
+import react from '@vitejs/plugin-react'
+import tsconfigPaths from 'vite-tsconfig-paths'
+
+export default defineConfig({
+  plugins: [tsconfigPaths(), react()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './vitest.setup.ts',
+  },
+})
+```
+
+**Async Server Components cannot be fully unit tested**—Next.js officially recommends E2E testing with Playwright for these. For synchronous components and Server Actions, mock `next/navigation` and `next/headers`:
+
+```typescript
+// vitest.setup.ts
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn() }),
+  usePathname: () => '/',
+  redirect: vi.fn(),
+}))
+
+vi.mock('next/headers', () => ({
+  cookies: () => ({
+    get: vi.fn(() => ({ value: 'mock' })),
+    set: vi.fn(),
+  }),
+}))
+```
+
+Playwright is preferred over Cypress for E2E testing due to **free parallelization**, **cross-browser support** (Chromium, Firefox, WebKit), and **multi-tab capability**.
+
+---
+
+## Docker standalone builds for production
+
+Next.js standalone output reduces Docker images from ~547MB to **~110-200MB** by tracing only required dependencies. Enable it and use a 4-stage Dockerfile:
+
+```dockerfile
+FROM node:22-alpine AS base
+
+FROM base AS deps
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+FROM base AS builder
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm run build
+
+FROM base AS runner
+ENV NODE_ENV=production
+RUN adduser --system --uid 1001 nextjs
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nextjs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nextjs /app/.next/static ./.next/static
+USER nextjs
+CMD ["node", "server.js"]
+```
+
+**`NEXT_PUBLIC_*` variables are inlined at build time** and cannot change at runtime. Pass them as Docker build args. Server-only environment variables (database URLs, secrets) work at runtime.
+
+---
+
+## Turborepo monorepo configuration
+
+Structure monorepos with `apps/` for Next.js applications and `packages/` for shared code. The root `turbo.json` defines task pipelines:
+
+```json
+{
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["NEXT_PUBLIC_*"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
+```
+
+For monorepo Next.js apps, add `transpilePackages` and `outputFileTracingRoot`:
+
+```javascript
+// apps/web/next.config.js
+const nextConfig = {
+  output: 'standalone',
+  transpilePackages: ['@repo/ui', '@repo/utils'],
+  outputFileTracingRoot: require('path').join(__dirname, '../../'),
+}
+```
+
+Use `pnpm-workspace.yaml` to define packages and `workspace:*` protocol for internal dependencies. Remote caching via Vercel is free—run `npx turbo login` and `npx turbo link` to enable it.
+
+---
+
+## Conclusion
+
+The 2025 Next.js stack represents a significant evolution: **Turbopack eliminates webpack configuration pain**, **Tailwind v4 moves design tokens into CSS**, and **Biome consolidates linting/formatting**. For initialization scripts, the key improvements are enabling React Compiler by default, using Auth.js v5's simplified `auth()` pattern, configuring Prisma with Accelerate for serverless, and adopting Vitest with proper `next/headers` mocking. Production deployments should always use standalone output with multi-stage Docker builds, and monorepos benefit enormously from Turborepo's remote caching for CI/CD efficiency.

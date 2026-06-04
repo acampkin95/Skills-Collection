@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  crawl4ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crawl4ai-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./outputs:/app/outputs
+      - ./logs:/app/logs
+    environment:
+      - CRAWL4AI_HOST=0.0.0.0
+      - CRAWL4AI_PORT=8000
+      - REDIS_URL=redis://redis:6379
+      - CACHE_MODE=enabled
+      - LOG_LEVEL=INFO
+      - MAX_CONCURRENT_CRAWLS=10
+      - RATE_LIMIT_REQUESTS_PER_MINUTE=60
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import asyncio; asyncio.run(__import__('crawl4ai').AsyncWebCrawler().arun('http://localhost:8000/health'))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: crawl4ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: crawl4ai-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.0.0
+    container_name: crawl4ai-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  redis-data:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  default:
+    name: crawl4ai-network

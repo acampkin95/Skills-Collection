@@ -1,0 +1,63 @@
+# Dependencies
+**/node_modules
+**/.package-lock.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs and debug
+*.log
+logs/
+*.log.*
+.ninja_log
+debug/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.venv
+
+# Data and outputs
+data/
+outputs/
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker
+.docker/
+
+# Environment
+.env
+.env.local
+.env.production
+*.local
+
+# Git
+.git/
+.gitignore
+
+# Misc
+*.pem
+*.key
+Thumbs.db

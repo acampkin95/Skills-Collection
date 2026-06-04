@@ -1,0 +1,56 @@
+# Weaviate Memory System - Docker Compose
+# Production single-node deployment with Ollama integration
+
+services:
+  weaviate:
+    image: cr.weaviate.io/semitechnologies/weaviate:1.28.4
+    container_name: weaviate-memory
+    restart: unless-stopped
+    ports:
+      - "8080:8080"   # REST API
+      - "50051:50051" # gRPC (required for v4 client)
+    environment:
+      # Core Configuration
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-ollama'
+      
+      # Module Configuration
+      ENABLE_MODULES: 'text2vec-ollama,generative-ollama,backup-filesystem'
+      
+      # Ollama Integration (host.docker.internal for Docker Desktop)
+      OLLAMA_API_ENDPOINT: 'http://host.docker.internal:11434'
+      
+      # Performance Tuning
+      GOMEMLIMIT: '6GiB'
+      LIMIT_RESOURCES: 'true'
+      
+      # Disk Management
+      DISK_USE_WARNING_PERCENTAGE: '80'
+      DISK_USE_READONLY_PERCENTAGE: '90'
+      
+      # Monitoring
+      PROMETHEUS_MONITORING_ENABLED: 'true'
+      
+      # Backup Configuration
+      BACKUP_FILESYSTEM_PATH: '/var/lib/weaviate/backups'
+      
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/v1/.well-known/ready"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 4G
+
+volumes:
+  weaviate_data:
+    driver: local

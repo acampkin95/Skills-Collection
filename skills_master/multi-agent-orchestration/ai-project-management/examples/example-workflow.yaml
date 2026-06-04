@@ -1,0 +1,429 @@
+# Example Workflow: Full-Stack Feature Implementation
+
+This YAML file demonstrates a complete workflow for implementing a new feature using the AI Project Management skill.
+
+```yaml
+---
+id: wf-feature-user-dashboard
+name: User Dashboard Feature Implementation
+description: Implement a comprehensive user dashboard with analytics and settings
+version: "1.0.0"
+created_by: ai-project-manager
+created_at: "2024-01-15T10:00:00Z"
+
+metadata:
+  project: user-dashboard
+  priority: high
+  estimated_duration: "4 hours"
+  agents_required:
+    - frontend-developer
+    - backend-developer
+    - devops-engineer
+  tags:
+    - feature
+    - dashboard
+    - full-stack
+
+steps:
+  # Phase 1: Planning and Design
+  - id: step-1
+    name: Design Review and Requirements Analysis
+    step_type: task
+    description: |
+      Review feature requirements and create technical design document
+    config:
+      command: |
+        Analyze requirements for user dashboard feature.
+        Create technical design document with:
+        - API specifications
+        - Database schema updates
+        - Frontend component architecture
+        - Security considerations
+    dependencies: []
+    max_retries: 2
+
+  - id: step-2
+    name: Database Schema Design
+    step_type: task
+    description: Design and implement database schema changes
+    config:
+      command: |
+        Create migration file for dashboard data:
+        - dashboard_widgets table
+        - user_preferences table
+        - analytics_events table
+        Add indexes for performance
+    dependencies: ["step-1"]
+    max_retries: 2
+
+  - id: step-3
+    name: API Design Specification
+    step_type: task
+    description: Create OpenAPI specification for dashboard APIs
+    config:
+      command: |
+        Define API endpoints:
+        - GET /api/dashboard/widgets
+        - POST /api/dashboard/widgets
+        - PUT /api/dashboard/widgets/:id
+        - DELETE /api/dashboard/widgets/:id
+        - GET /api/dashboard/analytics
+    dependencies: ["step-1"]
+    max_retries: 1
+
+  # Phase 2: Backend Implementation
+  - id: step-4
+    name: Backend - Widget Models
+    step_type: task
+    description: Implement backend models for dashboard widgets
+    config:
+      command: |
+        Create Python models in src/models/:
+        - DashboardWidget model
+        - WidgetPreference model
+        Add SQLAlchemy relationships
+        Write unit tests (>80% coverage)
+    dependencies: ["step-2"]
+    max_retries: 2
+
+  - id: step-5
+    name: Backend - Widget CRUD API
+    step_type: task
+    description: Implement widget CRUD endpoints
+    config:
+      command: |
+        Implement REST endpoints in src/api/widgets.py:
+        - CRUD operations for widgets
+        - Input validation
+        - Error handling
+        Add integration tests
+    dependencies: ["step-3", "step-4"]
+    max_retries: 2
+
+  - id: step-6
+    name: Backend - Analytics Endpoints
+    step_type: task
+    description: Implement analytics data endpoints
+    config:
+      command: |
+        Implement analytics endpoints:
+        - GET /api/dashboard/analytics/summary
+        - GET /api/dashboard/analytics/charts/:type
+        Optimize queries for performance
+    dependencies: ["step-3", "step-4"]
+    max_retries: 2
+
+  # Phase 3: Frontend Implementation
+  - id: step-7
+    name: Frontend - Dashboard Layout Components
+    step_type: task
+    description: Implement core dashboard layout components
+    config:
+      command: |
+        Create React components:
+        - DashboardContainer
+        - WidgetGrid
+        - WidgetCard
+        - AddWidgetModal
+        Style with Tailwind CSS
+    dependencies: ["step-1"]
+    max_retries: 2
+
+  - id: step-8
+    name: Frontend - Widget Components
+    step_type: task
+    description: Implement individual widget components
+    config:
+      command: |
+        Create widget components:
+        - StatsWidget (numbers display)
+        - ChartWidget (line/bar charts)
+        - TableWidget (data tables)
+        - ActivityWidget (feed)
+        Integrate with Recharts or similar
+    dependencies: ["step-7"]
+    max_retries: 2
+
+  - id: step-9
+    name: Frontend - API Integration
+    step_type: task
+    description: Connect frontend to backend APIs
+    config:
+      command: |
+        Implement API service layer:
+        - DashboardAPI class
+        - Error handling
+        - Loading states
+        - Retry logic
+        Update React Query hooks
+    dependencies: ["step-5", "step-6", "step-7"]
+    max_retries: 2
+
+  # Phase 4: DevOps
+  - id: step-10
+    name: Database Migration
+    step_type: task
+    description: Apply database migrations
+    config:
+      command: |
+        Run database migrations:
+        - Apply schema changes
+        - Seed initial widget types
+        - Verify migration success
+    dependencies: ["step-2"]
+    max_retries: 1
+
+  - id: step-11
+    name: CI Pipeline Configuration
+    step_type: task
+    description: Update CI/CD pipeline for new feature
+    config:
+      command: |
+        Update CI configuration:
+        - Add dashboard tests to pipeline
+        - Configure test coverage threshold
+        - Add integration test stage
+    dependencies: ["step-9", "step-10"]
+    max_retries: 2
+
+  # Phase 5: Quality Assurance
+  - id: step-12
+    name: Quality Gate - Automated Checks
+    step_type: integration
+    description: Run automated quality gates
+    config:
+      type: quality_gate
+      checks:
+        - code_quality
+        - test_coverage
+        - security
+    dependencies: ["step-5", "step-6", "step-9"]
+    max_retries: 1
+
+  - id: step-13
+    name: Integration Testing
+    step_type: task
+    description: Run comprehensive integration tests
+    config:
+      command: |
+        Execute integration tests:
+        - API integration tests
+        - E2E tests with Playwright
+        - Verify all user flows work
+    dependencies: ["step-12"]
+    max_retries: 2
+
+  # Phase 6: Review and Deploy
+  - id: step-14
+    name: Code Review
+    step_type: approval
+    description: Request human code review
+    config:
+      type: approval
+      approvers:
+        - tech-lead
+        - security-reviewer
+      criteria:
+        - All tests passing
+        - Coverage > 80%
+        - No critical vulnerabilities
+    dependencies: ["step-13"]
+    max_retries: 0
+
+  - id: step-15
+    name: Staging Deployment
+    step_type: task
+    description: Deploy to staging environment
+    config:
+      command: |
+        Deploy to staging:
+        - Build frontend assets
+        - Deploy backend containers
+        - Run smoke tests
+        - Update staging documentation
+    dependencies: ["step-14"]
+    max_retries: 1
+
+  - id: step-16
+    name: Production Deployment Approval
+    step_type: approval
+    description: Request production deployment approval
+    config:
+      type: approval
+      approvers:
+        - product-manager
+        - engineering-manager
+      criteria:
+        - Staging tests passed
+        - Stakeholder sign-off
+        - Rollback plan ready
+    dependencies: ["step-15"]
+    max_retries: 0
+
+  - id: step-17
+    name: Production Deployment
+    step_type: task
+    description: Deploy to production
+    config:
+      command: |
+        Production deployment:
+        - Blue-green deployment
+        - Health check verification
+        - Monitor error rates
+        - Send deployment notification
+    dependencies: ["step-16"]
+    max_retries: 1
+
+  - id: step-18
+    name: Feature Flag Cleanup
+    step_type: task
+    description: Clean up feature flags after deployment
+    config:
+      command: |
+        Remove feature flags:
+        - Disable canary flag
+        - Remove old code paths
+        - Archive feature flag configuration
+    dependencies: ["step-17"]
+    max_retries: 1
+
+# Error handling configuration
+error_handling:
+  retry_strategy: exponential_backoff
+  max_retries: 3
+  retry_delay_seconds: 60
+  fallback_action: checkpoint_and_notify
+  notifications:
+    - type: slack
+      channel: "#engineering"
+      on_failure: true
+      on_retry: true
+    - type: email
+      recipients: ["tech-lead@example.com"]
+      on_failure: true
+
+# Notification configuration
+notifications:
+  start:
+    - type: slack
+      channel: "#dev-activity"
+      message: "Starting: User Dashboard Feature Implementation"
+  progress:
+    - type: slack
+      channel: "#dev-activity"
+      message: "Progress update: {step_name} - {step_status}"
+  completion:
+    - type: slack
+      channel: "#dev-activity"
+      message: "Completed: User Dashboard Feature"
+  failure:
+    - type: slack
+      channel: "#alerts"
+      message: "Workflow failed: {step_name} - {error_message}"
+
+# Checkpoint configuration
+checkpoints:
+  enabled: true
+  interval_steps: 5
+  before_risky: true
+  storage_path: "./checkpoints/wf-feature-user-dashboard"
+
+# Rollback configuration
+rollback:
+  enabled: true
+  strategy: checkpoint_based
+  max_rollback_points: 5
+  auto_rollback_on_critical_failure: true
+
+---
+```
+
+## Workflow Execution Guide
+
+### 1. Load and Execute
+
+```python
+from scripts.workflow_orchestrator import WorkflowOrchestrator
+
+orchestrator = WorkflowOrchestrator()
+
+# Load workflow
+workflow = orchestrator.load_workflow("examples/example-workflow.yaml")
+
+# Validate before execution
+validation = orchestrator.validate_workflow(workflow.id)
+if validation["valid"]:
+    print("Workflow is valid. Ready to execute.")
+else:
+    print(f"Validation errors: {validation['errors']}")
+
+# Execute with initial context
+context = {
+    "project_name": "user-dashboard",
+    "feature_branch": "feature/user-dashboard"
+}
+
+result = orchestrator.execute(
+    workflow_id=workflow.id,
+    variables=context
+)
+
+print(f"Execution status: {result.status}")
+print(f"Completed steps: {result.completed_steps}")
+```
+
+### 2. Monitor Progress
+
+```python
+# Get real-time status
+status = orchestrator.get_workflow_status(workflow.id)
+print(f"Progress: {status['progress']}%")
+print(f"Status by step type: {status['status']}")
+
+# Visualize
+viz = orchestrator.generate_visualization(workflow.id)
+# Generate Gantt chart or dependency graph
+```
+
+### 3. Handle Failures
+
+```python
+if result.status == "failed":
+    print(f"Failed at step: {result.failed_step}")
+    print(f"Error: {result.error_message}")
+
+    # Rollback
+    from scripts.checkpoint_manager import CheckpointManager
+    checkpoint = CheckpointManager()
+    checkpoint.restore_checkpoint(result.last_checkpoint_id)
+
+    # Fix and retry from checkpoint
+    orchestrator.execute_from_checkpoint(result.last_checkpoint_id)
+```
+
+## Estimated Timeline
+
+| Phase | Steps | Estimated Time |
+|-------|-------|----------------|
+| Planning | 1-3 | 30 minutes |
+| Backend | 4-6 | 1.5 hours |
+| Frontend | 7-9 | 1.5 hours |
+| DevOps | 10-11 | 30 minutes |
+| Quality | 12-13 | 45 minutes |
+| Review/Deploy | 14-18 | 1 hour |
+| **Total** | **18** | **~6 hours** |
+
+## Parallelization Opportunities
+
+The following steps can run in parallel:
+
+- **Backend Implementation:**
+  - step-4 (Models) can start after step-2
+  - step-5 (CRUD API) and step-6 (Analytics) can run in parallel after step-4
+
+- **Frontend Implementation:**
+  - step-7 and step-8 can run in parallel if component interfaces are defined
+
+- **Quality and DevOps:**
+  - step-11 (CI Config) can start after step-9
+  - step-10 (Migration) can run during step-11

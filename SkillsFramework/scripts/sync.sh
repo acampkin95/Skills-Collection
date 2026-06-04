@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# sync.sh — Validate Dev_Skills, sync to master, symlink, package
+# sync.sh — Validate skills_devtesting, sync to skills_master, symlink, package
 #
 # EXIT CODE CONTRACT:
 #   0  Validation passed and all package operations succeeded
@@ -21,11 +21,16 @@
 # =============================================================================
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEV_DIR="$REPO_ROOT/Dev_Skills"
-MASTER_DIR="$REPO_ROOT/master"
-PACKAGED_DIR="$REPO_ROOT/packaged"
-REPORTS_DIR="$PACKAGED_DIR/reports"
+# Resolve REPO_ROOT: SkillsFramework/scripts/ -> repo root (go up 2 levels)
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+DEV_DIR="$REPO_ROOT/skills_devtesting"
+# Sync writes to STAGING (not MASTER) so we don't clobber production data.
+# Promotion from staging -> master is a separate, explicit step
+# (see SkillsFramework/scripts/promote-skill-production.py).
+STAGING_DIR="$REPO_ROOT/skills_staging"
+MASTER_DIR="$REPO_ROOT/skills_master"
+PACKAGED_DIR="$REPO_ROOT/skills_conversions/Claude-Desktop"
+REPORTS_DIR="$REPO_ROOT/skills_conversions/Claude-Desktop/reports"
 RUN_TIMESTAMP="$(date -u '+%Y%m%dT%H%M%SZ')"
 HISTORY_DIR="$REPORTS_DIR/history/$RUN_TIMESTAMP"
 
@@ -51,6 +56,7 @@ SYMLINK_TARGETS=(
   "$HOME/.codex/skills"
   "$HOME/.agents/skills"
   "$HOME/.config/opencode/skills"
+  "$HOME/.pi/agent/skills"
 )
 
 RSYNC_EXCLUDES=(
@@ -76,12 +82,12 @@ usage() {
   cat <<EOF
 Usage: ./sync.sh [options]
 
-Validate Dev_Skills, sync skill directories into master, update local skill
-symlinks, and rebuild packaged/*.skill archives.
+Validate skills_devtesting, sync skill directories into skills_master, update local skill
+symlinks, and rebuild skills_conversions/Claude-Desktop/*.skill archives.
 
 Options:
   --dry-run          Show what would change without writing files
-  --skip-package     Sync without rebuilding packaged/*.skill files
+  --skip-package     Sync without rebuilding skills_conversions/Claude-Desktop/*.skill files
   --force-symlinks   Replace existing real skill directories at local targets
   -h, --help         Show this help
 EOF
@@ -257,14 +263,17 @@ validate_skill() {
 }
 
 sync_skills() {
+  # Write validated dev skills into STAGING (not MASTER).
+  # This is the dev -> staging step; staging -> master is the separate
+  # `promote-skill-production.py` step.
   local -a dev_skill_dirs=("$@")
   local skill_dir skill_name dest
 
-  mkdir -p "$MASTER_DIR"
+  mkdir -p "$STAGING_DIR"
 
   for skill_dir in "${dev_skill_dirs[@]}"; do
     skill_name="$(basename "$skill_dir")"
-    dest="$MASTER_DIR/$skill_name"
+    dest="$STAGING_DIR/$skill_name"
     run mkdir -p "$dest"
 
     if "$DRY_RUN"; then
@@ -284,7 +293,7 @@ remove_orphaned_master_skills() {
     skill_name="$(basename "$master_skill")"
     dev_match="$DEV_DIR/$skill_name"
     if ! is_skill_dir "$dev_match"; then
-      log "  ${YEL}REMOVE${RST} master/$skill_name (not present in Dev_Skills)"
+      log "  ${YEL}REMOVE${RST} skills_master/$skill_name (not present in skills_devtesting)"
       run rm -rf "$master_skill"
       ((REMOVED++)) || true
     fi
@@ -298,10 +307,10 @@ ensure_symlinks() {
     if [[ -L "$target" ]]; then
       current="$(readlink "$target")"
       if [[ "$current" == "$MASTER_DIR" ]]; then
-        log "  ${GRN} OK ${RST}  $target -> master/"
+        log "  ${GRN} OK ${RST}  $target -> skills_master/"
         continue
       fi
-      log "  ${YEL}UPDATE${RST} $target -> master/"
+      log "  ${YEL}UPDATE${RST} $target -> skills_master/"
       run rm "$target"
     elif [[ -d "$target" ]]; then
       if "$FORCE_SYMLINKS"; then
@@ -318,7 +327,7 @@ ensure_symlinks() {
 
     run mkdir -p "$(dirname "$target")"
     run ln -s "$MASTER_DIR" "$target"
-    log "  ${GRN} OK ${RST}  $target -> master/ (created)"
+    log "  ${GRN} OK ${RST}  $target -> skills_master/ (created)"
   done
 }
 
@@ -328,20 +337,20 @@ package_skills() {
     return 0
   fi
 
-  if [[ ! -f "$REPO_ROOT/package.sh" ]]; then
-    log "  ${YEL}SKIP${RST} package.sh not found"
+  if [[ ! -f "$REPO_ROOT/SkillsFramework/scripts/package.sh" ]]; then
+    log "  ${YEL}SKIP${RST} SkillsFramework/scripts/package.sh not found"
     return 0
   fi
 
   if "$DRY_RUN"; then
     run rm -f "$PACKAGED_DIR"/*.skill
-    run "$REPO_ROOT/package.sh"
+    run "$REPO_ROOT/SkillsFramework/scripts/package.sh"
     return 0
   fi
 
   mkdir -p "$PACKAGED_DIR"
   rm -f "$PACKAGED_DIR"/*.skill
-  "$REPO_ROOT/package.sh"
+  "$REPO_ROOT/SkillsFramework/scripts/package.sh"
 }
 
 # JSON schema for latest-run.json (unified run manifest):
@@ -430,20 +439,22 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-[[ -d "$DEV_DIR" ]] || die "Dev_Skills directory not found: $DEV_DIR"
-[[ -d "$MASTER_DIR" ]] || die "master directory not found: $MASTER_DIR"
+[[ -d "$DEV_DIR" ]] || die "skills_devtesting directory not found: $DEV_DIR"
+[[ -d "$STAGING_DIR" ]] || die "skills_staging directory not found: $STAGING_DIR"
+[[ -d "$MASTER_DIR" ]] || die "skills_master directory not found: $MASTER_DIR"
 
 log "========================================"
 log " Skills Sync - Validate & Deploy"
 log "========================================"
 log ""
-log "Source:   $DEV_DIR"
-log "Target:   $MASTER_DIR"
-log "Packages: $PACKAGED_DIR"
+log "Source:    $DEV_DIR"
+log "Sync to:   $STAGING_DIR  (dev -> staging)"
+log "Master:    $MASTER_DIR  (production, symlinks + packaging)"
+log "Packages:  $PACKAGED_DIR"
 "$DRY_RUN" && log "Mode:     dry run"
 log ""
 
-log "Phase 1: Validating Dev_Skills/"
+log "Phase 1: Validating skills_devtesting/"
 log "----------------------------------------"
 
 failed_skills=()
@@ -481,12 +492,15 @@ if [[ "${#failed_skills[@]}" -gt 0 ]]; then
   exit 3
 fi
 
-log "Phase 2: Syncing Dev_Skills/ -> master/"
+log "Phase 2: Syncing skills_devtesting/ -> skills_staging/"
 log "----------------------------------------"
 sync_skills "${dev_skill_dirs[@]}"
-remove_orphaned_master_skills
-log "Synced $SYNCED skill directories to master/"
-[[ "$REMOVED" -gt 0 ]] && log "Removed $REMOVED orphaned skill directories from master/"
+# NOTE: Orphan removal is intentionally NOT called here.
+# In the new layout skills_master is production (immutable from sync's
+# perspective) and skills_staging is the dev/pending-promotion buffer.
+# Auto-removing items from staging is dangerous because staging may hold
+# skills queued for promotion that aren't yet in dev.
+log "Synced $SYNCED skill directories to skills_staging/"
 log ""
 
 log "Phase 3: Ensuring local skill symlinks"

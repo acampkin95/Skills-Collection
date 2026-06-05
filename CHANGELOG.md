@@ -6,6 +6,18 @@
 
 ---
 
+## [2026-06-05] proxmox-admin skill — maintenance routine added (v2.1.0)
+
+**Status:** ✅ Complete
+
+- Updated `skills_staging/proxmox-admin/SKILL.md` → v2.1.0
+- Added Maintenance Routine section with checklist and link to reference
+- Created `references/maintenance-routine.md` (377 lines) encoding full audit procedure from 2026-06-05 autonomous SSH audit
+- Content: SSH access patterns, hv01 ZFS/backup/notification audit, guest loop, Docker port-binding security, rclone bisync, post-remediation checklist, all GOTCHA learnings
+- All links one-level deep from SKILL.md; SKILL.md body within 300-line limit (178 lines)
+
+---
+
 ## [2026-06-04] Skills repo audit — body trim, description trim, systems alignment
 
 **Status:** ✅ Complete
@@ -995,3 +1007,20 @@ Changes to workspace structure or governance should be documented here and in pr
 - Removed stale consolidated firecrawl skills from staging
 - Master now contains only skill directories (85 skills)
 - Full pipeline: 86 packages, 0 errors, 5 symlinks, 0 warnings
+
+## [2026-06-05] OUI Sync — skills_master to AI01 OpenWebUI
+
+**Status:** ✅ Complete
+
+### Changes
+- Built `SkillsFramework/scripts/oui-sync.py` — convert, validate, and upload skills to Open WebUI
+- Converts SKILL.md → OUI SkillForm format (id, name, description, content, meta, is_active)
+- Merges references/ into content for single-field OUI skills
+- Content hash-based change detection (falls back to always-update when content not in list API)
+- Validates: required fields, description length, content size (max 8K chars)
+- Supports: --dry-run, --force, --prune, --skills filter, --export-dir
+- Synced 85 skills to AI01 OpenWebUI (80 created, 5 updated, 0 errors)
+- 7 skills skipped (CLI-only: claude-code, crewai-setup, sftp, proxmox-admin, ovhcloud-dedicated, open-webui-admin, cloudapi)
+- AI01 now has 107 skills total (27 legacy OUI + 85 from skills_master)
+- Pruned descriptions to ≤100 chars for pi context optimization
+- Removed large binary files from git history

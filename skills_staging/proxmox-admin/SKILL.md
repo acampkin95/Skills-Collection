@@ -1,8 +1,8 @@
 ---
 name: proxmox-admin
-description: Proxmox VE administration — VM/LXC lifecycle, snapshots, storage, networking, and cluster management.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Proxmox VE administration — VM/LXC lifecycle, snapshots, storage, networking, cluster management, and periodic maintenance audit routine for hv01 stack.
+version: 2.1.0
+reviewed: "2026-06-05"
 ---
 
 # Proxmox VE & Ubuntu VM Administration Skill
@@ -22,12 +22,14 @@ reviewed: "2026-06-04"
 | User & access control | [§ Users](#user--access-control-pveum) |
 | Security hardening | [§ Security](#security-hardening) |
 | Automation patterns | [§ Automation](#automation-patterns) |
+| **Maintenance routine** | [§ Maintenance](#maintenance-routine) |
 | Troubleshooting | [§ Troubleshoot](#troubleshooting) |
 
 Detailed reference files (load on demand):
 - `references/api-endpoints.md` — full REST API endpoint tree
 - `references/cli-cheatsheet.md` — complete qm/pct/pvesh/vzdump/pvecm/pveum commands
 - `references/tuning-guide.md` — deep performance tuning, CPU pinning, NUMA, I/O
+- `references/maintenance-routine.md` — **full periodic audit procedure, CLI commands, gotchas**
 
 ---
 
@@ -154,5 +156,24 @@ qm set <vmid> --net0 virtio,bridge=vmbr1  # change net
 qm snapshot <vmid> snap-name --description "Before upgrade"
 qm rollback <vmid> snap-name
 qm clone 100 200 --name new-vm --full --storage local-lvm
+```
 
-See [full-reference.md](references/full-reference.md) for complete details and advanced patterns.
+See `references/cli-cheatsheet.md` for migration (`qm migrate`), bulk operations, and advanced snapshot management.
+
+---
+
+## Maintenance Routine
+
+Periodic health audit covering hv01 hypervisor and all resident VMs/LXCs. Full procedure, all commands, and hard-won gotchas:
+
+**→ See [references/maintenance-routine.md](references/maintenance-routine.md)**
+
+Quick checklist (full detail in reference):
+1. SSH connectivity verified (vd-masterkey; `pct exec` fallback for LXCs)
+2. ZFS pool: capacity ≤ 70%, no DEGRADED/FAULTED vdevs, scrub scheduled
+3. Backup inventory: ≤ 2 per guest, no orphan dumps
+4. Notification endpoint: `mail-to-root` has `mailto` set
+5. Failed systemd units: zero across all nodes
+6. Docker: no `0.0.0.0` bindings on staging ports; images pinned (no `latest`)
+7. logrotate: clean run (add `missingok` on journald-only hosts)
+8. rclone bisync: all remote paths exist; timer active and healthy

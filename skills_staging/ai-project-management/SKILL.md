@@ -1,10 +1,7 @@
 ---
 name: ai-project-management
-description: Multi-agent orchestration with task decomposition, checkpointing, progress tracking, and workflow coordination for complex AI-augmented development.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Multi-agent orchestration with task decomposition, checkpointing, and progress tracking.
 ---
-# AI Project Management Skill
 
 ## Overview
 

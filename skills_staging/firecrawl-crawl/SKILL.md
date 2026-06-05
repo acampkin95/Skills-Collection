@@ -1,6 +1,6 @@
 ---
 name: firecrawl-crawl
-description: CLI bulk extraction across a site section or docs subtree.
+description: "Bulk extraction — crawl sites, download pages to disk, and autonomous structured extraction (agent)."
 allowed-tools:
   - Bash(firecrawl *)
   - Bash(npx firecrawl *)
@@ -58,3 +58,41 @@ firecrawl crawl <job-id>
 - [firecrawl-scrape](../firecrawl-scrape/SKILL.md) — scrape individual pages
 - [firecrawl-map](../firecrawl-map/SKILL.md) — discover URLs before deciding to crawl
 - [firecrawl-download](../firecrawl-download/SKILL.md) — download site to local files (uses map + scrape)
+
+## download — Save Site to Local Files
+
+Combines `map` + `scrape` to save an entire site as local files under `.firecrawl/`. Always pass `-y` to skip confirmation.
+
+```bash
+firecrawl download https://docs.example.com --screenshot --limit 20 -y
+firecrawl download https://docs.example.com --include-paths "/features,/sdks" --exclude-paths "/zh,/ja" -y
+```
+
+| Option | Description |
+|--------|-------------|
+| `--limit <n>` | Max pages to download |
+| `--search <query>` | Filter URLs |
+| `--include-paths` / `--exclude-paths` | Path filtering |
+| `-y` | Skip confirmation (always use in automated flows) |
+
+All scrape options work with download (`-f`, `--only-main-content`, `--screenshot`, etc.)
+
+## agent — Autonomous Structured Extraction
+
+AI-powered extraction from complex multi-page sites (2-5 min). Use when manual scraping would require navigating many pages.
+
+```bash
+firecrawl agent "extract all pricing tiers" --wait -o .firecrawl/pricing.json
+firecrawl agent "extract products" --schema '{"type":"object","properties":{"name":{"type":"string"},"price":{"type":"number"}}}' --wait -o .firecrawl/products.json
+```
+
+| Option | Description |
+|--------|-------------|
+| `--urls <urls>` | Starting URLs |
+| `--schema <json>` | JSON schema for structured output |
+| `--model <model>` | `spark-1-mini` or `spark-1-pro` |
+| `--max-credits <n>` | Credit limit |
+| `--wait` | Wait for completion (recommended) |
+
+- Always use `--wait` for inline results. Use `--max-credits` to cap spending.
+- For simple single-page extraction, prefer `scrape` — faster and cheaper.

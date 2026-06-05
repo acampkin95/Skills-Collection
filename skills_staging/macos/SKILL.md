@@ -1,8 +1,6 @@
 ---
 name: macos
-description: macOS Sequoia/Sonoma automation with AppleScript, Homebrew, Shortcuts, LaunchAgents, zsh, Xcode, and system diagnostics.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: "Use this skill when working with macOS, macos automation, AppleScript, Homebrew, Mac shortcuts."
 ---
 
 # macOS Automation & Development (Sequoia/Sonoma)

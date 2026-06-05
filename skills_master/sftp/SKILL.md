@@ -1,8 +1,6 @@
 ---
 name: sftp
-description: SFTP/rsync deployment and file transfer over Tailscale. Use for build deployment, bulk transfers, and automated deployment scripts.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: High-speed SFTP/rsync file transfer and deployment automation.
 ---
 
 # SFTP Deployment Skill

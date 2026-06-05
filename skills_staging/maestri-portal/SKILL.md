@@ -1,9 +1,7 @@
 ---
 name: maestri-portal
-description: Browser portal automation in Maestri — navigate, click, fill forms, screenshot, and read accessibility trees. Use for web UI interaction and testing.
+description: Automate browser portals in Maestri, — navigate pages, click elements, fill forms, take screenshots.
 user-invocable: false
-version: 2.0.0
-reviewed: "2026-06-04"
 ---
 
 # Maestri Portal Browser Automation

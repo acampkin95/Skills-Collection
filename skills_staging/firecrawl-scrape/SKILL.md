@@ -1,6 +1,6 @@
 ---
 name: firecrawl-scrape
-description: CLI extraction from one or more already-known URLs.
+description: "Scrape URLs, discover pages (map), and parse local files (PDF, DOCX) into markdown."
 allowed-tools:
   - Bash(firecrawl *)
   - Bash(npx firecrawl *)
@@ -68,3 +68,37 @@ firecrawl scrape "https://example.com/pricing" --query "What is the enterprise p
 - [firecrawl-search](../firecrawl-search/SKILL.md) — find pages when you don't have a URL
 - [firecrawl-interact](../firecrawl-interact/SKILL.md) — when scrape can't get the content, use `interact` to click, fill forms, etc.
 - [firecrawl-download](../firecrawl-download/SKILL.md) — bulk download an entire site to local files
+
+## map — Discover URLs on a Site
+
+Find URLs on a site. Use `--search` to find a specific page within a large site.
+
+```bash
+firecrawl map "<url>" --search "authentication" -o .firecrawl/filtered.txt
+firecrawl map "<url>" --limit 500 --json -o .firecrawl/urls.json
+```
+
+| Option | Description |
+|--------|-------------|
+| `--limit <n>` | Max URLs to return |
+| `--search <query>` | Filter URLs by search query |
+| `--include-subdomains` | Include subdomain URLs |
+
+## parse — Local File Extraction
+
+Turn a local file (PDF, DOCX, XLSX, HTML) into clean markdown. **Not a URL** — use scrape for URLs.
+
+```bash
+firecrawl parse ./paper.pdf -o .firecrawl/paper.md
+firecrawl parse ./paper.pdf -S -o .firecrawl/paper-summary.md
+firecrawl parse ./paper.pdf -Q "What are the conclusions?" -o .firecrawl/paper-qa.md
+```
+
+| Option | Description |
+|--------|-------------|
+| `-S, --summary` | AI-generated summary |
+| `-Q, --query <prompt>` | Ask a question about the content |
+| `-f, --format <fmt>` | `markdown` (default), `html`, `summary` |
+
+- Max upload: 50 MB. Credits: ~1 per PDF page.
+- Quote paths with spaces: `firecrawl parse "./My Doc.pdf" -o .firecrawl/mydoc.md`

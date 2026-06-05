@@ -1,8 +1,6 @@
 ---
 name: crawl4ai
-description: Crawl4AI v0.8 async web scraper with LLM extraction, screenshot capture, schema-based extraction, JavaScript rendering, batch crawling, and Docker deployment.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: "Use this skill when working with crawl4ai, web scraping, async scraping, playwright scraping."
 ---
 
 # Crawl4AI - Web Scraping Toolkit

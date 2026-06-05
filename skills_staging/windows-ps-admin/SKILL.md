@@ -1,8 +1,6 @@
 ---
 name: windows-ps-admin
-description: Windows 11 PowerShell scripting, automation, and system administration. Use for services, registry, scheduled tasks, WinGet, and NVIDIA GPU config.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Windows 11 PowerShell scripting, automation, and system administration.
 ---
 
 # Windows 11 PowerShell & Administration

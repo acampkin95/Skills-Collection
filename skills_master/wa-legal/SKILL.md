@@ -1,8 +1,6 @@
 ---
 name: wa-legal
-description: Master router for WA legal operations — FVRO, teacher misconduct, case files, affidavits, eDiscovery, legal matter ops, and Criminal Code offences.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Master router, for Western Australian legal operations — FVRO, teacher misconduct.
 ---
 
 # WA Legal — Master Router
@@ -11,19 +9,16 @@ reviewed: "2026-06-04"
 
 ## Router
 
-All reference files listed below are in `references/`. Case management scripts are in `scripts/`.
-
-| Topic | Key References |
-|-------|---------------|
-| **FVRO** — Restraining Orders Act 1997 (WA), s.31 objection, s.45–46 variation/cancellation, s.61 breach, Form 12, MHA conflicts | `fvro-affidavit-templates.md`, `fvro-case-law.md`, `fvro-court-forms.md`, `fvro-mha-intersections.md` |
-| **Teacher misconduct** — Teacher Registration Act 2012, WWC, TRBWA, grooming, professional boundaries | `teacher-regulatory-framework.md`, `teacher-wwc-framework.md`, `teacher-investigation-processes.md`, `teacher-complaints-and-evidence.md`, `teacher-conduct-scope-conflicts.md`, `teacher-case-law-legislation.md` |
-| **Case file management** — SRL folder structure, evidence/comms indexes, document naming, dashboards | `case-file-evidence-standards.md`, `case-file-templates.md`, `wa-magistrates-civil.md`, `wa-magistrates-criminal.md` |
-| **Affidavit & court prep** — drafting, chronologies, disclosure packs, annexures, hearing notes | `fvro-affidavit-templates.md`, `affidavit-court-formats.md`, `wa-evidence-law.md` |
-| **CSV / eDiscovery** — SMS/iMessage forensics, DuckDB/Polars, Bates numbering, privilege logs | `analysis-workflows.md`, `ediscovery-protocols.md`, `sms-imessage-analysis.md`, `wa-evidence-law.md`, `large-dataset-processing.md`, `family-law-evidence.md`, `coercive-control-frameworks.md` |
-| **Legal matter ops** — 15-phase lifecycle, intake to filing, DOCX/PDF generation, deadline registers | `execution-protocol.md`, `operations.md`, `folder-naming-versioning.md`, `docx-pdf-generation.md`, `internal-controls.md` |
-| **WA law general** — court hierarchy, legislation, filing fees, eLodgment, SAT, legal services | `legal-services.md`, `court-procedures.md` |
-| **Perjury** — Criminal Code s.124–s.143, s.169–s.170, false evidence, perverting justice | `wa-perjury-offences.md` |
-| **Tenancy** — WA residential tenancy disputes, Form 1A/1B, termination, bond | `wa-tenancy-guide.md` |
+| User need | Route to | Reference files |
+|-----------|----------|----------------|
+| FVRO — Restraining Orders Act 1997 (WA), s.31 objection, s.45–46 variation/cancellation, s.61 breach, s.61B protected-person conduct, Form 12, conferencing, MHA conflicts | `wa-fvro` | `references/fvro-affidavit-templates.md`, `fvro-case-law.md`, `fvro-court-forms.md`, `fvro-mha-intersections.md` |
+| Teacher misconduct — Teacher Registration Act 2012, WWC, TRBWA, grooming, professional boundaries, school investigations | `wa-teacher-misconduct` | `references/teacher-regulatory-framework.md`, `teacher-wwc-framework.md`, `teacher-investigation-processes.md`, `teacher-complaints-and-evidence.md`, `teacher-conduct-scope-conflicts.md`, `teacher-case-law-legislation.md` |
+| Case file management — SRL folder structure, evidence/comms indexes, document naming, dashboard docs, Magistrates Court civil/criminal | `case-file-manager-wa` | `references/case-file-evidence-standards.md`, `case-file-templates.md`, `wa-magistrates-civil.md`, `wa-magistrates-criminal.md` |
+| Affidavit & court prep — drafting affidavits, chronologies, disclosure packs, annexures, hearing notes, print-ready bundles | `affidavit-court-preparation` | `references/affidavit-court-affidavit-templates.md`, `affidavit-court-formats.md`, `evidence-standards.md` |
+| CSV / eDiscovery — SMS/iMessage forensics, tabular evidence analysis, DuckDB/Polars, chain of custody, Bates numbering, privilege logs | `csv-legal-analysis` | `references/analysis-workflows.md`, `ediscovery-protocols.md`, `evidence-standards.md`, `sms-imessage-analysis.md`, `wa-evidence-law.md`, `large-dataset-processing.md`, `family-law-evidence.md`, `coercive-control-frameworks.md` |
+| Legal matter ops — full 15-phase lifecycle, intake to filing, evidence freeze, DOCX/PDF generation, deadline registers | `legal-matter-ops` | `references/execution-protocol.md`, `operations.md`, `folder-naming-versioning.md`, `case-file-templates.md`, `ediscovery-protocols.md`, `wa-evidence-law.md`, `family-law-evidence.md`, `sms-imessage-analysis.md`, `coercive-control-frameworks.md`, `docx-pdf-generation.md`, `internal-controls.md` |
+| WA law general — court hierarchy, legislation, filing fees, eLodgment, Magistrates/District/Supreme Court, SAT, legal services | `wa-law-general` | `references/legal-services.md`, `court-procedures.md` |
+| Perjury & false statements — Criminal Code s.124–s.143, s.169–s.170, perjury offences, false evidence, perverting justice | `wa-perjury-offences` | `references/wa-perjury-offences.md` |
 
 ## Source Quality Protocol
 

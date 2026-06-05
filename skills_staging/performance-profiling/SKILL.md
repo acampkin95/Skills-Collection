@@ -1,8 +1,6 @@
 ---
 name: performance-profiling
-description: Web performance profiling with Lighthouse, Core Web Vitals (LCP/CLS/FID), React Profiler, flame graphs, and bundle analysis.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Web performance profiling and Core Web Vitals optimization.
 ---
 
 # Performance Profiling

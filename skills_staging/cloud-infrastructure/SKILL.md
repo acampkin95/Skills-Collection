@@ -1,6 +1,6 @@
 ---
 name: cloud-infrastructure
-description: Cloud infrastructure — Cloudflare, Tailscale, S3, OVHcloud dedicated servers, and GitHub API automation.
+description: Cloud infrastructure, — Cloudflare, Tailscale, S3, OVHcloud dedicated servers.
 version: 2.0.0
 reviewed: "2026-06-04"
 ---

@@ -1,8 +1,6 @@
 ---
 name: realtime-websockets
-description: Real-time communication with WebSockets, SSE, Socket.io. Use for live updates, reconnection, heartbeat, Redis pub/sub, and collaborative editing.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Real-time communication with WebSockets and Server-Sent Events.
 ---
 
 # Real-Time Communication Patterns

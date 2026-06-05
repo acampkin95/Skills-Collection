@@ -1,6 +1,6 @@
 ---
 name: wa-legal-letter-docx
-description: Court-ready DOCX legal correspondence for WA residential tenancy and SRL matters. Use for formal letters, statutory citations, and demand tables.
+description: Court-ready DOCX legal correspondence for WA residential tenancy and SRL matters.
 compatibility: "node (docx npm package), Python 3"
 version: 2.0.0
 reviewed: "2026-06-04"

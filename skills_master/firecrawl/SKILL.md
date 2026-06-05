@@ -1,6 +1,6 @@
 ---
 name: firecrawl
-description: "Master router for Firecrawl CLI — search, scrape, crawl, interact, parse, download, and autonomous extraction. For app code, use firecrawl-build."
+description: "Master router, for Firecrawl CLI — search, scrape, crawl, interact, parse, download."
 allowed-tools:
   - Bash(firecrawl *)
   - Bash(npx firecrawl *)

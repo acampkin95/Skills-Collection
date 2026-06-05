@@ -1,9 +1,8 @@
 ---
 name: documentation-site
-description: Documentation site generation with Docusaurus, Nextra, Starlight, and VitePress. Use for API references, versioning, search, and docs deployment.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Documentation site generation with Docusaurus, Nextra, Starlight, and VitePress.
 ---
+
 # Documentation Site Development
 
 ## Framework Comparison
@@ -67,5 +66,262 @@ docs/
 
 Brief description of what this page covers (1-2 sentences).
 
+## Prerequisites
 
-See [full-reference.md](references/full-reference.md) for complete details, code examples, and advanced patterns.
+- Requirement 1
+- Requirement 2
+
+## Step 1: First Thing
+
+Explanation and code example.
+
+```language
+code here
+```
+
+## Step 2: Next Thing
+
+...
+
+## Troubleshooting
+
+### Common Error: X
+Solution...
+
+## Next Steps
+
+- [Related Guide](./next-guide.md)
+- [API Reference](../api-reference/relevant.md)
+```
+
+## Docusaurus Quick Setup
+
+```bash
+npx create-docusaurus@latest my-docs classic --typescript
+cd my-docs
+npm run start
+```
+
+### docusaurus.config.ts
+
+```typescript
+import type { Config } from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+
+const config: Config = {
+  title: 'My Project',
+  tagline: 'Documentation for My Project',
+  url: 'https://docs.example.com',
+  baseUrl: '/',
+  favicon: 'img/favicon.ico',
+  organizationName: 'my-org',
+  projectName: 'my-project',
+
+  presets: [
+    [
+      'classic',
+      {
+        docs: {
+          sidebarPath: './sidebars.ts',
+          editUrl: 'https://github.com/my-org/my-project/tree/main/',
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
+        },
+        blog: {
+          showReadingTime: true,
+        },
+        theme: {
+          customCss: './src/css/custom.css',
+        },
+      } satisfies Preset.Options,
+    ],
+  ],
+
+  themeConfig: {
+    navbar: {
+      title: 'My Project',
+      items: [
+        { type: 'docSidebar', sidebarId: 'docs', label: 'Docs' },
+        { to: '/blog', label: 'Blog' },
+        { href: 'https://github.com/my-org/my-project', label: 'GitHub', position: 'right' },
+      ],
+    },
+    footer: {
+      style: 'dark',
+      links: [
+        { title: 'Docs', items: [{ label: 'Getting Started', to: '/docs/getting-started' }] },
+        { title: 'Community', items: [{ label: 'Discord', href: 'https://discord.gg/...' }] },
+      ],
+    },
+    algolia: {
+      appId: 'YOUR_APP_ID',
+      apiKey: 'YOUR_SEARCH_API_KEY',
+      indexName: 'my-project',
+    },
+  } satisfies Preset.ThemeConfig,
+};
+
+export default config;
+```
+
+## Nextra Quick Setup
+
+```bash
+npx create-next-app my-docs
+cd my-docs
+npm install nextra nextra-theme-docs
+```
+
+### next.config.mjs
+
+```javascript
+import nextra from 'nextra';
+
+const withNextra = nextra({
+  theme: 'nextra-theme-docs',
+  themeConfig: './theme.config.tsx',
+  defaultShowCopyCode: true,
+});
+
+export default withNextra({
+  output: 'export', // For static export
+});
+```
+
+### theme.config.tsx
+
+```tsx
+import type { DocsThemeConfig } from 'nextra-theme-docs';
+
+const config: DocsThemeConfig = {
+  logo: <span style={{ fontWeight: 800 }}>My Project</span>,
+  project: { link: 'https://github.com/my-org/my-project' },
+  docsRepositoryBase: 'https://github.com/my-org/my-project/tree/main',
+  footer: { text: `MIT ${new Date().getFullYear()} My Org` },
+  useNextSeoProps() {
+    return { titleTemplate: '%s – My Project' };
+  },
+  sidebar: { defaultMenuCollapseLevel: 1, toggleButton: true },
+  toc: { float: true },
+  feedback: { content: 'Question? Give us feedback →' },
+  editLink: { text: 'Edit this page on GitHub' },
+};
+
+export default config;
+```
+
+### Navigation with _meta.json
+
+```json
+{
+  "index": "Introduction",
+  "getting-started": "Getting Started",
+  "guides": {
+    "title": "Guides",
+    "type": "separator"
+  },
+  "authentication": "Authentication",
+  "data-fetching": "Data Fetching",
+  "---": { "type": "separator" },
+  "api-reference": "API Reference",
+  "changelog": {
+    "title": "Changelog",
+    "theme": { "timestamp": true }
+  }
+}
+```
+
+## Search Integration
+
+### Pagefind (Static, Zero-Config)
+
+```bash
+# After building the site
+npx pagefind --site dist
+```
+
+### Local Search (Docusaurus)
+
+```bash
+npm install @easyops-cn/docusaurus-search-local
+```
+
+```javascript
+// docusaurus.config.js themes
+themes: [
+  ['@easyops-cn/docusaurus-search-local', { hashed: true }],
+],
+```
+
+### Flexsearch (Nextra — built-in)
+
+Nextra includes Flexsearch by default. No additional configuration needed.
+
+## Versioning Strategy
+
+### When to Version
+
+- **API docs**: Version when API has breaking changes
+- **Product docs**: Version for major releases
+- **Tutorials**: Generally don't version (always show latest)
+
+### Docusaurus Versioning
+
+```bash
+# Create a version snapshot
+npm run docusaurus docs:version 1.0
+
+# Structure after versioning:
+# docs/              → "Next" (unreleased)
+# versioned_docs/
+#   version-1.0/     → Stable v1.0
+# versioned_sidebars/
+#   version-1.0-sidebars.json
+# versions.json      → ["1.0"]
+```
+
+## Deployment
+
+### GitHub Pages
+
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy Docs
+on:
+  push:
+    branches: [main]
+    paths: ['docs/**']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+        working-directory: docs
+      - run: npm run build
+        working-directory: docs
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: docs/build }
+      - uses: actions/deploy-pages@v4
+```
+
+### Vercel
+
+```json
+{
+  "buildCommand": "cd docs && npm run build",
+  "outputDirectory": "docs/build"
+}
+```
+
+See [references/docusaurus-setup.md](references/docusaurus-setup.md) for advanced Docusaurus configuration.
+
+See [references/nextra-setup.md](references/nextra-setup.md) for Nextra patterns and MDX components.
+
+See [references/api-reference.md](references/api-reference.md) for TypeDoc, OpenAPI, and SDK documentation.

@@ -1,8 +1,6 @@
 ---
 name: weaviate
-description: Weaviate vector database for AI agent memory, RAG pipelines, and semantic search. Use for hybrid search, embedding integration, and memory consolidation.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Weaviate vector database implementation, for AI agent memory systems, RAG pipelines.
 ---
 
 # Weaviate AI Memory Repository

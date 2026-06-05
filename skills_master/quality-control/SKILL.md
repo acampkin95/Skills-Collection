@@ -1,9 +1,8 @@
 ---
 name: quality-control
-description: Code quality control with Biome, testing, linting, formatting, type checking, pre-commit hooks, and CI/CD quality gates.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Code quality control with linting, formatting, and testing integration.
 ---
+
 # Code Quality Control
 
 Comprehensive guide for linting, formatting, type checking, and testing integration.
@@ -84,6 +83,242 @@ ruff check --fix . && ruff format .
 - flake8 (linting) — 800+ rules now built-in
 - pylint (style checking)
 
+---
+
+## Modern Tooling Comparison
+
+| Tool | Language | Speed | Replaces | Rules |
+|------|----------|-------|----------|-------|
+| **Biome v2.4** | JS/TS | 25x ESLint | ESLint + Prettier | 423+ (type-aware) |
+| **Ruff 0.15.1** | Python | 10-100x Flake8 | Black + isort + flake8 | 800+ |
+| **ESLint** | JS/TS | Baseline | - | 200+ |
+| **Prettier** | Multi | Baseline | - | - |
+
+---
+
+## Setup Patterns
+
+### Biome Configuration (biome.json)
+
+```json
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noConsole": "warn"
+      }
+    }
+  },
+  "formatter": {
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "trailingComma": "es5"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  }
+}
+```
+
+### Ruff Configuration (pyproject.toml)
+
+```toml
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+  "E",    # pycodestyle errors
+  "W",    # pycodestyle warnings
+  "F",    # Pyflakes
+  "I",    # isort
+  "B",    # flake8-bugbear
+  "UP",   # pyupgrade
+]
+ignore = ["E501"]  # Line too long (handled by formatter)
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+```
+
+---
+
+## Pre-commit Hooks Integration
+
+### .pre-commit-config.yaml
+
+```yaml
+repos:
+  - repo: https://github.com/biomejs/pre-commit
+    rev: v0.2.0
+    hooks:
+      - id: biome-check
+        args: [--apply]
+      - id: biome-format
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.1
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: detect-private-key
+```
+
+Install hooks:
+
+```bash
+pre-commit install
+pre-commit run --all-files  # Test all files
+```
+
+---
+
+## Testing Integration
+
+### Jest Configuration (JavaScript/TypeScript)
+
+```javascript
+// jest.config.js
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.d.ts',
+    '!src/**/index.ts',
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
+};
+```
+
+### Pytest Configuration (Python)
+
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=app --cov-report=html --cov-report=term-missing"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+branch = true
+omit = ["*/tests/*", "*/__init__.py"]
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = false
+```
+
+---
+
+## CI/CD Integration Example
+
+### GitHub Actions Workflow
+
+```yaml
+name: Quality Control
+
+on: [push, pull_request]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Biome check
+      - run: npx biome@latest ci .
+
+      # Tests
+      - run: npm test -- --coverage
+
+      # Type checking
+      - run: npm run type-check
+
+      # Python (if applicable)
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - run: pip install ruff pytest
+      - run: ruff check .
+      - run: pytest
+```
+
+---
+
+## Common Quality Issues & Fixes
+
+| Issue | Tool | Fix |
+|-------|------|-----|
+| Unused imports | Biome/Ruff | Auto-fix with `--fix` |
+| Inconsistent formatting | Biome/Prettier | Run `biome format --write` |
+| Import ordering | Biome/Ruff | Auto-fix included |
+| Missing semicolons | Biome | Auto-fix |
+| Trailing whitespace | pre-commit | Auto-fix |
+| Type errors | TypeScript/mypy | Manual review |
+| Missing test coverage | Jest/Pytest | Write tests |
+| Complexity violations | ESLint/Ruff | Refactor function |
+
+---
+
+## Performance Benchmarks (2026)
+
+**Biome v2.4 Performance:**
+- ESLint + Prettier: ~5,000ms
+- Biome alone: ~200ms
+- **Speedup: 25x**
+
+**Ruff 0.15.1 Performance:**
+- Flake8 + Black + isort: ~3,000ms
+- Ruff alone: ~30-300ms (depending on rules)
+- **Speedup: 10-100x**
+
+---
+
+## Best Practices Checklist
+
+- [ ] Biome or ESLint configured for JavaScript/TypeScript
+- [ ] Ruff or Black configured for Python
+- [ ] Pre-commit hooks installed and passing
+- [ ] CI/CD pipeline enforces quality gates
+- [ ] Test coverage > 80%
+- [ ] All auto-fixable issues addressed in CI
+- [ ] Team aligned on quality standards
+- [ ] Type checking enabled (TypeScript/mypy)
+- [ ] No `console.log` in production code
+- [ ] Linting errors block merges to main
+
+---
+
 ## References
 
 - [Biome documentation](https://biomejs.dev/reference/configuration/)
@@ -91,6 +326,3 @@ ruff check --fix . && ruff format .
 - [Pre-commit framework](https://pre-commit.com/)
 - [Jest configuration](https://jestjs.io/docs/configuration)
 - [Pytest documentation](https://docs.pytest.org/)
-
-
-See [full-reference.md](references/full-reference.md) for complete details, code examples, and advanced patterns.

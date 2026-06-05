@@ -1,8 +1,6 @@
 ---
 name: legal-matter-ops
-description: WA legal matter operations — intake, chronology, affidavits, disclosure, eDiscovery, evidence bundles, and court-ready document generation.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Use when managing Australian legal matter operations.
 ---
 
 # Legal Matter Operations

@@ -1,6 +1,6 @@
 ---
 name: proxmox-admin
-description: Proxmox VE administration — VM/LXC lifecycle, snapshots, storage, networking, and cluster management.
+description: Proxmox VE administration, — VM/LXC lifecycle, snapshots, storage, networking.
 version: 2.0.0
 reviewed: "2026-06-04"
 ---

@@ -1,8 +1,6 @@
 ---
 name: deepinfra-ocr
-description: DeepInfra vision-language OCR for PDFs, images, invoices, and tables. Uses olmOCR, DeepSeek-OCR via API. Use for document text extraction and batch OCR.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: DeepInfra vision-language model OCR, for extracting text from PDFs, scanned documents, images.
 ---
 
 # DeepInfra OCR — Document Text Extraction

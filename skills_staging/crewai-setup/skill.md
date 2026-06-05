@@ -1,8 +1,6 @@
 ---
 name: crewai-setup
-description: CrewAI agent orchestration framework setup, configuration, and multi-agent workflow patterns.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: CrewAI multi-agent framework setup, configuration, and development.
 ---
 
 # CrewAI Development Skill

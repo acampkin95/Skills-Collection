@@ -1,6 +1,6 @@
 ---
 name: pdf-generation
-description: Programmatic PDF generation — PDFKit (Node.js) and ReportLab (Python) for reports, invoices, and documents.
+description: Programmatic PDF generation — PDFKit (Node.js) and ReportLab (Python), for reports, invoices.
 version: 2.0.0
 reviewed: "2026-06-04"
 ---

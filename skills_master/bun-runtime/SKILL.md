@@ -1,8 +1,6 @@
 ---
 name: bun-runtime
-description: Bun v1.3 high-performance JS/TS runtime, package manager, bundler, and test runner. 10-20x faster startup than Node.js, native TypeScript, Bun Shell, Bun.sql.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Bun v1.3, — high-performance all-in-one JavaScript/TypeScript runtime, package manager, bundler.
 ---
 
 # Bun v1.3 Runtime Skill

@@ -1,6 +1,6 @@
 ---
 name: creative-suite
-description: Brand identity and creative strategy — logos, colours, typography, marketing campaigns, and visual design.
+description: Brand identity and creative strategy, — logos, colours, typography, marketing campaigns.
 version: 2.0.0
 reviewed: "2026-06-04"
 ---

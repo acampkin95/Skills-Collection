@@ -1,6 +1,6 @@
 ---
 name: open-webui-admin
-description: OpenWebUI administration — user management, model configuration, knowledge bases, and Docker deployment.
+description: OpenWebUI administration, — user management, model configuration, knowledge bases.
 version: 2.0.0
 reviewed: "2026-06-04"
 ---

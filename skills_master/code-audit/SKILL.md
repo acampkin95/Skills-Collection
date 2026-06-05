@@ -1,8 +1,6 @@
 ---
 name: code-audit
-description: Security audits, vulnerability scanning, CVE detection, and code quality assessment for production deployments. Use for dependency audits, secret scanning, and risk assessment.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Comprehensive security audits, vulnerability scanning, and code quality assessment.
 ---
 
 <essential_principles>

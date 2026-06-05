@@ -1,8 +1,6 @@
 ---
 name: regex-text-processing
-description: Regex and text processing with character classes, quantifiers, lookaround, backreferences, Unicode, and performance optimization.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Regular expressions and text processing across all languages.
 ---
 
 # Regular Expressions and Text Processing

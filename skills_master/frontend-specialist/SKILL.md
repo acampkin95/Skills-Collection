@@ -1,8 +1,6 @@
 ---
 name: frontend-specialist
-description: Next.js 16, React 19, and Tailwind v4 development. Use for scaffolding, UI components, framework migration, CSS/hydration debugging, and Server Components.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Expert Next.js 16/React 19/Tailwind v4 development, Use when scaffolding projects.
 ---
 
 # Frontend Specialist Agent

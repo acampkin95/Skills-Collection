@@ -1,6 +1,6 @@
 ---
 name: content-extraction
-description: Content extraction from any source — web scraping, OCR for documents/images, and content-to-action planning.
+description: Content extraction from any source — web scraping, OCR, for documents/images.
 version: 2.0.0
 reviewed: "2026-06-04"
 ---

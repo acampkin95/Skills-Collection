@@ -1,8 +1,6 @@
 ---
 name: creative-strategy
-description: Brand strategy, creative direction, and marketing campaigns with community-first positioning, influencer partnerships, and hyper-personalization.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: 2025 brand strategy, creative direction, and marketing campaigns with community-first positioning.
 ---
 
 <essential_principles>

@@ -1,8 +1,6 @@
 ---
 name: relationship-analysis
-description: Relationship communication analysis from SMS/iMessage/chat exports. Builds time-series metrics, response patterns, sentiment, and visual reports.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Use when analysing relationship communication patterns from SMS, iMessage, chat exports.
 ---
 
 # Relationship Communication Analysis

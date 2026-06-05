@@ -1,9 +1,7 @@
 ---
 name: maestri
-description: Master router for Maestri canvas — inter-agent communication, sticky notes, team orchestration, and portal automation.
+description: Communicate with nearby coding agents and read/write connected sticky notes in Maestri.
 user-invocable: false
-version: 2.0.0
-reviewed: "2026-06-04"
 ---
 
 # Maestri Inter-Agent Communication

@@ -1,8 +1,6 @@
 ---
 name: nextjs-code-audit
-description: Next.js codebase audit for security, performance, bundle analysis, dead code, type coverage, and code quality.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Next.js codebase audit and code quality analysis. Use this skill when code audit Next.
 ---
 
 # Next.js Code Audit Skill

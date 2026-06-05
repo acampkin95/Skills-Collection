@@ -1,8 +1,6 @@
 ---
 name: biome-linting
-description: Biome v2 ultrafast Rust-based linter, formatter, and import sorter for JS/TS/JSX/JSON/CSS/GraphQL. 451 rules, 97% Prettier compat, 10-100x faster than ESLint+Prettier.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Biome v2.4 — ultrafast Rust-based all-in-one linter, formatter, and import sorter, for JavaScript.
 ---
 
 # Biome v2.4 — Unified Linting & Formatting

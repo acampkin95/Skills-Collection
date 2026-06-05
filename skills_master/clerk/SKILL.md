@@ -1,8 +1,6 @@
 ---
 name: clerk
-description: Clerk v7 authentication for Next.js 16+ with email/OAuth, passkeys, MFA, organisations, machine auth, and custom UI elements. Use for auth middleware and session management.
-version: 2.0.0
-reviewed: "2026-06-04"
+description: Clerk v6 authentication platform, for Next.js 16+ with async auth() API, React 19 compatibility.
 ---
 
 # Clerk v6 — Authentication for Next.js

@@ -15,9 +15,6 @@ Usage:
     # Sync specific skills only
     python3 oui-sync.py --skills firecrawl,critical-thinking,structured-thinking
 
-    # Force update all (even unchanged)
-    python3 oui-sync.py --force
-
     # Delete skills on OUI that don't exist in skills_master
     python3 oui-sync.py --prune
 
@@ -25,7 +22,7 @@ Usage:
     python3 oui-sync.py --export-dir /tmp/oui-skills
 
 Requirements:
-    - OWUI_URL env var (e.g. http://100.118.164.120:3000)
+    - OWUI_URL env var (e.g. export OWUI_URL=http://your-openwebui:3000)
     - OWUI_API_KEY env var (e.g. sk-...)
     - requests library (pip install requests)
     - PyYAML library (pip install pyyaml)
@@ -41,17 +38,10 @@ import time
 from pathlib import Path
 from typing import Optional
 
-try:
-    import requests
-except ImportError:
-    print("ERROR: requests required. pip install requests", file=sys.stderr)
-    sys.exit(1)
+import requests
+import yaml
 
-try:
-    import yaml
-except ImportError:
-    print("ERROR: pyyaml required. pip install pyyaml", file=sys.stderr)
-    sys.exit(1)
+# Fix #8: Regex-based frontmatter parsing (avoids matching --- inside YAML values)
 
 
 # ─── Configuration ───────────────────────────────────────────────────────────
@@ -59,8 +49,8 @@ except ImportError:
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SKILLS_MASTER = REPO_ROOT / "skills_master"
 
-# Open WebUI connection
-OWUI_URL = os.environ.get("OWUI_URL", "http://100.118.164.120:3000")
+# Open WebUI connection — Fix #3: no hardcoded IP default
+OWUI_URL = os.environ.get("OWUI_URL", "")
 OWUI_API_KEY = os.environ.get("OWUI_API_KEY", "")
 
 # Skills to skip (CLI-only, agent-specific, not useful in OUI)
@@ -75,23 +65,26 @@ SKIP_SKILLS = {
     "cloudapi",          # Alias only
 }
 
-# Max content size for OUI skill (chars) — keep focused
-MAX_CONTENT_CHARS = 8000
+# Fix #5: no content limit — OUI stores in PostgreSQL TEXT (unlimited)
 
 
 # ─── Skill Conversion ────────────────────────────────────────────────────────
 
 def parse_skill_md(skill_path: Path) -> Optional[dict]:
     """Parse a SKILL.md file into structured data."""
-    content = (skill_path / "SKILL.md").read_text()
+    try:  # Fix #6: wrap file I/O in try/except
+        content = (skill_path / "SKILL.md").read_text(encoding="utf-8")
+    except (OSError, PermissionError) as e:
+        print(f"  ⚠ Cannot read {skill_path.name}/SKILL.md: {e}")
+        return None
 
-    # Extract YAML frontmatter
-    end = content.find("---", 3)
-    if end == -1:
+    # Fix #8: regex-based frontmatter parsing
+    m = re.match(r'^---\s*\n(.*?)\n---\s*\n?', content, re.DOTALL)
+    if not m:
         return None
 
     try:
-        fm = yaml.safe_load(content[3:end])
+        fm = yaml.safe_load(m.group(1))
     except yaml.YAMLError:
         return None
 
@@ -99,22 +92,24 @@ def parse_skill_md(skill_path: Path) -> Optional[dict]:
         return None
 
     # Body is everything after the second ---
-    body = content[end + 3:].strip()
+    body_end = m.end()
+    body = content[body_end:].strip() if body_end < len(content) else ""
 
     # Merge references/ content into body for OUI (it's a single content field)
     refs_dir = skill_path / "references"
     if refs_dir.is_dir():
         ref_parts = []
         for ref_file in sorted(refs_dir.glob("*.md")):
-            ref_content = ref_file.read_text().strip()
+            try:  # Fix #6: wrap ref file reads too
+                ref_content = ref_file.read_text(encoding="utf-8").strip()
+            except (OSError, PermissionError):
+                continue
             if ref_content:
                 ref_parts.append(f"\n\n---\n\n## {ref_file.stem.replace('-', ' ').title()}\n\n{ref_content}")
         if ref_parts:
             body += "".join(ref_parts)
 
-    # Truncate if too long
-    if len(body) > MAX_CONTENT_CHARS:
-        body = body[:MAX_CONTENT_CHARS - 50] + "\n\n---\n\n*Content truncated for Open WebUI.*"
+    # Fix #5: no truncation — upload full content
 
     return {
         "name": fm["name"],
@@ -153,7 +148,7 @@ def convert_to_oui(skill_data: dict) -> dict:
     }
 
 
-def content_hash(content: str) -> str:
+def _content_hash(content: str) -> str:
     """Stable hash of content for change detection."""
     return hashlib.sha256(content.encode()).hexdigest()[:12]
 
@@ -175,12 +170,6 @@ def validate_oui_skill(skill: dict) -> list[str]:
 
     if len(skill["description"]) > 500:
         issues.append(f"Description too long ({len(skill['description'])} chars, max 500)")
-
-    if len(skill["content"]) > MAX_CONTENT_CHARS:
-        issues.append(f"Content too long ({len(skill['content'])} chars, max {MAX_CONTENT_CHARS})")
-
-    # Note: CLI patterns are warnings, not blockers — LLM can still provide guidance
-    # cli_patterns = ["bash -c", "#!/bin/bash", "pip install", "npm install"]
 
     return issues
 
@@ -262,7 +251,6 @@ def discover_skills(skills_filter: Optional[list[str]] = None) -> list[Path]:
 
 def sync(
     dry_run: bool = False,
-    force: bool = False,
     prune: bool = False,
     skills_filter: Optional[list[str]] = None,
     export_dir: Optional[str] = None,
@@ -291,7 +279,7 @@ def sync(
             print(f"  ⚠ Validation issues for {sp.name}: {', '.join(issues)}")
             continue
 
-        converted.append({**oui, "_hash": content_hash(oui["content"]), "_path": sp})
+        converted.append({**oui, "_path": sp})
 
     print(f"Converted: {len(converted)}, Skipped: {len(skipped)} ({', '.join(skipped) if skipped else 'none'})")
 
@@ -307,7 +295,11 @@ def sync(
         print(f"\nExported {len(converted)} skills to {export_dir}")
         return
 
-    # Connect to OUI
+    # Fix #3: require OWUI_URL
+    if not OWUI_URL:
+        print("ERROR: OWUI_URL env var not set (e.g. http://host:3000)", file=sys.stderr)
+        sys.exit(1)
+
     if not OWUI_API_KEY:
         print("ERROR: OWUI_API_KEY env var not set", file=sys.stderr)
         sys.exit(1)
@@ -330,32 +322,49 @@ def sync(
     remote_map = {s["name"]: s for s in remote_skills}
     print(f"Remote skills: {len(remote_map)}")
 
+    # Fix #1: --prune + --skills guard
+    if prune and skills_filter:
+        print("ERROR: --prune and --skills cannot be used together (would delete unfiltered skills)", file=sys.stderr)
+        sys.exit(1)
+
     # Sync
     created = 0
     updated = 0
     unchanged = 0
     errors = []
+    auth_failed = False
 
     for skill in converted:
+        if auth_failed:  # Fix #7: short-circuit on auth failure
+            break
+
         name = skill["name"]
         payload = {k: v for k, v in skill.items() if not k.startswith("_")}
 
         if name in remote_map:
-            # Existing skill — always update (content not in list response)
+            # Fix #2: real change detection via get_skill
             remote = remote_map[name]
-
-            # Update
             if dry_run:
                 print(f"  🔄 Would update: {name}")
                 updated += 1
             else:
                 try:
+                    # Fetch full skill to compare content
+                    remote_full = client.get_skill(remote["id"])
+                    if remote_full and _content_hash(remote_full.get("content", "")) == _content_hash(payload["content"]):
+                        unchanged += 1
+                        continue
                     client.update_skill(remote["id"], payload)
                     print(f"  🔄 Updated: {name}")
                     updated += 1
-                except Exception as e:
-                    print(f"  ❌ Failed to update {name}: {e}")
-                    errors.append(f"update:{name}:{e}")
+                except requests.exceptions.HTTPError as e:
+                    if e.response is not None and e.response.status_code in (401, 403):
+                        print(f"  🚫 Auth failed: {e.response.status_code}. Aborting.")
+                        auth_failed = True
+                        errors.append(f"auth:{e.response.status_code}")
+                    else:
+                        print(f"  ❌ Failed to update {name}: {e}")
+                        errors.append(f"update:{name}:{e}")
         else:
             # New skill — create
             if dry_run:
@@ -366,9 +375,14 @@ def sync(
                     client.create_skill(payload)
                     print(f"  ✨ Created: {name}")
                     created += 1
-                except Exception as e:
-                    print(f"  ❌ Failed to create {name}: {e}")
-                    errors.append(f"create:{name}:{e}")
+                except requests.exceptions.HTTPError as e:
+                    if e.response is not None and e.response.status_code in (401, 403):
+                        print(f"  🚫 Auth failed: {e.response.status_code}. Aborting.")
+                        auth_failed = True
+                        errors.append(f"auth:{e.response.status_code}")
+                    else:
+                        print(f"  ❌ Failed to create {name}: {e}")
+                        errors.append(f"create:{name}:{e}")
 
     # Prune remote skills not in local
     if prune:
@@ -407,25 +421,20 @@ def main():
         description="Convert skills_master to Open WebUI skills and upload to AI01"
     )
     parser.add_argument("--dry-run", action="store_true", help="Validate and show changes without uploading")
-    parser.add_argument("--force", action="store_true", help="Update all skills even if unchanged")
     parser.add_argument("--prune", action="store_true", help="Delete remote skills not in skills_master")
     parser.add_argument("--skills", type=str, help="Comma-separated list of skill names to sync")
     parser.add_argument("--export-dir", type=str, help="Export skills as JSON files instead of uploading")
     parser.add_argument("--url", type=str, default=None, help="Override OWUI_URL")
-    parser.add_argument("--api-key", type=str, default=None, help="Override OWUI_API_KEY")
     args = parser.parse_args()
 
     global OWUI_URL, OWUI_API_KEY
     if args.url:
         OWUI_URL = args.url
-    if args.api_key:
-        OWUI_API_KEY = args.api_key
 
     skills_filter = [s.strip() for s in args.skills.split(",")] if args.skills else None
 
     sync(
         dry_run=args.dry_run,
-        force=args.force,
         prune=args.prune,
         skills_filter=skills_filter,
         export_dir=args.export_dir,

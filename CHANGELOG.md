@@ -1024,3 +1024,24 @@ Changes to workspace structure or governance should be documented here and in pr
 - AI01 now has 107 skills total (27 legacy OUI + 85 from skills_master)
 - Pruned descriptions to ≤100 chars for pi context optimization
 - Removed large binary files from git history
+
+## [2026-06-05b] OUI sync — review fixes, prune superseded skills, cleanup
+
+**Status:** ✅ Complete
+
+### Review loop results (2 rounds, 0 remaining blockers)
+- Round 1: 3 reviewers found 8 blockers + 2 architecture decisions
+- User decided: remove content limit entirely, keep 7 skips
+- All 8 fixes applied: prune guard, change detection, no hardcoded IP, no --api-key, no truncation, I/O error handling, 401 short-circuit, regex frontmatter
+- Round 2: 2 reviewers verified all fixes, found 2 additional minor issues (guard placement, prune-after-auth)
+
+### Cleanup
+- Removed unused imports (time, typing)
+- Pruned 13 superseded legacy OUI skills (duplicated by skills_master equivalents)
+- Kept 9 unique OUI skills (critical-thinking, data-synthesis, deep-research, reporting, source-evaluation, structured-thinking, summarization, technical-writing, web-research)
+
+### Final AI01 state
+- 94 skills total (85 from skills_master + 9 unique OUI)
+- All content uploaded in full (no truncation)
+- Change detection: 85 unchanged on re-sync (0 unnecessary updates)
+- wa-legal: 783K chars, ripgrep: 35K chars, all references included

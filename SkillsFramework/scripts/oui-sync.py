@@ -312,6 +312,11 @@ def sync(
 
     print(f"Connected to Open WebUI at {OWUI_URL}")
 
+    # Fix #1: --prune + --skills guard
+    if prune and skills_filter:
+        print("ERROR: --prune and --skills cannot be used together (would delete unfiltered skills)", file=sys.stderr)
+        sys.exit(1)
+
     # Get existing skills
     try:
         remote_skills = client.list_skills()
@@ -321,11 +326,6 @@ def sync(
 
     remote_map = {s["name"]: s for s in remote_skills}
     print(f"Remote skills: {len(remote_map)}")
-
-    # Fix #1: --prune + --skills guard
-    if prune and skills_filter:
-        print("ERROR: --prune and --skills cannot be used together (would delete unfiltered skills)", file=sys.stderr)
-        sys.exit(1)
 
     # Sync
     created = 0
@@ -385,7 +385,7 @@ def sync(
                         errors.append(f"create:{name}:{e}")
 
     # Prune remote skills not in local
-    if prune:
+    if prune and not auth_failed:
         local_names = {s["name"] for s in converted}
         for name, remote in remote_map.items():
             if name not in local_names:

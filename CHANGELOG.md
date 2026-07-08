@@ -6,6 +6,35 @@
 
 ---
 
+## [2026-06-11] Skills consolidation & format fixes — firecrawl merged, broken refs resolved
+
+**Status:** ✅ Complete
+
+### A. Firecrawl skills consolidated into single master skill
+
+- **Merged 16 skills** into `skills_master/firecrawl/SKILL.md` (v3.0.0)
+- Consolidated content: CLI workflows (search, scrape, crawl, map, parse), browser automation (interact), bulk operations (download, agent), and SDK integration patterns
+- Archived: `firecrawl-search`, `firecrawl-scrape`, `firecrawl-crawl`, `firecrawl-cli-installation`, `firecrawl-build` (router), `firecrawl-build-scrape`, `firecrawl-build-search`, `firecrawl-build-interact`, `firecrawl-build-onboarding`
+- Archived (missing SKILL.md): `firecrawl-agent`, `firecrawl-download`, `firecrawl-map`, `firecrawl-parse`, `firecrawl-security`
+- Archived (unrelated): `learned`, `reports`
+- Location: `.archive/` with `-consolidated-2026-06-11` or `-missing-2026-06-11` suffixes
+
+### B. Fixed format errors (2 skills)
+
+| Skill | Issue | Fix |
+|-------|-------|-----|
+| vercel-composition-patterns | YAML description: multi-line without quotes | Converted to single-line quoted string |
+| vercel-react-native-skills | YAML description: multi-line without quotes | Converted to single-line quoted string |
+
+### C. Summary
+
+- **Reduced skill count** from 120 → 104 (removed redundancy)
+- **Improved discoverability** with consolidated master skill including all operations + SDK examples
+- **Fixed metadata validation** errors that would prevent proper skill loading in Claude Code
+- **Status report**: `SKILLS_SCAN_REPORT.md` documents all fixes and remaining issues (if any)
+
+---
+
 ## [2026-06-05] proxmox-admin skill — maintenance routine added (v2.1.0)
 
 **Status:** ✅ Complete

@@ -1,6 +1,6 @@
 ---
 name: sftp
-description: High-speed SFTP/rsync file transfer and deployment automation.
+description: High-speed SFTP/rsync file transfer and deployment automation for Tailscale-connected ACDev infrastructure (vmi02d, node01, node02). Use this skill when sftp, rsync transfer, deploy files, upload to server, scp files, file deployment, remote file copy, Tailscale transfer, vmi02d upload, parallel transfer, sftp-deploy.sh, deploy Next.js build, transfer optimization, multi-stream sftp, ssh multiplexing. Use this skill when deploying builds to production servers, bulk file transfers over Tailscale, automated deployment scripts.
 ---
 
 # SFTP Deployment Skill

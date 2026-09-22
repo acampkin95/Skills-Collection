@@ -1,6 +1,6 @@
 ---
 name: proxy-manager
-version: "1.0"
+version: "1.0.0"
 description: >
   Manage Webshare proxies via the Webshare API: list active proxies, download the
   proxy list, refresh rotating pools, replace broken proxies, read and update

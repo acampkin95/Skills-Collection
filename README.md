@@ -7,6 +7,41 @@
 
 ---
 
+## Source of Truth & Directory Lifecycle
+
+Several directories in this repository can look like parallel copies of the
+same content. They are not — each has one job, and only one of them is
+hand-edited:
+
+| Directory | Role | Edited by hand? |
+|---|---|---|
+| `skills_master/` | Canonical, production-ready skills | ✅ Yes — this is the source |
+| `skills_staging/` | Pre-production copies under review | ✅ Yes, during promotion — never long-lived drift from master |
+| `skills_devtesting/` | Experimental/in-progress skills | ✅ Yes — freely |
+| `skills_conversions/` | Per-runtime packaged output (`.skill` files) | ❌ No — regenerate with `SkillsFramework/package-skills.sh`, never hand-edit |
+| `skills.json` | Generated catalogue index | ❌ No — regenerate with `python SkillsFramework/scripts/generate-skill-index.py --format json --output skills.json` |
+| `docs/catalogue.md` | Generated human-readable catalogue | ❌ No — regenerate with `python SkillsFramework/scripts/generate-skill-index.py --format markdown --output docs/catalogue.md` |
+
+Every skill's metadata (the YAML frontmatter in `SKILL.md`) must validate
+against [`schema/skill.schema.json`](schema/skill.schema.json) — that schema
+is itself the canonical definition of what fields a skill can declare. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for the full authoring and promotion
+workflow, and [SECURITY.md](SECURITY.md) before including any credential,
+infrastructure, or personal-data example in a skill.
+
+### Validating your changes
+
+```bash
+pip install pyyaml
+python SkillsFramework/scripts/validate_skills.py --verbose
+```
+
+This is the same check CI runs on every pull request
+(`.github/workflows/validate.yml`) against `skills_master/`,
+`skills_staging/`, and `skills_devtesting/`.
+
+---
+
 ## Quick Start
 
 ### For Claude Code Users

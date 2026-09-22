@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/acampkin95/skills-collection/schema/skill.schema.json",
+  "title": "Skill Properties",
+  "description": "Canonical frontmatter schema for a SKILL.md file in this repository. This is the single source of truth for skill metadata validation — SkillsFramework/scripts/validate_skills.py enforces it in CI. The 'required' set matches the upstream Agent Skills format (name, description) so every existing skill validates unchanged; everything else is optional metadata skills can adopt incrementally.",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(-[a-z0-9]+)*$",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "Skill name in kebab-case. Must match the directory name it lives in."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024,
+      "description": "A clear description of what the skill does and when to use it."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Independent semantic version for this skill (major.minor.patch)."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["experimental", "staging", "stable", "deprecated"],
+      "description": "Lifecycle stage. Should agree with which directory tier the skill lives in (see README's Source of Truth section)."
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier (e.g., MIT, Apache-2.0)."
+    },
+    "category": {
+      "type": "string",
+      "description": "Primary catalogue category, e.g. cybersecurity, legal, devops."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Free-text search tags."
+    },
+    "risk": {
+      "type": "string",
+      "enum": ["low", "medium", "high"],
+      "description": "Impact if the skill's actions go wrong. High-risk skills should set requires_confirmation."
+    },
+    "requires_confirmation": {
+      "type": "boolean",
+      "description": "Whether the skill must pause for explicit user confirmation before destructive, external, or credential-using actions."
+    },
+    "permissions": {
+      "type": "object",
+      "description": "Declares what the skill's instructions ask an agent to do, for the threat model in docs/security/threat-model.md.",
+      "properties": {
+        "filesystem": { "type": "string", "enum": ["none", "read", "write"] },
+        "shell": { "type": "string", "enum": ["none", "restricted", "full"] },
+        "network": { "type": "string", "enum": ["none", "restricted", "full"] },
+        "secrets": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "compatibility": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Compatibility requirements or dependencies (e.g., Requires Python 3.11+)."
+    },
+    "runtime": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Agent/model runtimes this skill is written for or has been converted for, e.g. claude, claude-desktop, generic-agents."
+    },
+    "allowed-tools": {
+      "type": "string",
+      "description": "Tool patterns required by the skill (experimental upstream feature, format: Tool(pattern:*) Tool(pattern:*))."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Arbitrary key-value pairs for client-specific properties not covered above."
+    },
+    "argument-hint": {
+      "type": "string",
+      "description": "Hint text shown for slash-command-style skill arguments."
+    },
+    "user-invocable": {
+      "type": "boolean",
+      "description": "Whether a user can invoke this skill directly (e.g. via /skill-name)."
+    },
+    "reviewed": {
+      "type": "string",
+      "description": "Date this skill's content was last reviewed for accuracy (YYYY-MM-DD)."
+    },
+    "references": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths to reference files this skill depends on, relative to the skill directory."
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "required": { "type": "boolean" },
+          "type": { "type": "string" }
+        }
+      },
+      "description": "Named inputs (env vars, parameters) the skill expects."
+    }
+  },
+  "additionalProperties": true
+}

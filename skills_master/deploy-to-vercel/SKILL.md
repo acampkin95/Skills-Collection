@@ -1,6 +1,7 @@
 ---
 name: deploy-to-vercel
 description: Deploy applications and websites to Vercel. Use when the user requests deployment actions like "deploy my app", "deploy and give me the link", "push this live", or "create a preview deployment".
+risk: medium
 metadata:
   author: vercel
   version: "3.0.0"
@@ -9,6 +10,8 @@ metadata:
 # Deploy to Vercel
 
 Deploy any project to Vercel. **Always deploy as preview** (not production) unless the user explicitly asks for production.
+
+**Confirmation required:** before pushing to a git remote, uploading a project archive, or running a production deploy, get explicit user approval for the target team and project. Linking a project after the user has chosen a team follows the steps below.
 
 The goal is to get the user into the best long-term setup: their project linked to Vercel with git-push deploys. Every method below tries to move the user closer to that state.
 
@@ -186,6 +189,8 @@ The script auto-detects the framework from `package.json`, packages the project 
 
 **Tell the user:** "Your deployment is ready at [previewUrl]. Claim it at [claimUrl] to manage your deployment."
 
+**Data disclosure:** this script packages the project directory (excluding `node_modules`, `.git`, and `.env`) and uploads it to the deploy endpoint set in `resources/deploy.sh` (`DEPLOY_ENDPOINT`). Confirm with the user before uploading private or proprietary code.
+
 ---
 
 ### No-Auth Fallback — Codex sandbox
@@ -217,6 +222,8 @@ The script auto-detects the framework from `package.json`, packages the project 
    ```
 
 The script handles framework detection, packaging, and deployment. It waits for the build to complete and returns JSON with `previewUrl` and `claimUrl`.
+
+**Data disclosure:** like `deploy.sh`, this script uploads the packaged project to the endpoint set in `resources/deploy-codex.sh` (`DEPLOY_ENDPOINT`). Confirm with the user before uploading private code.
 
 **Tell the user:** "Your deployment is ready at [previewUrl]. Claim it at [claimUrl] to manage your deployment."
 

@@ -1,6 +1,7 @@
 ---
 name: database-orm
-description: PostgreSQL database design with Prisma and Drizzle ORM.
+description: Designs PostgreSQL schemas and writes Prisma and Drizzle ORM models, queries, indexes, migrations, seeds, and connection pooling. Use when designing a PostgreSQL schema, writing Prisma or Drizzle models or queries, adding indexes or reading EXPLAIN ANALYZE output, creating or rolling back migrations, seeding a database, or setting up PgBouncer or other connection pooling.
+version: "1.0.0"
 ---
 
 # Database & ORM Skill
@@ -73,9 +74,9 @@ See `references/postgresql-optimization.md` for full EXPLAIN reading guide.
 
 ---
 
-## Prisma ORM (v7.x — 70% faster TypeScript rebuilds)
+## Prisma ORM (v7.x stable line)
 
-**v7.0+ (2025)**: Prisma TypeScript rebuild is 70% faster using Rust-based type generation and WebAssembly caching layer on main thread. relationLoadStrategy (join vs query) now supports more granular control.
+**Version note (checked 2026-10-12):** the npm `prev` tag points to Prisma 7.10.0 (the stable 7.x line). The npm `latest` tag currently points to 8.0.0-rc.22, a release candidate, so pin 7.x for production. The speed and architecture claims in the original text (70% faster TypeScript rebuilds, Rust-based type generation, WebAssembly caching) are vendor claims and were not verified. Confirm `previewFeatures`, `directUrl`, and `relationLoadStrategy` against the Prisma 7 docs before relying on them.
 
 ### Schema Design
 
@@ -180,9 +181,9 @@ See `references/prisma-patterns.md` for advanced patterns.
 
 ---
 
-## Drizzle ORM (v1.0-beta.2 — 10x faster schema introspection)
+## Drizzle ORM (0.45.x stable; 1.0 in pre-release)
 
-**v1.0-beta.2 (Feb 2025)**: Schema introspection is 10x faster (10s → <1s for large schemas). MSSQL support added. Unified imports across drivers.
+**Version note (checked 2026-10-12):** the npm `latest` tag points to drizzle-orm 0.45.4. A 1.0 line is in pre-release (the `beta` tag is 1.0.0-beta.22, and the rc tag is 1.0.0-rc.4). The earlier "v1.0-beta.2 (Feb 2025)" label, the 10x introspection claim, and the MSSQL claim were not verified. Check the release notes for the version you install.
 
 ### Schema Definition
 

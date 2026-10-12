@@ -1,28 +1,31 @@
 ---
 name: proxmox-admin
-description: Proxmox VE administration, — VM/LXC lifecycle, snapshots, storage, networking.
+description: "Administers Proxmox VE hosts and Ubuntu VMs through the CLI and REST API: VM and LXC container lifecycle with qm and pct, snapshots, clones, storage, networking, clustering and HA, vzdump backup and restore, API tokens and users with pveum, and performance tuning. Use when creating, starting, snapshotting, cloning or destroying a Proxmox VM or container, setting up a Proxmox API token, managing Proxmox storage or backups, or troubleshooting a Proxmox node."
 version: 2.0.0
-reviewed: "2026-06-04"
+reviewed: "2026-10-12"
+risk: high
 ---
 
 # Proxmox VE & Ubuntu VM Administration Skill
 
 ## Quick Reference
 
-| Domain | Jump to section |
+| Domain | Where to find it |
 |---|---|
 | API auth & tokens | [§ Auth](#authentication) |
 | VM lifecycle (qm) | [§ VMs](#vm-management-qm) |
-| LXC containers (pct) | [§ Containers](#lxc-container-management-pct) |
-| Storage management | [§ Storage](#storage-management) |
-| Networking / SDN | [§ Networking](#networking--sdn) |
-| Cluster & HA | [§ Cluster](#cluster--high-availability) |
-| Backup & PBS | [§ Backup](#backup--restore) |
-| Ubuntu VM optimisation | [§ Optimise](#ubuntu-vm-optimisation) |
-| User & access control | [§ Users](#user--access-control-pveum) |
-| Security hardening | [§ Security](#security-hardening) |
-| Automation patterns | [§ Automation](#automation-patterns) |
-| Troubleshooting | [§ Troubleshoot](#troubleshooting) |
+| LXC containers (pct) | `references/cli-cheatsheet.md`, section "pct — LXC Container Management" |
+| Storage management | `references/cli-cheatsheet.md`, section "pvesm — Storage Management" |
+| Networking / SDN | Only qm network commands are in `references/cli-cheatsheet.md`; SDN is not bundled with this skill |
+| Cluster & HA | `references/cli-cheatsheet.md`, sections "pvecm — Cluster Management" and "ha-manager — High Availability" |
+| Backup & PBS | `references/cli-cheatsheet.md`, section "vzdump — Backup" |
+| Performance tuning (CPU, NUMA, I/O) | `references/tuning-guide.md` |
+| User & access control | `references/cli-cheatsheet.md`, section "pveum — User & Access Management" |
+| Security hardening | Not bundled with this skill |
+| Automation patterns | Not bundled with this skill (`pvesh` examples are in `references/cli-cheatsheet.md`) |
+| Troubleshooting | Not bundled with this skill |
+
+**Confirmation required:** before creating, starting, stopping, resetting, cloning, migrating, resizing, or destroying a VM or container, or changing storage, networking, cluster, backup or user/token settings, state the target (VMID, node, storage) and the effect, and get the user's explicit confirmation. `qm destroy` deletes the VM's disks; `--purge` also removes it from backup, replication and HA configurations.
 
 Detailed reference files (load on demand):
 - `references/api-endpoints.md` — full REST API endpoint tree
@@ -57,7 +60,7 @@ pveum user token add root@pam automation --privsep 0
 # privsep 0 = inherits user permissions; privsep 1 = must explicitly grant ACLs
 
 # Create scoped token with expiry
-pveum user token add monitoring@pve readonly --expire 2026-12-31
+pveum user token add monitoring@pve readonly --expire "$(date -d '2026-12-31' +%s)"  # --expire takes Unix epoch seconds
 
 # List tokens for a user
 pveum user token list root@pam
@@ -154,5 +157,6 @@ qm set <vmid> --net0 virtio,bridge=vmbr1  # change net
 qm snapshot <vmid> snap-name --description "Before upgrade"
 qm rollback <vmid> snap-name
 qm clone 100 200 --name new-vm --full --storage local-lvm
+```
 
 See [references/cli-cheatsheet.md](references/cli-cheatsheet.md) for migration (`qm migrate`), bulk operations, and advanced snapshot management.

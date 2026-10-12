@@ -2,6 +2,8 @@
 name: write-polish
 description: Improve writing clarity, tone, and structure. Use when user asks to "improve this", "make it clearer", "fix grammar", "rewrite this", "make it more professional", "polish this email".
 user-invocable: true
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Writing Polish — Clarity, Tone, Structure
@@ -46,7 +48,7 @@ def match_tone(text: str, target: str) -> str:
             "structure": "short sentences, direct, conversational"
         },
         "empathetic": {
-            "avoid": ["unfortunately", "regrettably" (too formal), "you should"],
+            "avoid": ["unfortunately", "regrettably", "you should"],  # "regrettably" is too formal for most emails
             "prefer": ["I understand", "that sounds difficult", "here's how"],
             "structure": "acknowledge feelings first, then solution"
         },
@@ -118,11 +120,11 @@ grammar_fixes = {
     "a large number of": "many",
     "the vast majority of": "most",
     
-    # Vague → Specific
-    "soon": "by Friday" or "within 2 business days",
-    "some": "3 of the 10", "about 20%",
-    "things": "items", "documents", "tasks",
-    "stuff": specific noun
+    # Vague → Specific (replacements are examples; pick the specific value from the text)
+    "soon": "by Friday, or within 2 business days",
+    "some": "3 of the 10, or about 20%",
+    "things": "items, documents, or tasks",  # name the specific noun
+    "stuff": "a specific noun from the context",
 }
 ```
 

@@ -1,5 +1,7 @@
 # Next.js Caching Layers
 
+> **Version note (checked 2026-10-12):** the current Next.js docs describe `revalidateTag(tag, profile)` as the two-argument form. The one-argument `revalidateTag(tag)` used in the examples below is deprecated and may be removed. Pass a profile such as `"max"` or `{ expire: 0 }`, and use `updateTag` inside Server Actions. The examples are kept in their original form and should be updated to the current signature before use.
+
 ## Caching Architecture Overview
 
 Next.js has four caching layers:

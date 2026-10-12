@@ -208,17 +208,13 @@ For active WA case folders or full matter operations, prefer the folder structur
 
 ## Validation
 
-After editing this skill or its references, run:
+After editing this skill or its references, run the repository validator from the repository root (maintainers only; not needed for case work):
 
 ```bash
-docker compose -f compose.skills.yml run --rm skills-validator
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
-Fallback:
-
-```bash
-uv run --project .maintenance/Skills-Framework-Reference skills-ref validate affidavit-court-preparation
-```
+Earlier versions of this skill pointed at a Docker compose file and a `.maintenance/` reference project; neither is present in this repository.
 
 ## Cross-References
 

@@ -1,6 +1,7 @@
 ---
 name: caching-redis
-description: High-performance Redis caching with cache-aside, write-through, TTL management.
+description: High-performance Redis caching with cache-aside, write-through, and write-behind patterns, TTL management, cache invalidation by key, pattern, or tag, stampede prevention, and Redis key naming, plus Next.js Data Cache and CDN caching. Use when adding a Redis cache with ioredis, choosing a caching strategy, setting cache expiry, invalidating stale data, preventing cache stampedes or thundering herds, designing cache key names, or configuring Next.js or edge caching headers.
+version: "1.0.0"
 ---
 
 # Caching & Redis Skill
@@ -149,6 +150,8 @@ const rank = await redis.zrevrank("leaderboard:daily", `player:${playerId}`);
 ---
 
 ## ioredis Client Setup
+
+**Version note (checked 2026-10-12):** the latest ioredis release is v6.0.0 (published 2026-07-31). It requires Node.js 20 or newer and makes RESP3 the default protocol; set `protocol: 2` to keep the v5 wire protocol. The examples below use the default import, which is unchanged.
 
 ### Basic Setup
 
@@ -362,6 +365,8 @@ async function getWithMutex<T>(
 
 ### Probabilistic Early Expiration (PER)
 
+The function below is a simplified heuristic, not the published XFetch algorithm (Vattani, Chierichetti, and Lowenstein, VLDB 2015). Use the paper's formula if you need its guarantees.
+
 ```typescript
 async function getWithPER<T>(
   key: string,
@@ -380,9 +385,9 @@ async function getWithPER<T>(
     const random = -Math.log(Math.random()) * beta;
     if (random < expiry / ttl) {
       // Don't await — recompute in background
-      fetchFn().then((data) =>
-        redis.set(key, JSON.stringify(data), "EX", ttl)
-      );
+      fetchFn()
+        .then((data) => redis.set(key, JSON.stringify(data), "EX", ttl))
+        .catch(() => { /* keep serving the cached value; the next read retries */ });
     }
     return JSON.parse(cached as string);
   }
@@ -411,9 +416,11 @@ async function getWithSWR<T>(
 
     if (age > ttl * 1000) {
       // Stale — revalidate in background
-      fetchFn().then((fresh) =>
-        redis.set(key, JSON.stringify({ data: fresh, setAt: Date.now() }), "EX", ttl + staleTTL)
-      );
+      fetchFn()
+        .then((fresh) =>
+          redis.set(key, JSON.stringify({ data: fresh, setAt: Date.now() }), "EX", ttl + staleTTL)
+        )
+        .catch(() => { /* keep serving the stale value; the next read retries */ });
     }
     return data;
   }

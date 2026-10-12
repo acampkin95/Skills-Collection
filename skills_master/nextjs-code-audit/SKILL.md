@@ -1,6 +1,8 @@
 ---
 name: nextjs-code-audit
-description: Next.js codebase audit and code quality analysis. Use this skill when code audit Next.
+description: "Audits a Next.js 16 and TypeScript React codebase across eight categories (quality, types, performance, security, technical debt, architecture, testing, accessibility) and produces a prioritised report with a health score and roadmap. Use when running a code audit, codebase review, technical debt assessment, code quality analysis, project health check, or security review of a Next.js project."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Next.js Code Audit Skill
@@ -18,6 +20,8 @@ Systematic eight-category audit methodology for Next.js 16 and TypeScript React 
 | CVE-2025-67779 | High | Next.js < 16.0.10 | Upgrade to 16.0.10+ |
 
 **Action Required:** If auditing Next.js App Router projects, verify version is 16.0.10+ to patch RSC vulnerabilities.
+
+*Not verified (checked 2026-10-12):* the fixed-version floors in this table were not confirmed against the Vercel security bulletin, which was not reachable from the review environment. Confirm them before relying on the table.
 
 ## Audit Categories (Eight Minds)
 
@@ -46,11 +50,7 @@ Outputs: File inventory, dependency versions, structure overview, quick issue co
 
 Validate all config files against best practices:
 
-```bash
-./scripts/audit-config.sh [project-path]
-```
-
-Checks: `package.json`, `tsconfig.json`, `next.config.*`, `postcss.config.*`, ESLint/Biome, environment files.
+The config audit script `audit-config.sh` is not bundled with this skill. Check the files listed here by hand: `package.json`, `tsconfig.json`, `next.config.*`, `postcss.config.*`, ESLint/Biome, environment files.
 
 See `references/09-config-templates.md` for recommended configurations.
 
@@ -82,18 +82,15 @@ Run targeted audits as needed:
 ```bash
 ./scripts/audit-quick.sh .      # Fast quality scan only
 ./scripts/audit-security.sh .   # Deep security analysis
-./scripts/audit-perf.sh .       # Performance deep-dive
-./scripts/audit-a11y.sh .       # Accessibility audit
 ```
+
+`audit-perf.sh` and `audit-a11y.sh` are not bundled with this skill; run the performance and accessibility checks in `references/03-performance.md` and `references/08-accessibility.md` by hand.
 
 ### Phase 6: Auto-Fix (optional)
 
 Apply safe automatic fixes:
 
-```bash
-./scripts/fix-safe.sh .         # Non-breaking fixes only
-./scripts/fix-all.sh .          # All auto-fixable issues
-```
+Auto-fix scripts `fix-safe.sh` and `fix-all.sh` are not bundled with this skill. Use the tool-specific fix commands in the Quick Reference below, after reviewing their changes.
 
 ### Phase 7: Report Generation
 

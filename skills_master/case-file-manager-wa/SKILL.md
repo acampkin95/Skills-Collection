@@ -1,6 +1,7 @@
 ---
 name: case-file-manager-wa
-description: Use when organising Western Australian self-represented litigant case folders, evidence indexes.
+description: Organises case folders for self-represented litigants in Western Australian courts, including the canonical folder layout, court document naming, evidence and communications indexes, dashboard documents, folder linting, and AI workspace cleanup. Use when setting up or auditing a WA self-represented litigant case folder, naming a court document, updating an evidence index or comms log, or tidying an AI workspace. Does not provide legal advice.
+version: "1.0.0"
 ---
 
 # SRL Case File Manager — Western Australia
@@ -293,17 +294,13 @@ This skill is **organisational/administrative only**. It must:
 
 ## Validation
 
-After changing this skill, run the local validator. Prefer Docker when available:
+After changing this skill, run the repository validator from the repository root (maintainers only; not needed for case work):
 
 ```bash
-docker compose -f compose.skills.yml run --rm skills-validator
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
-Use the host fallback only when Docker is unavailable:
-
-```bash
-uv run --project .maintenance/Skills-Framework-Reference skills-ref validate case-file-manager-wa
-```
+Earlier versions of this skill pointed at a Docker compose file and a `.maintenance/` reference project; neither is present in this repository.
 
 ## Common SRL Workflows
 

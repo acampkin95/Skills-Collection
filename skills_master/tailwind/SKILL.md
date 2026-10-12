@@ -1,78 +1,48 @@
 ---
 name: tailwind
-description: "Use this skill when working with Tailwind, tailwind."
+description: "Writes, configures and migrates Tailwind CSS v4 utility-first styling: PostCSS and CSS-first setup with @import and @theme, responsive and dark-mode variants, common layout and form patterns, and upgrading v3 projects to v4 (ring, important modifier, opacity and config changes). Use when adding Tailwind to a project, styling components with utility classes, configuring theme tokens, enabling dark mode, or migrating a Tailwind v3 project to v4."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Tailwind CSS v4 - Utility-First CSS Framework
 
-Tailwind CSS v4 with Oxide (Rust) engine, CSS-first configuration, automatic content detection, and native CSS variable theme support. 5-100x faster than v3.
+Tailwind CSS v4 with the Oxide (Rust) engine, CSS-first configuration, automatic content detection, and native CSS variable theme support.
 
 ## Installation
 
-### Standalone CLI
+Tailwind CSS v4 ships its PostCSS plugin as a separate package. Checked against https://tailwindcss.com/docs/installation/using-postcss on 2026-10-12.
 
 ```bash
-npm install -D tailwindcss
-npx tailwindcss init -p
+npm install tailwindcss @tailwindcss/postcss postcss
 ```
 
-### PostCSS Integration
-
-```bash
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
+```javascript
+// postcss.config.mjs
+export default {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
 ```
 
-### Framework Integration
-
-```bash
-# Next.js
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-
-# Create React App
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-
-# Vite
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p
-```
+Do not add `autoprefixer` or `postcss-import` (v4 handles both), and do not run `npx tailwindcss init -p`, which is the v3 setup.
 
 ---
 
 ## Configuration
 
-### tailwind.config.js
-
-```javascript
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
-  theme: {
-    extend: {
-      colors: {
-        brand: '#0f172a',
-      },
-      spacing: {
-        '128': '32rem',
-      },
-    },
-  },
-  plugins: [],
-};
-```
+Tailwind v4 is CSS-first: theme tokens are declared in CSS with `@theme`, and sources are detected automatically, so there is no `content` array.
 
 ### CSS Setup
 
 ```css
-/* input.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* app/globals.css (or src/index.css) */
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #0f172a;
+}
 
 @layer components {
   .btn-primary {
@@ -80,6 +50,8 @@ export default {
   }
 }
 ```
+
+Replace the v3 `@tailwind base;`, `@tailwind components;` and `@tailwind utilities;` lines with the single `@import "tailwindcss";` line.
 
 ---
 
@@ -176,12 +148,11 @@ export default {
 
 ### Setup
 
-```javascript
-// tailwind.config.js
-export default {
-  darkMode: 'class', // or 'media'
-  // ...
-};
+Class-based dark mode in v4 is declared in CSS (the v3 `darkMode` config key is gone). Exact selector not re-checked against the dark-mode docs in this pass; confirm before use.
+
+```css
+/* app/globals.css */
+@custom-variant dark (&:where(.dark, .dark *));
 ```
 
 ### Usage
@@ -314,33 +285,28 @@ function DarkModeToggle() {
 
 ## v3 to v4 Migration
 
+Checked against https://tailwindcss.com/docs/upgrade-guide on 2026-10-12.
+
 ### Breaking Changes
 
 | Change | v3 | v4 |
 |--------|----|----|
-| CSS API | `@apply` only | CSS variables, `theme()` |
-| Config | JavaScript | JavaScript or CSS |
-| Colors | Limited palette | Extended palette |
-| Sizing | Predefined | Arbitrary values everywhere |
+| Import | `@tailwind base;` / `components;` / `utilities;` | `@import "tailwindcss";` |
+| PostCSS plugin | `tailwindcss` | `@tailwindcss/postcss`; remove `autoprefixer` and `postcss-import` |
+| Configuration | `tailwind.config.js` with `content` and `theme.extend` | CSS-first `@theme`; sources detected automatically |
+| `ring` with no width | 3px | 1px; use `ring-3` for 3px |
+| Important modifier | `!flex` (prefix) | `flex!` (suffix); the prefix form is deprecated |
+| Background opacity | `bg-opacity-50` | Color opacity modifier, e.g. `bg-black/50` |
+| Shadow scale | `shadow-sm` | `shadow-xs` (scale shifted; check each use) |
 
 ### Migration Steps
 
-1. Update Tailwind:
-   ```bash
-   npm install tailwindcss@latest
-   ```
-
-2. Update config format (CSS option):
-   ```css
-   @import "tailwindcss";
-
-   @theme {
-     --color-primary: #3b82f6;
-   }
-   ```
-
-3. Update utility variants
-4. Run production build to test
+1. Run the official upgrade tool, then review its changes against the upgrade guide.
+2. Replace the `@tailwind` directives with `@import "tailwindcss";`.
+3. Move the PostCSS plugin to `@tailwindcss/postcss` and remove `autoprefixer` and `postcss-import`.
+4. Move `theme.extend` values into `@theme` in CSS, and remove the `content` array.
+5. Replace bare `ring` with `ring-3` where a 3px ring is meant; replace `bg-opacity-*` with color opacity modifiers; move `!` to the end of the class.
+6. Run a production build and check the pages visually.
 
 ---
 
@@ -348,16 +314,7 @@ function DarkModeToggle() {
 
 ### Optimize Bundle Size
 
-```javascript
-// tailwind.config.js
-export default {
-  content: [
-    './src/**/*.{js,ts,jsx,tsx}',
-    // Exclude unnecessary files
-  ],
-  // ...
-};
-```
+v4 scans the project for class names automatically, so there is no `content` array to trim. To add or exclude sources, use the v4 `@source` directive in CSS (not re-checked in this pass; see the docs).
 
 ### Purge Unused Styles
 

@@ -1,6 +1,7 @@
 ---
 name: crewai-setup
-description: CrewAI multi-agent framework setup, configuration, and development.
+description: Sets up and develops CrewAI multi-agent projects, covering crew scaffolding, agents.yaml and tasks.yaml configuration, LLM provider setup, custom tools, flows, and sequential or hierarchical processes. Use when creating or configuring a CrewAI crew, defining agents or tasks in YAML, choosing an LLM provider for a crew, writing a custom CrewAI tool, or troubleshooting a CrewAI provider or tool error.
+version: "1.0.0"
 ---
 
 # CrewAI Development Skill
@@ -37,10 +38,12 @@ project/
 
 ## LLM Provider Configuration
 
-CrewAI v1.11.0 supports native providers and LiteLLM fallback:
+CrewAI v1.11.0 supports native providers and LiteLLM fallback. **Not verified:** the v1.11.0 pin and the provider list were not checked against current CrewAI release notes on 2026-10-12. The PyPI index reported 1.15.27 as the latest release on that date; keep the pin until an upgrade is tested.
 
 **Native providers** (no extra install): `openai/`, `anthropic/`, `gemini/`, `azure/`, `bedrock/`
 **LiteLLM providers** (need `crewai[litellm]`): `groq/`, `deepinfra/`, `together_ai/`, `ollama/`
+
+**Not verified:** model IDs in the examples below (for example `claude-sonnet-4-20250514` and `gpt-4o`) were not checked against current provider model lists. Confirm the model ID with the provider before use.
 
 ```yaml
 # agents.yaml - provider/model format

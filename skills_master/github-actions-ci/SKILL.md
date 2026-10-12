@@ -66,7 +66,7 @@ jobs:
       - run: npm test
 ```
 
-**Rules:** Always set explicit `permissions` (least privilege). Pin action versions (a major tag such as `@v7`, or a full commit SHA). Use `npm ci` over `npm install` (deterministic, faster). Workflow files go in `.github/workflows/*.yml`.
+**Rules:** Always set explicit `permissions` (least privilege). Pin action versions (a major tag such as `@v4`, or a full commit SHA). Newer major tags are not verified for these examples; keep the existing pins until an upgrade is tested. Use `npm ci` over `npm install` (deterministic, faster). Workflow files go in `.github/workflows/*.yml`.
 
 ---
 
@@ -465,7 +465,7 @@ jobs:
 | Pitfall | Fix |
 |---------|-----|
 | `permissions` not set (defaults to `write-all`) | Always set explicit `permissions` block |
-| Using `actions/checkout@main` (mutable tag) | Pin to a major tag such as `@v7`, or a SHA, for supply chain security |
+| Using `actions/checkout@main` (mutable tag) | Pin to a major tag such as `@v4`, or a SHA, for supply chain security |
 | `npm install` in CI | Use `npm ci` (faster, deterministic) |
 | Secrets in `if:` conditions | Secrets in conditions are logged; use step outputs |
 | Missing `concurrency` on PRs | Wastes minutes on superseded pushes |

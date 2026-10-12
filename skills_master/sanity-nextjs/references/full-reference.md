@@ -131,14 +131,16 @@ const query = `*[_type == "post" && slug.current == $slug][0] {
 import { LiveQuery } from 'next-sanity/preview';
 import { sanityClient } from '@/lib/sanity.client';
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  // Next.js 15+: params is a Promise and must be awaited
+  const { slug } = await params;
   const query = `*[_type == "post" && slug.current == $slug][0] { ... }`;
 
   return (
     <LiveQuery
       query={query}
-      initialData={await sanityClient.fetch(query, { slug: params.slug })}
-      variables={{ slug: params.slug }}
+      initialData={await sanityClient.fetch(query, { slug })}
+      variables={{ slug }}
     >
       {(post) => (
         <article>

@@ -1,6 +1,7 @@
 ---
 name: github-actions-ci
-description: GitHub Actions CI/CD Skill
+description: Writes and reviews GitHub Actions CI/CD workflows, covering triggers, jobs and matrix builds, caching, artifacts, deploy environments and approvals, concurrency, least-privilege permissions, secrets, service containers, and runner cost control. Use when creating or fixing a .github/workflows YAML file, adding a CI pipeline, setting up matrix or reusable workflows, configuring deploy environments and approvals, hardening GITHUB_TOKEN permissions, or reducing GitHub Actions minutes.
+version: "1.0.0"
 ---
 
 # GitHub Actions CI/CD Skill
@@ -10,20 +11,20 @@ description: GitHub Actions CI/CD Skill
 - `references/deployment-workflows.md` — Environments, approvals, rollbacks
 - `references/security-hardening.md` — OIDC, Dependabot, CodeQL, supply chain
 
-## 2026 GitHub Actions Pricing & Strategy
+## GitHub Actions Pricing & Strategy (2026 Changes; Verify Billing)
 
-**Major changes effective 2026:**
+**Verification status (checked 2026-10-12):** GitHub's December 2025 announcement of a hosted-runner price reduction effective 2026-01-01 (net decrease of up to about 39%, varying by runner size) was confirmed by secondary coverage. The self-hosted runner platform charge announced for 2026-03-01 is reported as postponed, and sources conflict. The ARM64 free-tier change could not be checked against GitHub's billing documentation, and the GitHub pricing pages were not reachable from this session. Check current billing docs before changing runner strategy or quoting savings.
 
-| Update | Date | Impact |
-|--------|------|--------|
-| **Hosted runner price reduction** | Jan 1, 2026 | 39% decrease on standard runners (save ~40% on CI costs) |
-| **ARM64 free-tier runners** | Jan 29, 2026 | ARM runners free in private repos (used to be paid) |
-| **Self-hosted runner tax** | Mar 1, 2026 | $0.002/min for self-hosted runners (was free) |
+| Update | Announced date | Status |
+|--------|----------------|--------|
+| Hosted runner price reduction | 2026-01-01 | Announced; up to about 39% net decrease, varies by runner size |
+| ARM64 runner free tier | 2026-01-29 | Not verified |
+| Self-hosted runner platform charge ($0.002/min) | 2026-03-01 | Conflicting reports; reported as postponed. Verify before relying on it |
 
 **Strategy implications:**
-- **Hosted runners**: Now much cheaper; prefer `ubuntu-latest` for CI (was 10x pricier than Linux)
-- **ARM64 free**: Use for compatible workloads (Node.js, Python, Go) to save money
-- **Self-hosted**: Only use for specialized hardware needs or long-running jobs; costs accumulate fast
+- **Hosted runners**: Prefer `ubuntu-latest` for CI (the price reduction applies to standard runners)
+- **ARM64**: Use for compatible workloads (Node.js, Python, Go) only after checking current pricing
+- **Self-hosted**: Use only for specialized hardware needs or long-running jobs, and check current charges first
 
 ## Quick Navigation
 
@@ -65,7 +66,7 @@ jobs:
       - run: npm test
 ```
 
-**Rules:** Always set explicit `permissions` (least privilege). Pin action versions (`@v4` or SHA). Use `npm ci` over `npm install` (deterministic, faster). Workflow files go in `.github/workflows/*.yml`.
+**Rules:** Always set explicit `permissions` (least privilege). Pin action versions (a major tag such as `@v7`, or a full commit SHA). Use `npm ci` over `npm install` (deterministic, faster). Workflow files go in `.github/workflows/*.yml`.
 
 ---
 
@@ -134,7 +135,7 @@ jobs:
     needs: lint                    # depends on lint job
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [20, 22]     # Node 20 reached end-of-life in April 2026 (Node.js release schedule; not re-verified here). Consider 22 and 24.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -171,7 +172,7 @@ jobs:
       fail-fast: false              # don't cancel others on failure
       max-parallel: 4               # limit concurrency
       matrix:
-        node-version: [20, 22]
+        node-version: [20, 22]     # Node 20 reached end-of-life in April 2026 (Node.js release schedule; not re-verified here). Consider 22 and 24.
         os: [ubuntu-latest, macos-latest]
         include:
           - node-version: 22
@@ -264,6 +265,8 @@ jobs:
 ---
 
 ## Artifacts
+
+**Version note:** the examples use `upload-artifact@v4` and `download-artifact@v4`. A mirror of the `actions/upload-artifact` repository shows a v7 release (checked 2026-10-12). A v8 release of `download-artifact` could not be confirmed from the review environment; check the official releases pages before bumping either action, and test upload and download majors together.
 
 ### Upload and Download
 
@@ -443,8 +446,8 @@ jobs:
 
 | Technique | Savings |
 |-----------|---------|
-| Use `ubuntu-latest` (now 39% cheaper as of Jan 2026) | Huge savings vs macOS |
-| Use ARM64 free tier for compatible workloads | Free vs paid runners |
+| Use `ubuntu-latest` (hosted runner price reduction announced for 2026-01-01) | Large savings vs macOS |
+| Use ARM64 runners for compatible workloads | Check current ARM64 pricing first (not verified) |
 | `cancel-in-progress: true` on CI jobs | Stop paying for superseded runs |
 | Use `paths` / `paths-ignore` filters | Skip irrelevant workflows entirely |
 | Cache `node_modules`, `.turbo`, build outputs | Cut install/build time 50-80% |
@@ -453,7 +456,7 @@ jobs:
 | Use larger runners for parallelizable work | Faster = fewer billed minutes |
 | Split unit tests from slow E2E tests | Run E2E only on main or nightly |
 | Use `dorny/paths-filter` to skip unchanged packages | Monorepo cost control |
-| **Avoid self-hosted runners** | $0.002/min tax (eff. Mar 1, 2026) adds up fast |
+| **Avoid unnecessary self-hosted runners** | Self-hosted charge status is conflicting (see pricing note); check billing |
 
 ---
 
@@ -462,7 +465,7 @@ jobs:
 | Pitfall | Fix |
 |---------|-----|
 | `permissions` not set (defaults to `write-all`) | Always set explicit `permissions` block |
-| Using `actions/checkout@main` (mutable tag) | Pin to `@v4` or SHA for supply chain security |
+| Using `actions/checkout@main` (mutable tag) | Pin to a major tag such as `@v7`, or a SHA, for supply chain security |
 | `npm install` in CI | Use `npm ci` (faster, deterministic) |
 | Secrets in `if:` conditions | Secrets in conditions are logged; use step outputs |
 | Missing `concurrency` on PRs | Wastes minutes on superseded pushes |
@@ -473,4 +476,4 @@ jobs:
 | Large artifacts without `retention-days` | Eat storage quota (default is 90 days) |
 | `continue-on-error` hiding real failures | Use sparingly; prefer `if: failure()` for cleanup |
 | Forgetting `fetch-depth: 0` for git history | Needed for changelogs, `git describe`, monorepo tools |
-| Using self-hosted runners unnecessarily | $0.002/min tax as of Mar 2026 |
+| Using self-hosted runners unnecessarily | Check current self-hosted runner billing before choosing runners |

@@ -1,4 +1,4 @@
-# Tailwind CSS v4/v5 Guide
+# Tailwind CSS v4 Guide
 
 Complete reference for Tailwind CSS in Next.js 15/16. Covers configuration, migration, debugging, and common issues.
 
@@ -259,7 +259,9 @@ const colorMap = {
 
 ---
 
-## Tailwind v5 Preview
+## Tailwind v5 (not verified)
+
+The Tailwind CSS documentation checked on 2026-10-12 describes v4 as the current major version and documents no v5 release. Treat the list below as speculation, not as facts about a released version.
 
 ### Expected Changes (When Released)
 

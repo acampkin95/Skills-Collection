@@ -1,11 +1,14 @@
 ---
 name: bun-runtime-cli
-description: Bun v1.3, — high-performance all-in-one JavaScript/TypeScript runtime, package manager, bundler.
+description: Bun 1.x high-performance all-in-one JavaScript and TypeScript runtime, package manager, test runner, and bundler. Use when running TypeScript directly with bun, installing dependencies with bun install, writing bun test suites, building a standalone executable with bun build --compile, writing cross-platform Bun Shell scripts, or migrating a Node.js project or CLI to Bun.
 metadata:
   interface: "cli"
+version: "1.0.0"
 ---
 
-# Bun v1.3 Runtime Skill
+# Bun Runtime Skill
+
+**Version note (checked 2026-10-12):** the latest Bun release on the GitHub releases page is `bun-v1.4.3` (10 Oct). The lockfile and Redis facts below were checked against the Bun docs in the `oven-sh/bun` repository. The `Bun.sql` version tag and the performance figures were not verified.
 
 **Bun** is an all-in-one JavaScript runtime, toolkit, and package manager.
 
@@ -28,8 +31,8 @@ metadata:
 ## Quick Start
 
 ```bash
-# Create new project
-bun create template my-app
+# Create new project from a template (replace <template> with a real template name)
+bun create <template> my-app
 
 # Run TypeScript directly (no build step)
 bun run index.ts
@@ -139,7 +142,8 @@ bun add -d typescript @types/react
 # Run package (like npx)
 bunx prettier --write .
 
-# Lockfile format: bun.lockb (binary, faster parsing)
+# Lockfile: bun.lock (text). Bun v1.2 made the text lockfile the default; the older
+# binary bun.lockb is migrated with: bun install --save-text-lockfile --frozen-lockfile --lockfile-only
 ```
 
 In package.json scripts, just use "bun":
@@ -205,16 +209,16 @@ const mysql = new SQL("mysql://localhost/mydb");
 const sqlite = new SQL("sqlite://data.db");
 ```
 
-## Bun.redis — Native Redis Client (v1.3+)
+## Bun.redis — Native Redis Client
 
 ```typescript
-import { Redis } from "bun";
+import { redis } from "bun"; // default client; or: import { RedisClient } from "bun"
 
-const redis = new Redis();
 await redis.set("key", "value");
 const val = await redis.get("key");
-// 7.9x faster than ioredis in benchmarks
-// Supports Pub/Sub, auto-reconnect, Valkey
+// Pub/Sub is supported (labelled experimental in the docs; added in Bun 1.2.23)
+// Auto-reconnect is on by default (exponential backoff, capped at 2 seconds, up to 20 retries)
+// The "7.9x faster than ioredis" figure is a vendor claim and is not verified here.
 ```
 
 ## Single-Executable Deployment
@@ -232,7 +236,7 @@ bun build --compile src/index.ts --outfile myapp
 - ✅ Cross-platform shell scripts (Bun Shell)
 - ✅ Fast test execution with built-in runner
 - ✅ AWS Lambda / serverless functions (fast cold starts)
-- ✅ Production HTTP servers (1.8x faster than nginx — used by Midjourney)
+- ✅ Production HTTP servers (the "1.8x faster than nginx" figure is a vendor claim and is not verified here)
 - ✅ Database-connected services via Bun.sql
 - ✅ Single-executable deployments via `bun build --compile`
 

@@ -6,14 +6,14 @@ Comprehensive reference for Turbopack in Next.js 15/16. Covers configuration, de
 
 ## Overview
 
-Turbopack is Next.js's Rust-based bundler, enabled by default in Next.js 15+ development. Significantly faster than webpack for incremental builds.
+Turbopack is Next.js's Rust-based bundler. It is the default for development in Next.js 15 and for both development and production builds in Next.js 16 (verified in https://github.com/vercel/next.js/blob/v16.2.9/docs/01-app/02-guides/upgrading/version-16.mdx, checked 2026-10-12).
 
 ### Status
 
 | Mode | Turbopack Status |
 |------|------------------|
-| Development (`next dev`) | ✅ Stable (default in Next.js 15) |
-| Production (`next build`) | ⚠️ Beta (opt-in with `--turbopack`) |
+| Development (`next dev`) | ✅ Stable (default since Next.js 15) |
+| Production (`next build`) | ✅ Default in Next.js 16. On Next.js 15, opt in with `--turbopack` |
 
 ### Enabling/Disabling
 

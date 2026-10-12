@@ -155,4 +155,4 @@ qm snapshot <vmid> snap-name --description "Before upgrade"
 qm rollback <vmid> snap-name
 qm clone 100 200 --name new-vm --full --storage local-lvm
 
-See [full-reference.md](references/full-reference.md) for complete details and advanced patterns.
+See [references/cli-cheatsheet.md](references/cli-cheatsheet.md) for migration (`qm migrate`), bulk operations, and advanced snapshot management.

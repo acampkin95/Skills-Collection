@@ -1,26 +1,29 @@
 ---
 name: open-webui-admin
-description: OpenWebUI administration, — user management, model configuration, knowledge bases.
+description: "Administers a remote Open WebUI instance through its REST API: user and group management, model pull and import, connection configuration for Ollama and OpenAI-compatible providers, knowledge bases and RAG files, chats, API keys and environment variables. Use when managing Open WebUI users or roles, adding or configuring a model or connection, uploading knowledge base files, rotating API keys, or running curl commands against an Open WebUI server."
 version: 2.0.0
-reviewed: "2026-06-04"
+reviewed: "2026-10-12"
+risk: high
 ---
 
 # Open WebUI Remote Administration Skill
 
 ## Quick Reference
 
-| Task category | Jump to section |
+| Task category | Where to find it |
 |---|---|
 | Authentication & API keys | [§ Auth](#authentication) |
 | User management | [§ Users](#user-management) |
 | Model management | [§ Models](#model-management) |
-| Connection management | [§ Connections](#connection-management) |
-| Knowledge base / RAG | [§ RAG](#knowledge-base--rag) |
-| Chat session management | [§ Chats](#chat-session-management) |
-| System config & env vars | [§ Config](#system-configuration) |
-| Docker maintenance | [§ Docker](#docker-maintenance) |
-| Health, monitoring, backup | [§ Ops](#operations--maintenance) |
-| Scripted automation patterns | [§ Automation](#automation-patterns) |
+| Connection management (Ollama, OpenAI) | `references/api-tree.md`, sections "Ollama Connection Config" and "OpenAI Connection Config" |
+| Knowledge base / RAG and files | `references/api-tree.md`, sections "File & RAG Management" (Files, Knowledge Bases, Retrieval) |
+| Chat session management | `references/api-tree.md`, section "Chats" |
+| System config & env vars | `references/env-vars.md` |
+| Docker maintenance | Not bundled with this skill |
+| Health, monitoring, backup | Not bundled with this skill |
+| Scripted automation patterns | Not bundled with this skill (the helper script `scripts/owui_admin.py` is included but not documented here) |
+
+**Confirmation required:** before creating or deleting users, changing roles or permissions, importing model or connection configuration, rotating or revoking API keys, or changing Docker containers or volumes, state the exact action and its effect on the live instance, and get the user's explicit confirmation.
 
 ---
 
@@ -29,10 +32,10 @@ reviewed: "2026-06-04"
 ```bash
 # Required env vars — set once, reference everywhere
 export OWUI_URL="https://your-webui.example.com"   # no trailing slash
-export OWUI_API_KEY="sk-xxxxxxxxxxxxxxxxxxxx"        # Admin API key preferred
+export OWUI_API_KEY="<your-api-key>"        # Admin API key preferred
 ```
 
-**Enable API keys** (first-time setup): Admin Panel → Settings → General → Enable API Keys.  
+**Enable API keys** (first-time setup): set `ENABLE_API_KEYS=true` (default `False`; it replaces the deprecated `ENABLE_API_KEY`), or enable it in the admin settings. For non-admin users, also set `USER_PERMISSIONS_FEATURES_API_KEYS=true` or grant the "API Keys" permission through a group. Source: https://github.com/open-webui/docs/blob/main/docs/reference/env-configuration.mdx (checked 2026-10-12).  
 **Swagger docs**: Set `ENV=dev` in your Docker environment, then browse `$OWUI_URL/docs`.
 
 ---
@@ -151,8 +154,12 @@ curl -s "$OWUI_URL/ollama/api/tags" \
 curl -s "$OWUI_URL/api/models" \
   -H "Authorization: Bearer $OWUI_API_KEY" > models-backup-$(date +%Y%m%d).json
 
-# Import model configurations
+# Import model configurations. The body must be {"models": [ ...model objects... ]}, so wrap the
+# exported model objects in that shape in models-import.json before posting it.
 curl -s -X POST "$OWUI_URL/api/models/import" \
   -H "Authorization: Bearer $OWUI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d @models-import.json
+```
 
-See [full-reference.md](references/full-reference.md) for complete details and advanced patterns.
+Endpoint tree: `references/api-tree.md`. Environment variables: `references/env-vars.md`.

@@ -1,8 +1,8 @@
 ---
 name: content-extraction
-description: Content extraction from any source — web scraping, OCR, for documents/images.
+description: Routes content extraction requests to crawl4ai for web scraping, deepinfra-ocr for OCR of PDFs, scans, and images, or tapestry for turning URLs, videos, and PDFs into action plans. Use when scraping or crawling web pages, extracting text from scanned documents or images, or pulling content from a URL, video, or PDF.
 version: 2.0.0
-reviewed: "2026-06-04"
+reviewed: "2026-10-12"
 ---
 
 # Content Extraction — Master Router

@@ -1,6 +1,8 @@
 ---
 name: relationship-analysis
-description: Use when analysing relationship communication patterns from SMS, iMessage, chat exports.
+description: "Analyses communication patterns in SMS, iMessage and chat exports by loading messages into SQLite and computing frequency, response-time and sentiment metrics, then writing pattern reports that keep message IDs and caveats. Use when analysing message exports or chat histories, measuring response times or message frequency, tracking sentiment trends over time, or preparing a communication-pattern summary. Reports observed behaviour, not diagnosis or legal conclusions."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Relationship Communication Analysis
@@ -30,6 +32,8 @@ Treat outputs as pattern analysis, not psychological diagnosis, legal conclusion
 
 ## Data Schema
 
+The schema below is simplified for the examples in this file. The canonical schema is `references/database_schema.md`, which uses different column names (for example `unix_timestamp`). Reconcile the two before loading real data.
+
 ### Messages Table
 
 ```sql
@@ -43,10 +47,11 @@ CREATE TABLE messages (
   sentiment_score REAL,
   is_emoji_only BOOLEAN,
   contains_links BOOLEAN,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  INDEX idx_timestamp (timestamp),
-  INDEX idx_sender_recipient (sender, recipient)
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX idx_timestamp ON messages (timestamp);
+CREATE INDEX idx_sender_recipient ON messages (sender, recipient);
 ```
 
 ### Communication Metrics Table
@@ -59,8 +64,7 @@ CREATE TABLE daily_metrics (
   avg_message_length REAL,
   avg_sentiment REAL,
   response_time_avg REAL,
-  PRIMARY KEY (date, sender),
-  FOREIGN KEY (sender) REFERENCES contacts(name)
+  PRIMARY KEY (date, sender)
 );
 ```
 
@@ -151,7 +155,7 @@ def analyze_response_times(db_path):
         SELECT
             m1.sender,
             m1.recipient,
-            AVG(CAST((m2.timestamp - m1.timestamp) AS REAL)) as response_time_seconds
+            AVG((julianday(m2.timestamp) - julianday(m1.timestamp)) * 86400.0) as response_time_seconds
         FROM messages m1
         JOIN messages m2 ON
             m1.sender = m2.recipient AND
@@ -238,14 +242,10 @@ def generate_summary_report(db_path):
 After editing this skill or its references, run:
 
 ```bash
-docker compose -f compose.skills.yml run --rm skills-validator
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
-Fallback:
-
-```bash
-uv run --project .maintenance/Skills-Framework-Reference skills-ref validate relationship-analysis
-```
+Run from the repository root. The earlier Docker and `uv` validation commands referred to files that are not in this repository.
 
 ---
 

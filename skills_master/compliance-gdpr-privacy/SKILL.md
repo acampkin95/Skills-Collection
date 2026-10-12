@@ -1,6 +1,7 @@
 ---
 name: compliance-gdpr-privacy
-description: GDPR, CCPA/CPRA, and ePrivacy compliance implementation with consent management and data protection.
+description: Implements GDPR, CCPA/CPRA, and ePrivacy compliance, including consent management and cookie banners, data subject access, export, and deletion flows, breach notification, audit logging, and vendor data processing agreements. Use when adding a consent banner, handling a data subject access or deletion request, building privacy controls, designing audit logs, reviewing a breach response, or checking privacy-by-design requirements.
+version: "1.0.0"
 ---
 
 # GDPR & Privacy Compliance
@@ -57,13 +58,13 @@ async function recordConsent(consent: ConsentRecord): Promise<void> {
 
 | Right | Response Time | Implementation |
 |-------|--------------|----------------|
-| Access (Art. 15) | 30 days | Export all personal data |
-| Rectification (Art. 16) | 30 days | Allow data correction |
-| Erasure (Art. 17) | 30 days | Delete data ("right to be forgotten") |
-| Restrict processing (Art. 18) | 30 days | Flag as restricted |
-| Portability (Art. 20) | 30 days | Export in machine-readable format |
-| Object (Art. 21) | 30 days | Stop processing |
-| No automated decisions (Art. 22) | 30 days | Human review required |
+| Access (Art. 15) | One month (Art. 12(3); extendable by two months) | Export all personal data |
+| Rectification (Art. 16) | One month (Art. 12(3); extendable by two months) | Allow data correction |
+| Erasure (Art. 17) | One month (Art. 12(3); extendable by two months) | Delete data ("right to be forgotten") |
+| Restrict processing (Art. 18) | One month (Art. 12(3); extendable by two months) | Flag as restricted |
+| Portability (Art. 20) | One month (Art. 12(3); extendable by two months) | Export in machine-readable format |
+| Object (Art. 21) | One month (Art. 12(3); extendable by two months) | Stop processing |
+| No automated decisions (Art. 22) | One month (Art. 12(3); extendable by two months) | Human review required |
 
 ### Data Export
 
@@ -106,7 +107,9 @@ async function deleteUserData(userId: string): Promise<DeletionReport> {
   await analyticsService.deleteUser(userId);
   await emailService.deleteSubscriber(userId);
 
-  // Keep minimal deletion log for compliance
+  // Keep minimal deletion log for compliance.
+  // A hashed ID is pseudonymised, not anonymised, and remains personal data under GDPR;
+  // document the lawful basis and retention period for this log.
   await db.deletionLog.insert({
     hashedUserId: hashUserId(userId),
     deletedAt: report.deletedAt,
@@ -183,6 +186,7 @@ function applyConsent(consent: CookieConsent): void {
   window.gtag?.('consent', 'update', {
     analytics_storage: consent.analytics ? 'granted' : 'denied',
     ad_storage: consent.marketing ? 'granted' : 'denied',
+    ad_user_data: consent.marketing ? 'granted' : 'denied',
     ad_personalization: consent.marketing ? 'granted' : 'denied',
   });
 }
@@ -253,6 +257,8 @@ interface DataBreach {
   containedAt?: string;
 }
 
+// Heuristic triage only. The GDPR Art. 33 test is "risk to the rights and freedoms of natural persons",
+// assessed by the controller with the DPA guidance; this function does not replace that assessment.
 function assessBreachRisk(breach: Omit<DataBreach, 'riskLevel'>): 'low' | 'medium' | 'high' {
   const sensitiveTypes = ['financial', 'health', 'credentials', 'ssn'];
   const hasSensitive = breach.dataTypes.some(t => sensitiveTypes.includes(t));
@@ -295,7 +301,7 @@ class AuditLogger {
 ```
 
 Log: data access, modifications, consent changes, DSAR requests, authentication events, admin access.
-Retention: minimum 3 years.
+Retention: set by your policy and any sector rules. GDPR does not set a fixed minimum for audit logs.
 
 ## Privacy-by-Design: 7 Principles
 

@@ -1,6 +1,8 @@
 ---
 name: realtime-websockets
-description: Real-time communication with WebSockets and Server-Sent Events.
+description: "Designs live data synchronisation between a client and server using WebSockets, Server-Sent Events (SSE) and HTTP polling, including reconnection with backoff, heartbeats, authentication, presence, Socket.IO and horizontal scaling. Use when building live updates, chat, notifications, live dashboards or collaboration features, choosing between WebSocket, SSE and polling, or fixing a dropped or reconnecting real-time connection."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Real-Time Communication Patterns
@@ -19,11 +21,10 @@ Use this skill when building applications requiring **live data synchronization*
 
 | File | When to Load |
 |------|--------------|
-| `references/protocol-selection.md` | Choosing between WebSocket, SSE, polling based on use case |
-| `references/websocket-implementation.md` | WebSocket setup, reconnection, heartbeat, authentication |
-| `references/sse-implementation.md` | Server-Sent Events patterns and browser support |
-| `references/polling-implementation.md` | HTTP polling fallback for constrained environments |
-| `references/scaling-realtime.md` | Horizontal scaling with Redis Pub/Sub, message brokers |
+| `references/sse-patterns.md` | Server-Sent Events patterns |
+| `references/socketio-patterns.md` | Socket.IO patterns |
+| `references/presence-sync.md` | Presence tracking and state synchronisation |
+| Protocol selection, WebSocket implementation details, HTTP polling fallback, horizontal scaling with Redis Pub/Sub | Not bundled with this skill; use the decision matrix and the patterns below |
 
 ---
 
@@ -106,7 +107,7 @@ ws.onmessage = (event) => {
 ### Authentication
 
 ```javascript
-// Token in query string or header
+// Token in query string (tokens in URLs can appear in server and proxy logs; prefer the message below or a short-lived ticket)
 const ws = new WebSocket(`wss://api.example.com/stream?token=${authToken}`);
 
 // OR: Send auth message immediately after connection

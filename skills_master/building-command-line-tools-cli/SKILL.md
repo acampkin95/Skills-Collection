@@ -1,8 +1,9 @@
 ---
 name: building-command-line-tools-cli
-description: Use this skill when CLI tool, command line, commander.
+description: Builds Node.js and TypeScript command-line tools with Commander.js, citty, or node:util parseArgs, plus interactive prompts with @clack/prompts, config file loading, error handling, exit codes, and CLI tests. Use when creating a CLI tool or terminal tool, adding subcommands, flags, or arguments, writing a command-line interface or interactive prompts, setting up a package bin entry, or testing a CLI binary.
 metadata:
   interface: "cli"
+version: "1.0.0"
 ---
 
 # CLI Tool Development
@@ -208,12 +209,17 @@ export async function initCommand() {
 
 ## Output Formatting
 
-**For patterns, see `references/distribution.md`** — includes:
-- Chalk vs picocolors comparison and usage
-- Ora spinner states and configuration
-- cli-table3 examples for tabular output
-- JSON output mode patterns
+The following output topics are **not bundled with this skill** (no reference file covers them): chalk versus picocolors usage, ora spinner states, and cli-table3 tables. The JSON output flag and progress bar patterns below are the bundled examples. For packaging and distribution, read `references/distribution.md`.
+
+- JSON output mode: use a `--json` flag and emit machine-readable output to stdout
 - Progress bars and animations
+
+Example of a JSON output flag (`getItems` and `output` are placeholders for your own code):
+
+```ts
+program
+  .command("list")
+  .option("--json", "output as JSON")
   .action(async (options) => {
     const items = await getItems();
     output(items, options.json);

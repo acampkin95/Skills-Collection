@@ -1,6 +1,8 @@
 ---
 name: nextjs
-description: Next.js 16 full-stack development with App Router, React 19, and Turbopack, Use when app router.
+description: "Builds, debugs and audits Next.js 16 App Router applications with React 19, Turbopack and Tailwind CSS v4. Covers Server and Client Component boundaries, async request APIs, Server Actions, configuration files, the unstyled or white-screen (dead UI) fix, cacheComponents, the React Compiler and proxy.ts. Use when creating, modifying, debugging or reviewing a Next.js app, fixing a hydration error or unstyled page, upgrading to Next.js 16, or asking about App Router, Server Actions, Turbopack or Partial Prerendering."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Next.js Development Skill
@@ -21,7 +23,7 @@ export async function saveFormData(data) {
 
 **Enhanced Security** - Unguessable action IDs, dead code elimination
 
-**Turbopack as Default** - 10x faster builds in development
+**Turbopack as Default** - the development default since Next.js 15; the default for `next dev` and `next build` in Next.js 16
 
 **Partial Prerendering** - Static shell + dynamic content streaming
 
@@ -42,6 +44,15 @@ export const metadata = {
 - **Async Request APIs**: `cookies()`, `headers()`, `params` are now async
 - **Caching Semantics**: Page data has `staleTime: 0` by default
 
+### Next.js 16 Changes
+
+- **Turbopack is the default** for `next dev` and `next build`; the `--turbopack` flag is no longer needed.
+- **`middleware` is renamed to `proxy`**: export a function named `proxy` from `proxy.ts` (or `proxy.js`).
+- **`cacheComponents: true`** replaces the deprecated experimental Partial Prerendering settings (see the PPR section below).
+- **`reactCompiler: true`** is a top-level option. It is stable in Next.js 16 but not enabled by default.
+
+Source: https://github.com/vercel/next.js/blob/v16.2.9/docs/01-app/02-guides/upgrading/version-16.mdx (checked 2026-10-12).
+
 ## Quick Navigation
 
 | Task | Reference |
@@ -49,7 +60,7 @@ export const metadata = {
 | Starting / core patterns | `references/critical-rules.md` |
 | Configuration files | `references/config-templates.md` |
 | **Debugging / white screen** | `references/troubleshooting.md` |
-| **Tailwind v4/v5 issues** | `references/tailwind-guide.md` |
+| **Tailwind CSS issues** | `references/tailwind-guide.md` |
 | **Turbopack problems** | `references/turbopack-guide.md` |
 | Testing setup | `references/testing-guide.md` |
 | **Deployment (Docker/Vercel)** | `references/deployment-guide.md` |
@@ -131,7 +142,7 @@ rm -rf .next               # Clear cache
 
 ## 2026 Trends: React Compiler
 
-React Compiler is now stable and automatically optimizes components:
+The React Compiler is stable and supported by Next.js 16, but it is not enabled by default. When enabled, it optimizes components:
 
 ```typescript
 // No more useMemo/useCallback needed - Compiler handles it
@@ -153,11 +164,13 @@ function UserProfile({ user, onUpdate }) {
 Enable in `next.config.ts`:
 
 ```typescript
-const nextConfig = {
-  experimental: {
-    reactCompiler: true,
-  },
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  reactCompiler: true,
 };
+
+export default nextConfig;
 ```
 
 ## 2026: Advanced Server Component Patterns
@@ -229,22 +242,24 @@ export async function GET() {
 }
 ```
 
-## 2026: Partial Prerendering (PPR)
+## Partial Prerendering (PPR) with cacheComponents
 
 ```typescript
-// next.config.ts
-export default {
-  experimental: {
-    ppr: 'incremental', // or true for all routes
-  },
+// next.config.ts (Next.js 16)
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  cacheComponents: true,
 };
+
+export default nextConfig;
 ```
+
+Next.js 16 replaces the experimental PPR settings with `cacheComponents`. Do not use `experimental.ppr` in new code.
 
 ```typescript
 // app/shop/page.tsx
 // Static shell, dynamic content
-export const experimental_ppr = true;
-
 export default function ShopPage() {
   return (
     <div>

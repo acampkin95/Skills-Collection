@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [pdf-generation](../pdf-generation/SKILL.md) master router.
 name: reportlab-python
 description: Python PDF generation with ReportLab — Canvas (low-level drawing) and Platypus (high-level document layout with flowables). Use when ReportLab, SimpleDocTemplate, Paragraph, Table, canvas.drawString, platypus flowables, PDF in Python.
 ---
+> Part of the [pdf-generation](../SKILL.md) router.
+
 
 # ReportLab — Python PDF Generation Skill
 

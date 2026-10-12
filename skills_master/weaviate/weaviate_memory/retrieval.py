@@ -61,15 +61,14 @@ class MemoryRetrieval:
                 continue
             
             try:
-                try:
-                    response = collection.query.hybrid(
-                        query=query,
-                        alpha=0.7,
-                        limit=limit * 2,
-                        return_metadata=wvc.MetadataQuery(distance=True)
-                    )
+                response = collection.query.hybrid(
+                    query=query,
+                    alpha=0.7,
+                    limit=limit * 2,
+                    return_metadata=wvc.MetadataQuery(distance=True)
+                )
 
-                    for obj in response.objects:
+                for obj in response.objects:
                     similarity = 1.0 - (obj.metadata.distance / 2.0) if obj.metadata.distance else 0.5
                     recency = obj.properties.get("recencyScore", 0.5)
                     importance = obj.properties.get("importanceScore", 0.5)
@@ -83,20 +82,20 @@ class MemoryRetrieval:
                         importance_weight * importance
                     )
                     
-                        all_results.append({
-                            "uuid": str(obj.uuid),
-                            "type": mem_type,
-                            "properties": obj.properties,
-                            "scores": {
-                                "similarity": round(similarity, 4),
-                                "recency": round(recency, 4),
-                                "importance": round(importance, 4),
-                                "composite": round(composite, 4)
-                            }
-                        })
-                except Exception as e:
-                    print(f"Error querying {mem_type}: {e}")
-                    continue
+                    all_results.append({
+                        "uuid": str(obj.uuid),
+                        "type": mem_type,
+                        "properties": obj.properties,
+                        "scores": {
+                            "similarity": round(similarity, 4),
+                            "recency": round(recency, 4),
+                            "importance": round(importance, 4),
+                            "composite": round(composite, 4)
+                        }
+                    })
+            except Exception as e:
+                print(f"Error querying {mem_type}: {e}")
+                continue
         
         all_results.sort(key=lambda x: x["scores"]["composite"], reverse=True)
         return all_results[:limit]

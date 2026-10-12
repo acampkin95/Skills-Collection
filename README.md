@@ -1,9 +1,44 @@
 # Skills Repository
 
-**Location:** `/Users/alex/Projects/Infra/Skills_Repo`  
+**Location:** this repository (`skills_master/` is the production tier)  
 **Purpose:** Central production and development hub for agent skills  
 **Agents:** Claude Code, Codex, OpenCode, Pi  
 **Governance:** Follows project AGENTS.md and Infra workspace rules
+
+---
+
+## Source of Truth & Directory Lifecycle
+
+Several directories in this repository can look like parallel copies of the
+same content. They are not — each has one job, and only one of them is
+hand-edited:
+
+| Directory | Role | Edited by hand? |
+|---|---|---|
+| `skills_master/` | Canonical, production-ready skills | ✅ Yes — this is the source |
+| `skills_staging/` | Pre-production copies under review | ✅ Yes, during promotion — never long-lived drift from master |
+| `skills_devtesting/` | Experimental/in-progress skills | ✅ Yes — freely |
+| `skills_conversions/` | Per-runtime packaged output (`.skill` files) | ❌ No — regenerate with `SkillsFramework/package-skills.sh`, never hand-edit |
+| `skills.json` | Generated catalogue index | ❌ No — regenerate with `python SkillsFramework/scripts/generate-skill-index.py --format json --output skills.json` |
+| `docs/catalogue.md` | Generated human-readable catalogue | ❌ No — regenerate with `python SkillsFramework/scripts/generate-skill-index.py --format markdown --output docs/catalogue.md` |
+
+Every skill's metadata (the YAML frontmatter in `SKILL.md`) must validate
+against [`schema/skill.schema.json`](schema/skill.schema.json) — that schema
+is itself the canonical definition of what fields a skill can declare. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for the full authoring and promotion
+workflow, and [SECURITY.md](SECURITY.md) before including any credential,
+infrastructure, or personal-data example in a skill.
+
+### Validating your changes
+
+```bash
+pip install pyyaml
+python SkillsFramework/scripts/validate_skills.py --verbose
+```
+
+This is the same check CI runs on every pull request
+(`.github/workflows/validate.yml`) against `skills_master/`,
+`skills_staging/`, and `skills_devtesting/`.
 
 ---
 
@@ -13,11 +48,11 @@
 
 ```bash
 # Option 1: Symlink to master skills (recommended)
-ln -s /Users/alex/Projects/Infra/Skills_Repo/skills_master \
+ln -s "$(pwd)/skills_master" \
       ~/.claude/skills
 
 # Option 2: Copy skills (if symlink not available)
-cp -r /Users/alex/Projects/Infra/Skills_Repo/skills_master/* \
+cp -r skills_master/* \
       ~/.claude/skills/
 ```
 
@@ -43,9 +78,9 @@ EOF
 
 # Validate and promote through pipeline:
 # 1. Test locally in Claude Code
-# 2. Validate: python Scripts/validate-skill-upload.py my-new-skill
+# 2. Validate: python3 SkillsFramework/scripts/validate_skills.py --verbose
 # 3. Move to staging: cp -r skills_devtesting/my-new-skill skills_staging/
-# 4. Promote: python Scripts/promote-skill-production.py my-new-skill
+# 4. Promote: python3 SkillsFramework/scripts/promote-skill-production.py my-new-skill
 ```
 
 ---
@@ -57,10 +92,8 @@ skills_master/          ← PRODUCTION (aliased as 'skills')
 skills_staging/         ← Pre-production validation
 skills_devtesting/      ← Development & testing
 skills_conversions/     ← Agent-specific adaptations
-Packaged/              ← Vendor/third-party skills (read-only)
-.archive/              ← Deprecated skills
 Plans/                 ← Roadmap & planning
-Scripts/               ← Validation & management utilities
+SkillsFramework/scripts/  ← Validation & management utilities
 ```
 
 **See `agents.md` for detailed folder descriptions and purposes.**
@@ -73,7 +106,7 @@ Scripts/               ← Validation & management utilities
 |----------|---------|
 | **agents.md** | Complete folder structure, lifecycle, validation process, best practices |
 | **claude.md** | Claude Code specific guidance, setup, skill design, troubleshooting |
-| **Skils-Guidance-Readme.md** | Complete skill authoring guide (16 sections, comprehensive reference) |
+| **docs/authoring/advanced-skill-development.md** | Engineering reference for authoring, evaluating and releasing skills |
 | **CHANGELOG.md** | Change history and promotions |
 | **README.md** | This file - quick reference |
 
@@ -90,13 +123,13 @@ Create in skills_devtesting/
   ↓
 Test locally in Claude Code
   ↓
-python Scripts/validate-skill-upload.py my-skill
+python3 SkillsFramework/scripts/validate_skills.py --verbose
   ↓
 Move to skills_staging/
   ↓
 Test on target agents (claude, codex, pi, opencode)
   ↓
-python Scripts/promote-skill-production.py my-skill
+python3 SkillsFramework/scripts/promote-skill-production.py my-skill
   ↓
 In skills_master/ (PRODUCTION) ✅
   ↓
@@ -109,20 +142,20 @@ Major changes → deprecated, archived
 
 ## Key Scripts
 
-All scripts run from the repository root: `/Users/alex/Projects/Infra/Skills_Repo/`
+All scripts run from the repository root.
 
-### validate-skill-upload.py
-Validates skill before moving to staging.
+### validate_skills.py
+Validates every skill in all three tiers. The same check runs in CI.
 
 ```bash
 # Validate single skill
-python Scripts/validate-skill-upload.py my-skill-name
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 
 # Validate all in devtesting
-python Scripts/validate-skill-upload.py all
+python3 SkillsFramework/scripts/validate_skills.py
 
-# Verbose output
-python Scripts/validate-skill-upload.py my-skill-name --verbose
+# Show warnings too
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
 **Checks:**
@@ -139,13 +172,13 @@ Promotes validated skill from staging to master.
 
 ```bash
 # Dry run (validation only)
-python Scripts/promote-skill-production.py my-skill --dry-run
+python3 SkillsFramework/scripts/promote-skill-production.py my-skill --dry-run
 
 # Promote to production
-python Scripts/promote-skill-production.py my-skill
+python3 SkillsFramework/scripts/promote-skill-production.py my-skill
 
 # With agent-specific copies
-python Scripts/promote-skill-production.py my-skill --auto-conversions
+python3 SkillsFramework/scripts/promote-skill-production.py my-skill --auto-conversions
 ```
 
 **Actions:**
@@ -180,11 +213,11 @@ cp -r skills_devtesting/my-skill-name ~/.claude/skills/my-skill-name-dev
 # Test in Claude Code IDE...
 
 # 3. Validate & move to staging
-python Scripts/validate-skill-upload.py my-skill-name
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 cp -r skills_devtesting/my-skill-name skills_staging/
 
 # 4. Promote to master
-python Scripts/promote-skill-production.py my-skill-name
+python3 SkillsFramework/scripts/promote-skill-production.py my-skill-name
 ```
 
 ---
@@ -201,7 +234,7 @@ vim skills_master/my-skill/SKILL.md
 cp -r skills_master/my-skill skills_staging/my-skill-v2
 # 2. Make changes and test
 # 3. Promote as new version
-python Scripts/promote-skill-production.py my-skill-v2
+python3 SkillsFramework/scripts/promote-skill-production.py my-skill-v2
 ```
 
 ---
@@ -270,7 +303,7 @@ description: Processes Excel spreadsheets, creates pivot tables, generates chart
 ### Skill Design
 
 ✅ **Do:**
-- Keep SKILL.md under 300 lines
+- Keep SKILL.md under 500 lines; move detail into `references/` (see `docs/authoring/advanced-skill-development.md`)
 - Use progressive disclosure (reference additional files)
 - Write in third person
 - Include concrete examples
@@ -301,9 +334,7 @@ description: Processes Excel spreadsheets, creates pivot tables, generates chart
 
 ## Governance
 
-- **Workspace:** `/Users/alex/Projects/Infra`
-- **Project Law:** `/Users/alex/Projects/AGENTS.md`
-- **Workspace Law:** `/Users/alex/Projects/Infra/AGENTS.md`
+- Workspace governance documents are maintained outside this repository.
 - **Changes:** Log in CHANGELOG.md (this directory) and project CHANGELOG.md
 
 ---
@@ -312,8 +343,8 @@ description: Processes Excel spreadsheets, creates pivot tables, generates chart
 
 - **Detailed folder structure & lifecycle:** See `agents.md`
 - **Claude Code specific:** See `claude.md`
-- **Complete authoring guide:** See `Skils-Guidance-Readme.md`
-- **Repository scripts:** `Scripts/` directory with `--help` flag
+- **Complete authoring guide:** See `docs/authoring/advanced-skill-development.md`
+- **Repository scripts:** `SkillsFramework/scripts/` (run with `--help`)
 - **Skill examples:** `skills_master/` (production ready)
 
 ---
@@ -321,11 +352,10 @@ description: Processes Excel spreadsheets, creates pivot tables, generates chart
 ## Key Contacts & Escalation
 
 **For questions about:**
-- **Skill authoring:** See `Skils-Guidance-Readme.md` sections 1-10
+- **Skill authoring:** See `docs/authoring/advanced-skill-development.md`
 - **Claude Code integration:** See `claude.md`
 - **Validation errors:** Run scripts with `--help` and check inline docs
-- **Governance:** See `/Users/alex/Projects/AGENTS.md`
-- **Workspace:** See `/Users/alex/Projects/Infra/AGENTS.md`
+- **Governance:** maintained outside this repository
 
 ---
 
@@ -334,5 +364,5 @@ description: Processes Excel spreadsheets, creates pivot tables, generates chart
 - **Master Skills:** `skills_master/`
 - **Development:** `skills_devtesting/`
 - **Staging:** `skills_staging/`
-- **Scripts:** `Scripts/`
+- **Scripts:** `SkillsFramework/scripts/`
 - **Full Documentation:** `agents.md` (comprehensive reference)

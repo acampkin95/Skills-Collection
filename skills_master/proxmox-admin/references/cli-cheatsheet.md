@@ -224,7 +224,7 @@ pveum group delete ops-team
 
 # API tokens
 pveum user token add <user@realm> <tokenid>
-pveum user token add <user@realm> <tokenid> --privsep 0 --expire 2027-01-01
+pveum user token add <user@realm> <tokenid> --privsep 0 --expire "$(date -d '2027-01-01' +%s)"  # Unix epoch seconds
 pveum user token modify <user@realm> <tokenid> --comment "Updated"
 pveum user token remove <user@realm> <tokenid>
 pveum user token list <user@realm>

@@ -1,6 +1,8 @@
 ---
 name: wa-teacher-misconduct
-description: Use when assessing Western Australian teacher misconduct, TRBWA complaints.
+description: "Provides general information on Western Australian teacher misconduct: the Teacher Registration Act 2012, Working with Children checks, Teacher Registration Board of WA (TRBWA) complaints, professional boundaries, school investigations and evidence. Use when assessing a possible teacher misconduct matter, preparing a TRBWA complaint, or asking how the WA teacher registration and child-safety processes apply. General information only, not legal advice."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # WA Teacher Misconduct Assessor
@@ -300,14 +302,10 @@ Legislation and policy should be verified against current versions before relyin
 After editing this skill or its references, run:
 
 ```bash
-docker compose -f compose.skills.yml run --rm skills-validator
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
-Fallback:
-
-```bash
-uv run --project .maintenance/Skills-Framework-Reference skills-ref validate wa-teacher-misconduct
-```
+Run from the repository root. The earlier Docker and `uv` validation commands referred to files that are not in this repository.
 
 ## Cross-References to Other Skills
 

@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [creative-suite](../creative-suite/SKILL.md) master router.
 name: creative-strategy
 description: 2025 brand strategy, creative direction, and marketing campaigns with community-first positioning. Use when brand strategy, creative direction, marketing campaign, brand voice, content strategy, positioning, messaging framework.
 ---
+> Part of the [creative-suite](../SKILL.md) router.
+
 
 <essential_principles>
 ## Core Philosophy

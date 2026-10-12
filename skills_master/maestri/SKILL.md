@@ -1,7 +1,8 @@
 ---
 name: maestri
-description: Communicate with nearby coding agents and read/write connected sticky notes in Maestri.
+description: Communicates with nearby coding agents and reads or writes connected sticky notes in the Maestri canvas. Use when working inside a Maestri workspace to ask a connected agent a question, check what an agent is showing, list connected agents and notes, or create, read, write or edit a connected note.
 user-invocable: false
+version: "1.0.0"
 ---
 
 # Maestri Inter-Agent Communication

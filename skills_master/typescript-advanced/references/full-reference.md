@@ -11,9 +11,9 @@ description: Advanced TypeScript patterns and type-safe abstractions. Use this s
 
 | Topic | Reference |
 |-------|-----------|
-| Generics, conditional types, infer, recursive types | [references/advanced-generics.md](references/advanced-generics.md) |
-| Branded/opaque types, phantom types, type-safe IDs | [references/branded-types.md](references/branded-types.md) |
-| Type challenges, practical puzzles, builders | [references/type-challenges.md](references/type-challenges.md) |
+| Generics, conditional types, infer, recursive types | [references/advanced-generics.md](advanced-generics.md) |
+| Branded/opaque types, phantom types, type-safe IDs | [references/branded-types.md](branded-types.md) |
+| Type challenges, practical puzzles, builders | [references/type-challenges.md](type-challenges.md) |
 
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: performance-profiling
-description: Web performance profiling and Core Web Vitals optimization.
+description: "Profiles and optimises web performance: measures Core Web Vitals (LCP, INP, CLS, FCP, TTFB) with the web-vitals library, finds slow React renders with the Profiler, records and reads Chrome DevTools traces, sets performance budgets, and fixes common anti-patterns. Use when a page is slow, when Core Web Vitals or Lighthouse scores are poor, when profiling React re-renders or long tasks, or when setting a performance budget."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Performance Profiling
@@ -64,7 +66,6 @@ export default function App() {
 ## Performance Budget
 
 ```json
-// performance-budget.json
 {
   "bundles": {
     "main": { "maxSize": "150kb" },
@@ -155,8 +156,8 @@ console.log(`Search took ${measure.duration.toFixed(0)}ms`);
 
 ## Quick Diagnostic Script
 
-```typescript
-// Paste in DevTools Console
+```javascript
+// Paste in DevTools Console (plain JavaScript)
 (() => {
   // Check LCP element
   new PerformanceObserver((list) => {
@@ -178,7 +179,7 @@ console.log(`Search took ${measure.duration.toFixed(0)}ms`);
 
   // Resource summary
   const resources = performance.getEntriesByType("resource");
-  const byType: Record<string, { count: number; size: number }> = {};
+  const byType = {};
   resources.forEach((r) => {
     const ext = r.name.split(".").pop()?.split("?")[0] || "other";
     if (!byType[ext]) byType[ext] = { count: 0, size: 0 };

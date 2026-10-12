@@ -1,7 +1,8 @@
 ---
 name: brainstorm-creative
-description: Generate ideas, solutions, and creative alternatives. Use when user asks "what are some ideas", "brainstorm", "what if", "alternatives", "options", or needs to explore multiple approaches to a problem.
+description: Generates ideas, solutions, and creative alternatives by reframing a problem and exploring several approaches before choosing one. Use when the user asks "what are some ideas", "brainstorm", "what if", "alternatives", or "options", or needs to explore multiple approaches to a problem.
 user-invocable: true
+version: "1.0.0"
 ---
 
 # Brainstorm & Creative — Idea Generation
@@ -28,6 +29,8 @@ E — Explore wildly (quantity first)
 E — Evaluate practically (quality second)
 P — Prioritise and pick (commit to action)
 ```
+
+Code blocks in this skill are illustrative pseudo-code, not a library. Helpers such as `ask_user_or_assess` are placeholders for the agent's own judgment or a question to the user.
 
 ## Step 1 — Reframe the Problem
 

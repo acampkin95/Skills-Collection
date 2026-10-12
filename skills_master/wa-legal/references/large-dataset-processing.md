@@ -123,16 +123,19 @@ def legal_keyword_search_sql(conn, table_name, text_columns, keywords, operator=
         col_conditions = [f"{col} ILIKE '%{kw}%'" for col in text_columns]
         conditions.append(f"({' OR '.join(col_conditions)})")
 
+    # Build the per-keyword CASE expressions before the query (no backslashes inside f-string expressions)
+    hit_cols = []
+    for kw in keywords:
+        cond = ' OR '.join(f"{col} ILIKE '%{kw}%'" for col in text_columns)
+        hit_cols.append(f"CASE WHEN {cond} THEN 1 ELSE 0 END AS _hit_{kw.replace(' ', '_')}")
+
     joiner = ' OR ' if operator == 'OR' else ' AND '
     where_clause = joiner.join(conditions)
 
     query = f"""
         SELECT *,
             -- Tag which keywords matched
-            {', '.join([
-                f"CASE WHEN {' OR '.join([f'{col} ILIKE \'%{kw}%\'' for col in text_columns])} THEN 1 ELSE 0 END AS _hit_{kw.replace(' ', '_')}"
-                for kw in keywords
-            ])}
+            {', '.join(hit_cols)}
         FROM {table_name}
         WHERE {where_clause}
         ORDER BY _row_id

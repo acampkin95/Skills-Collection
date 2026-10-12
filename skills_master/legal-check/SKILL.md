@@ -1,7 +1,8 @@
 ---
 name: legal-check
-description: Australian legal information and rights awareness. Use when user asks about legal rights, what they can/cannot do, what the law says, their options, or needs to understand a legal document or situation.
+description: Explains Australian legal rights, obligations, and options as general legal information, with a focus on Western Australia, and helps the user understand a legal document or notice. Use when the user asks about their legal rights, what they can or cannot do, what the law says, their options, or needs to understand a legal document or situation, including tenant, employee, and consumer rights. Does not give legal advice.
 user-invocable: true
+version: "1.0.0"
 ---
 
 # Legal Awareness — Australian Rights & Options
@@ -36,6 +37,8 @@ periodic tenancy."                          ────────────
 **Rule:** Always state the information/advice distinction. Never predict case outcomes or guarantee legal positions.
 
 ## Australian Legal Knowledge Base
+
+**Verification status (2026-10-12):** the figures, section numbers, and URLs in this section were not verified against primary sources. Government domains were unreachable from the review environment. Check legislation.wa.gov.au, the Fair Work Commission, and the agency sites before relying on any value here. The two employee minimum-wage figures below are inconsistent with each other and must be checked before use.
 
 ### Western Australia — Key Frameworks
 
@@ -198,6 +201,8 @@ def flag_legal_urgency(text: str) -> dict:
 ```
 
 ## Australian Legal Resources
+
+The URLs below were not verified on 2026-10-12. The SAT, Fair Work Commission, and WA State Law Publisher entries may have incorrect domains and need checking before use.
 
 | Resource | URL | Use For |
 |----------|-----|---------|

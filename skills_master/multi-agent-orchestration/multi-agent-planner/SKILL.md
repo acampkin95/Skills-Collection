@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [multi-agent-orchestration](../multi-agent-orchestration/SKILL.md) master router.
 name: multi-agent-planner
 description: Multi-agent planning, agent orchestration, task decomposition, parallel agents, complex workflows, Perplexity research. Use when planning architect, research specialist, data analyst, DAG of subtasks, parallel agent execution.
 ---
+> Part of the [multi-agent-orchestration](../SKILL.md) router.
+
 
 # Multi-Agent Planner
 
@@ -40,6 +39,6 @@ Coordinate complex tasks by spawning and orchestrating specialized sub-agents.
 
 ## See also
 
-- [claude-code](../claude-code/SKILL.md) — Claude Code CLI + MCP orchestration (overlapping domain)
+- [claude-code](../configuring-coding-agent-cli/SKILL.md) — Claude Code CLI + MCP orchestration (overlapping domain)
 - [ai-project-management](../ai-project-management/SKILL.md) — burndown charts, checkpointing
-- [crewai-setup](../crewai-setup/SKILL.md) — CrewAI-specific multi-agent framework
+- [crewai-setup](../../crewai-setup/SKILL.md) — CrewAI-specific multi-agent framework

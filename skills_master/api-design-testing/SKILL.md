@@ -1,6 +1,7 @@
 ---
 name: api-design-testing
-description: REST API design, type-safe validation, OpenAPI specs, and contract testing with Hono, Zod, and MSW.
+description: REST API design, type-safe request validation, OpenAPI 3.1 specs, and contract testing with Hono, Zod, and MSW. Use when designing REST endpoints or URL structures, choosing HTTP status codes, adding RFC 7807 problem-detail error responses, implementing cursor or offset pagination, filtering, CORS, or rate-limit headers, writing Zod validation schemas, generating OpenAPI or Swagger specs, or setting up MSW mocks and Pact contract tests.
+version: "1.0.0"
 ---
 
 # API Design & Testing Skill
@@ -338,7 +339,7 @@ function setRateLimitHeaders(c: Context, info: RateLimitInfo) {
   "type": "https://api.example.com/errors/rate-limit",
   "title": "Too Many Requests",
   "status": 429,
-  "detail": "Rate limit exceeded. Try again in 30 seconds.",
+  "detail": "Rate limit exceeded. Try again in 30 seconds."
 }
 ```
 

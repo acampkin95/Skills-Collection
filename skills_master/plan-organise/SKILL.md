@@ -2,6 +2,8 @@
 name: plan-organise
 description: Break down tasks, create plans, organise projects. Use when user asks to "plan this", "break this down", "what are the steps", "make a todo list", "how should I organise", "help me prioritise", or needs a structured approach to work.
 user-invocable: true
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Plan & Organise — Structured Task Management

@@ -1,6 +1,8 @@
 ---
 name: weaviate
-description: Weaviate vector database implementation, for AI agent memory systems, RAG pipelines.
+description: "Designs and implements a Weaviate vector database for AI agent memory and RAG: episodic, semantic and procedural memory collections, schema creation, hybrid and filtered retrieval, temporal queries, memory decay, consolidation and deployment. Use when building agent memory on Weaviate, creating Weaviate collections, running hybrid or semantic search, storing or retrieving memories, or setting up a RAG pipeline with Weaviate."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Weaviate AI Memory Repository
@@ -104,7 +106,7 @@ from weaviate.classes.query import Filter
 
 results = memories.query.near_text(
     query="user preferences",
-    where=Filter.by_property("importance").greater_than(0.7),
+    filters=Filter.by_property("importance").greater_than(0.7),
     limit=5
 )
 ```
@@ -115,7 +117,7 @@ from datetime import timedelta
 
 cutoff = (datetime.now() - timedelta(days=7)).isoformat()
 results = memories.query.fetch_objects(
-    where=Filter.by_property("timestamp").greater_or_equal(cutoff),
+    filters=Filter.by_property("timestamp").greater_or_equal(cutoff),
     limit=20
 )
 ```
@@ -137,13 +139,13 @@ results = memories.query.fetch_objects(
 
 | File | Purpose |
 |------|---------|
-| `crud-operations.md` | Store, retrieve, update, delete with access tracking, batch import |
-| `schema-design.md` | Detailed schema design, field types, indexes, partitioning |
-| `embedding-integration.md` | OpenAI, Ollama, LM Studio, named vectors setup |
-| `retrieval-strategies.md` | Advanced queries, temporal, semantic, hybrid, filtering patterns |
-| `memory-decay.md` | Exponential decay, forgetting strategies, consolidation |
-| `consolidation.md` | Episodic→semantic consolidation, LLM-driven extraction |
-| `deployment.md` | Docker single-node, HA multi-node, authentication, monitoring |
+| `references/crud-operations.md` | Store, retrieve, update, delete with access tracking, batch import |
+| `references/schema-design.md` | Detailed schema design, field types, indexes, partitioning |
+| `references/embedding-integration.md` | OpenAI, Ollama, LM Studio, named vectors setup |
+| `references/retrieval-strategies.md` | Advanced queries, temporal, semantic, hybrid, filtering patterns |
+| `references/memory-decay.md` | Exponential decay, forgetting strategies, consolidation |
+| `references/consolidation.md` | Episodic→semantic consolidation, LLM-driven extraction |
+| `references/deployment.md` | Docker single-node, HA multi-node, authentication, monitoring |
 
 ---
 
@@ -153,7 +155,7 @@ results = memories.query.fetch_objects(
 - **Scalar quantization (SQ)**: 75% storage reduction with 8-bit compression
 - **Range filters**: Efficient quantitative data filtering
 - **Async Python client**: Full async/await support for concurrent operations
-- **Anthropic integration**: Native support for Anthropic embedding models
+- **Anthropic integration**: Anthropic is a generative AI integration in Weaviate (not an embedding model); use a separate vectorizer for embeddings. Source: https://github.com/weaviate/docs/blob/main/docs/weaviate/modules/index.md (checked 2026-10-12)
 
 See `embedding-integration.md` for current model setup patterns and `deployment.md` for production configuration.
 

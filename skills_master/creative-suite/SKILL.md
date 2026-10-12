@@ -1,8 +1,8 @@
 ---
 name: creative-suite
-description: Brand identity and creative strategy, — logos, colours, typography, marketing campaigns.
+description: Routes brand identity and creative strategy requests to brand-creativebuilder for logos, colours, typography, and brand guides, or to creative-strategy for campaigns and creative direction. Use when building a brand kit or visual identity, or planning a marketing campaign or creative direction.
 version: 2.0.0
-reviewed: "2026-06-04"
+reviewed: "2026-10-12"
 ---
 
 # Creative Suite — Master Router

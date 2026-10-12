@@ -1,6 +1,8 @@
 ---
 name: reportlab-python
-description: ReportLab Python PDF generation with Canvas drawing and Platypus document layout.
+description: "Generates PDF documents in Python with ReportLab: Platypus flowing layouts with paragraphs, styled tables, images, headers and footers, and page templates, plus low-level Canvas drawing for precise positioning. Use when creating a PDF from Python code, building a report, invoice or letter as PDF with ReportLab, styling a table or header in a generated PDF, choosing between Canvas and Platypus, or registering a TrueType font for a PDF."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # ReportLab — Python PDF Generation Skill
@@ -402,8 +404,8 @@ When generating court documents, evidence bundles, or legal reports, use with:
 | Related Skill | Use when |
 |---------------|----------|
 | `legal-matter-ops` | Generating print-ready court bundles, evidence reports, DOCX/PDF output |
-| `csv-legal-analysis-v2` | Generating statistical analysis reports, evidence-grade PDFs |
+| `csv-legal-analysis` | Generating statistical analysis reports, evidence-grade PDFs |
 | `affidavit-court-preparation` | Generating affidavit bundles, annexure indexes, hearing prep documents |
-| `srl-case-file-manager-wa` | Generating dashboard reports, evidence indexes as PDF |
+| `case-file-manager-wa` | Generating dashboard reports, evidence indexes as PDF |
 | `wa-law-general` | Generating general legal information documents |
 | `pdfkit-node` | Node.js alternative for the same PDF generation tasks |

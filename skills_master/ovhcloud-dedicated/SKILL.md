@@ -1,6 +1,9 @@
 ---
 name: ovhcloud-dedicated
-description: OVHcloud dedicated server remote administration via API, — server lifecycle.
+description: "Administers OVHcloud dedicated servers through the OVH API and the bundled ovh_server.py helper: server lifecycle, soft and hard reboot, rescue mode, IPMI and KVM console access, OS reinstall, IP and reverse DNS, network firewall rules, bandwidth and monitoring, tasks and interventions. Use when managing an OVHcloud or OVH dedicated server, rebooting or reinstalling it, opening its KVM or serial console, changing its firewall or reverse DNS, or checking its bandwidth, monitoring or datacenter interventions."
+version: "1.0.0"
+reviewed: "2026-10-12"
+risk: high
 ---
 
 # OVHcloud Dedicated Server Management Skill
@@ -53,6 +56,8 @@ export OVH_CONSUMER_KEY=YOUR_CK
    - `PUT /ip/*`
    - `POST /ip/*`
    - `DELETE /ip/*`
+
+**Confirmation required:** before any reboot (especially `--hard`), rescue-mode change, OS install (`os --install` wipes all data), firewall or mitigation change, reverse DNS or secondary DNS change, IPMI reset, or task cancel, state the target server and the effect, and get the user's explicit confirmation.
 
 ## Quick Reference
 
@@ -137,10 +142,10 @@ python3 scripts/ovh_server.py os SERVER_NAME --list-ovh
 # Install an OS (DESTRUCTIVE — wipes all data)
 python3 scripts/ovh_server.py os SERVER_NAME --install TEMPLATE_NAME
 
-# Install with SSH key and custom hostname
+# Install with a registered SSH key (name as registered in OVH, not the key material) and custom hostname
 python3 scripts/ovh_server.py os SERVER_NAME --install debian12_64 \
   --hostname myserver.example.com \
-  --ssh-key "ssh-ed25519 AAAA..."
+  --ssh-key NAME_OF_REGISTERED_KEY
 
 # Check install task status
 python3 scripts/ovh_server.py tasks SERVER_NAME
@@ -297,7 +302,7 @@ When a server is unresponsive and SSH is down:
 ### Reinstall OS
 
 1. List templates: `ovh_server.py os SERVER --list`
-2. Install: `ovh_server.py os SERVER --install debian12_64 --ssh-key "ssh-ed25519 ..."`
+2. Install: `ovh_server.py os SERVER --install debian12_64 --ssh-key NAME_OF_REGISTERED_KEY`
 3. Monitor task: `ovh_server.py tasks SERVER`
 4. Wait for completion (typically 10-20 minutes)
 

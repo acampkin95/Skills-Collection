@@ -1,6 +1,8 @@
 ---
 name: tapestry
-description: Content extraction and actionable implementation planning from any source.
+description: "Turns a YouTube video, article, PDF or web page into key insights and a prioritised, week-by-week implementation plan with checklists, plus a Markdown or JSON report. Use when the user shares a link or document and wants the actionable takeaways, a learning plan, an implementation timeline, or to turn reading or video content into concrete build tasks."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Tapestry - Content Extraction and Action Planning

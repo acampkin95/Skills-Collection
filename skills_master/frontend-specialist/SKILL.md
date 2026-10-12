@@ -1,6 +1,7 @@
 ---
 name: frontend-specialist
-description: Expert Next.js 16/React 19/Tailwind v4 development, Use when scaffolding projects.
+description: Builds and debugs Next.js 16, React 19, Tailwind CSS v4, and Vite front-end projects, including scaffolding, component architecture, Tailwind v3 to v4 migration, creative UI design, accessibility, and debugging unstyled pages or hydration errors. Use when scaffolding a Next.js or Vite app, setting up Tailwind v4, migrating Tailwind v3 classes, building UI components, fixing a page with no styling, or designing a distinctive web interface.
+version: "1.0.0"
 ---
 
 # Frontend Specialist Agent
@@ -29,7 +30,7 @@ Expert agent for production-grade, visually distinctive web applications.
 - **CSS-first configuration**: No `tailwind.config.js` required
 - `@theme` directive for customization (replaces config files)
 - `@import "tailwindcss"` replaces `@tailwind` directives
-- Oxide engine: 5x faster builds
+- Oxide engine: "5x faster builds" (vendor claim, not verified)
 - Backward compatible with v3 utilities (but use v4 patterns for new work)
 
 **Native CSS Features (Now Production-Ready)**
@@ -154,6 +155,8 @@ ls tailwind.config.* 2>/dev/null && echo "Tailwind v3"
 
 **Server Component (Async params required):**
 ```typescript
+import { cookies } from 'next/headers';
+
 export default async function Page({
   params
 }: {
@@ -183,12 +186,12 @@ export default function Page({
 
 **Cache Components (Explicit Caching):**
 ```typescript
+// Requires Cache Components to be enabled in next.config (see references/nextjs-patterns.md).
+// The directive applies to the whole file or function it is declared in.
 'use cache';
 
 export default async function UserCard({ userId }: { userId: string }) {
-  // This component is cached and revalidates after 60 seconds
-  // Declare at top of component
-
+  // The revalidation period comes from the cache lifetime configuration, which is not shown here.
   const user = await getUser(userId);
   return <div>{user.name}</div>;
 }
@@ -205,10 +208,11 @@ See `references/nextjs-patterns.md` for complete patterns.
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite'; // v4 support
+import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  resolve: { alias: { '@': '/src' } }
+  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } }
 });
 ```
 
@@ -269,20 +273,21 @@ See `references/creative-patterns.md` for implementations.
 
 | File | Content |
 |------|---------|
-| `nextjs-patterns.md` | Version matrix (14-16), async APIs, Cache Components, Server/Client components |
-| `tailwind-v4-migration.md` | @theme directive, config removal, class renames, Container Queries, Cascade Layers |
-| `css-features.md` | Container Queries, @scope, @layer, scroll-driven animations |
-| `vite-patterns.md` | SPA, SSR, library mode, monorepo, environment variables |
-| `component-library.md` | Architecture, compound components, CVA variants, hooks |
-| `brand-tokens.md` | Three-layer token system, Tailwind v4 integration, theming |
-| `creative-patterns.md` | Bold UI implementations, typography, color, animations |
-| `shadcn-patterns.md` | shadcn/ui setup, customization, dark mode, theming |
-| `accessibility.md` | WCAG checklist, ARIA patterns, keyboard navigation, testing |
-| `performance.md` | Core Web Vitals, images, fonts, code splitting, caching |
-| `forms-validation.md` | React Hook Form, Zod schemas, Server Actions, patterns |
-| `state-management.md` | useState, Context, Zustand, React Query, Jotai |
-| `testing-patterns.md` | Vitest, RTL, MSW, hooks testing, E2E with Playwright |
-| `debugging-guide.md` | Common errors, hydration issues, TypeScript, quick fixes |
+| `references/nextjs-patterns.md` | Version matrix (14-16), async APIs, Cache Components, Server/Client components |
+| `references/tailwind-migration.md` | Tailwind v3 ↔ v4 class renames and config changes (Container Queries and Cascade Layers are covered in SKILL.md only) |
+| `references/css-features.md` | Not bundled with this skill (Container Queries, @scope, @layer, scroll-driven animations) |
+| `references/vite-patterns.md` | SPA, SSR, library mode, monorepo, environment variables |
+| `references/component-library.md` | Architecture, compound components, CVA variants, hooks |
+| `references/brand-tokens.md` | Three-layer token system, Tailwind v4 integration, theming |
+| `references/creative-patterns.md` | Bold UI implementations, typography, color, animations |
+| `references/shadcn-patterns.md` | shadcn/ui setup, customization, dark mode, theming |
+| `references/accessibility.md` | WCAG checklist, ARIA patterns, keyboard navigation, testing |
+| `references/performance.md` | Core Web Vitals, images, fonts, code splitting, caching |
+| `references/forms-validation.md` | React Hook Form, Zod schemas, Server Actions, patterns |
+| `references/state-management.md` | useState, Context, Zustand, React Query, Jotai |
+| `references/testing-patterns.md` | Vitest, RTL, MSW, hooks testing, E2E with Playwright |
+| `references/debugging-guide.md` | Common errors, hydration issues, TypeScript, quick fixes |
+| `references/best-practices.md` | Frontend best practices (2026 edition); read when reviewing a project against general practice |
 
 ## Scripts
 

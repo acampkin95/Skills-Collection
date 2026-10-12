@@ -1,6 +1,8 @@
 ---
 name: regex-text-processing
-description: Regular expressions and text processing across all languages.
+description: "Writes, tests and optimises regular expressions and text-processing code across languages: pattern syntax, flags, lookarounds, Unicode properties, validation and extraction recipes such as email, URL, CSV and Markdown link parsing, and catastrophic-backtracking fixes. Use when writing or debugging a regex, validating or extracting text with a pattern, parsing a query string or Markdown, transforming text with regular expressions, or asking why a regex is slow."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Regular Expressions and Text Processing
@@ -128,8 +130,9 @@ https?://[^\s]+
 // BAD: Inefficient alternation
 /cat|dog|bird|fish|mouse/  // Order matters - put common patterns first
 
-// GOOD: Use atomic groups or possessive quantifiers
-/(?>[a-z]+)b/
+// GOOD: Remove the nested or redundant group (JavaScript has no atomic groups or possessive quantifiers;
+// PCRE and Python's regex module do support them)
+/[a-z]+b/
 
 // GOOD: More specific pattern
 /(ca|do|bi|fi|mo)\w+/
@@ -178,8 +181,8 @@ const pattern2 = /\p{Script=Greek}+/u;
 ```python
 import regex  # pip install regex
 
-// Named character classes
-pattern = regex.compile(r'\p{L}+')  // Letters in any script
+# Named character classes
+pattern = regex.compile(r'\p{L}+')  # Letters in any script
 pattern2 = regex.compile(r'\p{Emoji}')
 ```
 

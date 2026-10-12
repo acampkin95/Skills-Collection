@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [creative-suite](../creative-suite/SKILL.md) master router.
 name: brand-creativebuilder
 description: End-to-end brand identity builder with Pantone colour systems, SVG logos, favicons, interactive HTML mockups, brand voice guidelines. Use when brand identity, logo design, Pantone colours, SVG icon, favicon, brand voice, visual identity system.
 ---
+> Part of the [creative-suite](../SKILL.md) router.
+
 
 # Brand Creative Builder
 

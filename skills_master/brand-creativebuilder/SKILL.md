@@ -1,6 +1,7 @@
 ---
 name: brand-creativebuilder
-description: End-to-end brand identity builder with Pantone colour systems, SVG logos, favicons.
+description: Builds an end-to-end brand identity with Pantone colour systems, typography, SVG logos, favicons, and a single self-contained interactive HTML brand guide, using enforced web research gates. Use when the user asks for a brand kit, style guide, visual identity, rebrand, logo, colour palette, design tokens, brand voice or positioning, or a brand guide for a product.
+version: "1.0.0"
 ---
 
 # Brand Creative Builder
@@ -8,6 +9,8 @@ description: End-to-end brand identity builder with Pantone colour systems, SVG 
 End-to-end brand identity system builder. The primary deliverable is a **single self-contained interactive HTML brand guide** (~2500–3000 lines) with Pantone-specified colours, SVG logos, live animation demos, production code, and AI prompt libraries.
 
 **This skill enforces three research gates.** No design decisions are made from memory or assumption alone — every phase is informed by targeted web research into the product's market, audience, design landscape, and current trends.
+
+**Environment note:** the phases below name Claude.ai-style tools (`web_search`, `web_fetch`, `deep_research`, `ask_user_input`, `present_files`) and output paths under `/mnt/user-data/outputs/`. If a tool is not available in the current session, use the closest available search or fetch tool, ask the question in plain text, and state the substitution in the delivery summary. The DOCX and PDF report steps also expect `validate.py` and `soffice.py` helpers, which are not bundled with this skill.
 
 ## Reference Files
 

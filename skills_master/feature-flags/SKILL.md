@@ -1,6 +1,7 @@
 ---
 name: feature-flags
-description: Feature flag systems, for gradual rollouts, A/B testing.
+description: Designs and implements feature flag systems for gradual rollouts, A/B testing, kill switches, and percentage or targeted releases, with JSON, React context, Edge Config, and LaunchDarkly, Statsig, or GrowthBook integrations. Use when adding a feature flag, rolling out a feature to a percentage of users, running an A/B test, building a kill switch, cleaning up stale flags, or choosing a feature flag platform.
+version: "1.0.0"
 ---
 
 # Feature Flags
@@ -20,6 +21,8 @@ Feature flag management for controlled releases, A/B testing, and operational co
 
 For teams at scale, consider managed platforms:
 
+Pricing and claims in the table below are from 2025 sources and were not verified on 2026-10-12.
+
 | Platform | Best For | Pricing | Key Features |
 |----------|----------|---------|--------------|
 | **LaunchDarkly** | Enterprise DevOps teams | $10+/mo | Enterprise security, advanced targeting, integrations |
@@ -27,7 +30,7 @@ For teams at scale, consider managed platforms:
 | **GrowthBook** | Open-source or growth teams | Free (open) | A/B testing focus, experimentation, cost-effective |
 | **Flagsmith** | Small-to-medium teams | Free tier + paid | Lightweight, developer-friendly, event tracking |
 
-**2025 Trend**: 96% of high-growth companies (expected 2025+ growth) invest in feature experimentation.
+**2025 Trend (unverified survey claim)**: 96% of high-growth companies (expected 2025+ growth) invest in feature experimentation.
 
 ## Simple JSON-Based Flags (Zero Dependencies)
 
@@ -192,7 +195,7 @@ export function FeatureGate({
 ## Server-Side Middleware for Flags
 
 ```typescript
-// middleware.ts (Next.js)
+// middleware.ts (Next.js 15; in Next.js 16+ the equivalent file is proxy.ts)
 import { NextRequest, NextResponse } from "next/server";
 
 export function middleware(request: NextRequest) {
@@ -330,9 +333,12 @@ async function searchProducts(query: string) {
 ### LaunchDarkly Integration
 
 ```typescript
-import { LDClient } from "@launchdarkly/node-server-sdk";
+import * as LaunchDarkly from "@launchdarkly/node-server-sdk";
 
-const client = new LDClient(process.env.LD_SDK_KEY!);
+// init() creates the client; LDClient is the type, not a constructor.
+// Not verified against the current SDK on 2026-10-12.
+const client = LaunchDarkly.init(process.env.LD_SDK_KEY!);
+await client.waitForInitialization();
 
 export async function getLDFlag(userId: string, flagKey: string): Promise<boolean> {
   const user = { key: userId };
@@ -341,6 +347,8 @@ export async function getLDFlag(userId: string, flagKey: string): Promise<boolea
 ```
 
 ### Statsig Integration
+
+Not verified against the current Statsig SDK on 2026-10-12; check the SDK's client constructor before use.
 
 ```typescript
 import { StatsigClient, User } from "statsig-node";
@@ -354,6 +362,8 @@ export async function getStatsigFlag(userId: string, flagKey: string): Promise<b
 ```
 
 ### GrowthBook Integration
+
+Not verified against the current GrowthBook SDK on 2026-10-12; check the constructor and evaluation API before use.
 
 ```typescript
 import { GrowthBook } from "@growthbook/sdk-js";

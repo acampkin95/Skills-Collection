@@ -1,6 +1,8 @@
 ---
 name: sanity-nextjs
-description: Headless CMS integration with Sanity and Next.js. Use this skill when Sanity CMS, GROQ.
+description: "Integrates Sanity CMS with Next.js 15+: client setup, TypeGen types, GROQ queries, Live Content API previews with draft mode, image URLs with next/image, on-demand ISR revalidation with webhooks, cache tags, and Portable Text and SEO schema patterns. Use when connecting a Next.js app to Sanity, writing GROQ queries, enabling live preview or draft mode, rendering Sanity images, setting up Sanity webhooks for revalidation, or defining Sanity schemas."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Sanity CMS with Next.js 15+ Integration
@@ -131,14 +133,16 @@ const query = `*[_type == "post" && slug.current == $slug][0] {
 import { LiveQuery } from 'next-sanity/preview';
 import { sanityClient } from '@/lib/sanity.client';
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
+export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
+  // Next.js 15+: params is a Promise and must be awaited
+  const { slug } = await params;
   const query = `*[_type == "post" && slug.current == $slug][0] { ... }`;
 
   return (
     <LiveQuery
       query={query}
-      initialData={await sanityClient.fetch(query, { slug: params.slug })}
-      variables={{ slug: params.slug }}
+      initialData={await sanityClient.fetch(query, { slug })}
+      variables={{ slug }}
     >
       {(post) => (
         <article>

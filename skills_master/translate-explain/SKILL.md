@@ -2,6 +2,8 @@
 name: translate-explain
 description: Explain complex topics simply. Use when user asks "what does X mean", "can you explain", "I don't understand", "what is", "how does it work", or needs a jargon-free explanation of a technical or complex concept.
 user-invocable: true
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Translate & Explain — Complex Made Simple

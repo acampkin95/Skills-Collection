@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [pdf-generation](../pdf-generation/SKILL.md) master router.
 name: pdfkit-node
 description: Node.js PDF generation with PDFKit — chainable API for text, vector graphics, images, tables, headers, footers, fonts. Use when PDFKit, generate PDF in Node, addPage, text(), image(), vector path, doc.font, doc.pipe.
 ---
+> Part of the [pdf-generation](../SKILL.md) router.
+
 
 # PDFKit — Node.js PDF Generation Skill
 

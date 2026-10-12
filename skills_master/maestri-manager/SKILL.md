@@ -1,9 +1,9 @@
 ---
 name: maestri-manager
-description: Create connected agent terminals on the Maestri canvas, Use for team assembly, parallel delegation.
+description: Creates, names, wires and dismisses connected agent terminals on the Maestri canvas, including role presets and team assembly. Use for team assembly, recruiting a reviewer or implementer, delegating work in parallel to teammates, or connecting agents and notes to each other in Maestri.
 user-invocable: false
 version: 2.0.0
-reviewed: "2026-06-04"
+reviewed: "2026-10-12"
 ---
 
 # Maestri Team Orchestration

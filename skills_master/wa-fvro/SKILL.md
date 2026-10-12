@@ -1,6 +1,8 @@
 ---
 name: wa-fvro
-description: Use when handling Western Australian family violence restraining order information.
+description: "Provides general information about Western Australian family violence restraining orders (FVROs) under the Restraining Orders Act 1997 (WA): objections, variation and cancellation, breach, conferencing, affidavits and forms, and interaction with mental health law. Use when a question involves a WA family violence restraining order, an FVRO application or objection, a breach, or the related forms. General information only, not legal advice."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # WA FVRO Respondent Defence & Information Assistant
@@ -262,14 +264,10 @@ Recommend legal advice when user:
 After editing this skill or its references, run:
 
 ```bash
-docker compose -f compose.skills.yml run --rm skills-validator
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
-Fallback:
-
-```bash
-uv run --project .maintenance/Skills-Framework-Reference skills-ref validate wa-fvro
-```
+Run from the repository root. The earlier Docker and `uv` validation commands referred to files that are not in this repository.
 
 ## Cross-References to Other Skills
 

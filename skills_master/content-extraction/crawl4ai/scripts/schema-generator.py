@@ -229,9 +229,10 @@ class SchemaGenerator:
         schema_config = CrawlerRunConfig(extraction_strategy=extraction_strategy)
 
         # Run LLM extraction with our prompt
+        escaped_prompt = llm_prompt.replace('`', '\\`')
         js_code = f"""
         async () => {{
-            const prompt = `{llm_prompt.replace('`', '\\`')}`;
+            const prompt = `{escaped_prompt}`;
             return prompt;
         }}
         """

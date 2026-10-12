@@ -74,7 +74,7 @@ async function runEval(
 
     try {
       const response = await client.messages.create({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-5-5",
         max_tokens: 1024,
         system: systemPrompt,
         messages: [{ role: "user", content: tc.input }],
@@ -189,7 +189,7 @@ async function judgeOutput(
   criteria: string[]
 ): Promise<{ score: number; reasoning: string }> {
   const response = await client.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-5-5",
     max_tokens: 1024,
     system: `You are an evaluator. Score the given answer on a scale of 1-5 for each criterion.
 Be strict and objective. Return JSON.`,

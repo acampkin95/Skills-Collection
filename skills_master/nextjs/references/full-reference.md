@@ -21,7 +21,7 @@ export async function saveFormData(data) {
 
 **Enhanced Security** - Unguessable action IDs, dead code elimination
 
-**Turbopack as Default** - 10x faster builds in development
+**Turbopack as Default** - the development default since Next.js 15; the default for `next dev` and `next build` in Next.js 16
 
 **Partial Prerendering** - Static shell + dynamic content streaming
 
@@ -49,7 +49,7 @@ export const metadata = {
 | Starting / core patterns | `references/critical-rules.md` |
 | Configuration files | `references/config-templates.md` |
 | **Debugging / white screen** | `references/troubleshooting.md` |
-| **Tailwind v4/v5 issues** | `references/tailwind-guide.md` |
+| **Tailwind CSS issues** | `references/tailwind-guide.md` |
 | **Turbopack problems** | `references/turbopack-guide.md` |
 | Testing setup | `references/testing-guide.md` |
 | **Deployment (Docker/Vercel)** | `references/deployment-guide.md` |
@@ -153,10 +153,10 @@ function UserProfile({ user, onUpdate }) {
 Enable in `next.config.ts`:
 
 ```typescript
-const nextConfig = {
-  experimental: {
-    reactCompiler: true,
-  },
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  reactCompiler: true,
 };
 ```
 
@@ -233,18 +233,18 @@ export async function GET() {
 
 ```typescript
 // next.config.ts
-export default {
-  experimental: {
-    ppr: 'incremental', // or true for all routes
-  },
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  cacheComponents: true,
 };
+
+export default nextConfig;
 ```
 
 ```typescript
 // app/shop/page.tsx
 // Static shell, dynamic content
-export const experimental_ppr = true;
-
 export default function ShopPage() {
   return (
     <div>

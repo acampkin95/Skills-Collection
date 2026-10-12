@@ -16,7 +16,7 @@ Scrape one or more URLs. Returns clean, LLM-optimized markdown. Multiple URLs ar
 
 - You have a specific URL and want its content
 - The page is static or JS-rendered (SPA)
-- Step 2 in the [workflow escalation pattern](../firecrawl/SKILL.md): search → **scrape** → map → crawl → interact
+- Step 2 in the [workflow escalation pattern](../firecrawl-cli/SKILL.md): search → **scrape** → map → crawl → interact
 
 ## Quick start
 
@@ -64,10 +64,10 @@ firecrawl scrape "https://example.com/pricing" --query "What is the enterprise p
 
 ## See also
 
-- [firecrawl](../firecrawl/SKILL.md) — master router for Firecrawl CLI workflows
+- [firecrawl](../firecrawl-cli/SKILL.md) — master router for Firecrawl CLI workflows
 - [firecrawl-search](../firecrawl-search/SKILL.md) — find pages when you don't have a URL
-- [firecrawl-interact](../firecrawl-interact/SKILL.md) — when scrape can't get the content, use `interact` to click, fill forms, etc.
-- [firecrawl-download](../firecrawl-download/SKILL.md) — bulk download an entire site to local files
+- [firecrawl-interact](../firecrawl-interact-cli/SKILL.md) — when scrape can't get the content, use `interact` to click, fill forms, etc.
+- [firecrawl-download](../firecrawl-cli/SKILL.md) — bulk download an entire site to local files
 
 ## map — Discover URLs on a Site
 

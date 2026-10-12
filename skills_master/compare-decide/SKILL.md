@@ -1,7 +1,8 @@
 ---
 name: compare-decide
-description: Compare options, weigh trade-offs, make decisions. Use when user asks to "compare", "pros and cons", "which is better", "help me decide", "should I choose A or B", "what are the trade-offs", or needs to evaluate alternatives.
+description: Compares options, weighs trade-offs against explicit criteria, and helps the user reach a decision with a scored matrix and a recommendation. Use when the user asks to "compare", asks for "pros and cons", asks "which is better", says "help me decide", asks "should I choose A or B", asks about "the trade-offs", or needs to evaluate alternatives.
 user-invocable: true
+version: "1.0.0"
 ---
 
 # Compare & Decide — Evaluate Options, Choose Action
@@ -30,6 +31,8 @@ I — Investigate (gather information on each option)
 D — Decide (score options against criteria)
 E — Execute (commit and act)
 ```
+
+Code blocks in this skill are illustrative pseudo-code. Helpers such as `extract_decision_type`, `rate_option`, and the rating scale itself are placeholders for the agent's own judgment, informed by the user's stated priorities.
 
 ## Step 1 — Define the Decision
 
@@ -216,7 +219,7 @@ decision_patterns = {
         "rule_of_thumb": "Buy if staying >5-7 years in stable area"
     },
     "keep_vs_replace": {
-        "criteria": ["cost", " reliability", "efficiency", "maintenance_history", "sentiment"],
+        "criteria": ["cost", "reliability", "efficiency", "maintenance_history", "sentiment"],
         "key_question": "What's the repair cost vs replacement cost?",
         "rule_of_thumb": "Replace if repair >50% of replacement cost"
     },
@@ -239,11 +242,11 @@ decision_patterns = {
 traps = {
     "sunk_cost": "You've invested X, so you should continue → Wrong. Past costs don't predict future value.",
     "status_quo": "Keep the current option → Wrong. New options should be evaluated independently.",
-    "availability_bias": "S容易想起的选项更安全 → Wrong. Easy to remember ≠ best choice.",
-    "anchoring": "第一个价格锚定了你的判断 → Wrong. Evaluate independently of first impression.",
-    "confirmation_bias": "只找支持你观点的证据 → Wrong. Actively seek disconfirming evidence.",
+    "availability_bias": "The option that comes to mind most easily must be safer → Wrong. Easy to remember ≠ best choice.",
+    "anchoring": "The first price you saw anchors your judgment → Wrong. Evaluate independently of first impression.",
+    "confirmation_bias": "Only look for evidence that supports your view → Wrong. Actively seek disconfirming evidence.",
     "groupthink": "Everyone agrees → Wrong. Silence ≠ agreement. Ask for dissent.",
-    "analysis_paralysis": "永远在分析，从不决定 → Wrong. Good enough now beats perfect later."
+    "analysis_paralysis": "Always analysing, never deciding → Wrong. Good enough now beats perfect later.",
 }
 ```
 

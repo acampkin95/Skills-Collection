@@ -58,7 +58,7 @@ class MemoryStore:
     def _get_next_sequence_index(self, session_id: str) -> int:
         """Get next sequence index for session ordering."""
         results = self.episodic.query.fetch_objects(
-            where=wvc.Filter.by_property("sessionId").equal(session_id),
+            filters=wvc.Filter.by_property("sessionId").equal(session_id),
             limit=1,
             sort=wvc.Sort.by_property("sequenceIndex", ascending=False)
         )

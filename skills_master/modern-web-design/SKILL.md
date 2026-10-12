@@ -1,6 +1,8 @@
 ---
 name: modern-web-design
-description: "Use this skill when working with web design, UI components, WCAG, accessibility, ShadCN."
+description: "Guides modern web design and UI work: WCAG 2.2 accessibility, Tailwind CSS v4 setup, ShadCN/UI components, OKLCH color, fluid typography, Core Web Vitals, SEO, and View Transitions. Use when building accessible UI components, setting up a design system or theme, applying Tailwind v4 or ShadCN, checking WCAG compliance, improving Core Web Vitals or SEO, or asking for modern web design guidance."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Modern Web Design 2025
@@ -52,11 +54,11 @@ Production web design with WCAG 2.2 accessibility, Tailwind v4 CSS-first configu
 | Change | v3 | v4 |
 |--------|----|----|
 | Shadow default | `shadow-sm` | `shadow-xs` |
-| Ring default | `ring` (0px) | `ring-3` (3px) |
+| Ring default | `ring` (3px) | `ring` (1px); use `ring-3` for 3px |
 | Opacity syntax | `bg-opacity-50` | `bg-black/50` |
 | Important | `!flex` | `flex!` |
 
-See `references/tailwind-migration.md` for full changelog.
+The full changelog is not bundled with this skill; see the official upgrade guide at https://tailwindcss.com/docs/upgrade-guide (checked 2026-10-12).
 
 ## CSS Features 2025+
 
@@ -98,7 +100,7 @@ body { background: light-dark(white, #1a1a1a); }
 }
 ```
 
-See `references/css-2026-features.md` for anchor positioning, view transitions, @starting-style.
+Anchor positioning, @starting-style and other CSS 2026 features are not bundled with this skill.
 
 ## Color & Typography Patterns
 
@@ -249,10 +251,12 @@ See `references/seo.md` for detailed optimization.
 .hero { view-transition-name: hero; }
 ```
 
-**SPA Transitions (React):**
+**SPA Transitions (React):** React provides a `<ViewTransition>` component and a `startTransition` function imported from `react`. There is no `useViewTransition` hook. Confirm the React version in use exposes `<ViewTransition>`.
 ```tsx
-const { startTransition } = useViewTransition();
-startTransition(() => router.push('/page'));
+import { ViewTransition, startTransition } from "react";
+
+// Wrap the animated content in <ViewTransition>, then update inside startTransition
+startTransition(() => router.push("/page"));
 ```
 
 See `references/motion-design.md` for animation patterns.
@@ -294,11 +298,11 @@ See `references/seo.md` for structured data.
 
 | Need | File | Purpose |
 |------|------|---------|
-| All WCAG rules | `accessibility.md` | 2.2 checklist + testing |
-| ShadCN components | `shadcn.md` | Installation + patterns |
-| SEO & structured data | `seo.md` | AI overview optimization |
-| Animations | `motion-design.md` | View Transitions, keyframes |
-| Design system | `design-systems.md` | DTCG tokens, branding |
-| Tailwind v4 | `tailwind-migration.md` | v3→v4 breaking changes |
-| CSS 2026 features | `css-2026-features.md` | Anchor positioning, @starting-style |
-| 2025 trends | `2026-trends.md` | Motion, 3D, typography trends |
+| All WCAG rules | `references/accessibility.md` | 2.2 checklist + testing |
+| ShadCN components | `references/shadcn.md` | Installation + patterns |
+| SEO & structured data | `references/seo.md` | AI overview optimization |
+| Animations | `references/motion-design.md` | View Transitions, keyframes |
+| Design system | `references/design-systems.md` | DTCG tokens, branding |
+| Tailwind v4 | not bundled | v3→v4 breaking changes: see https://tailwindcss.com/docs/upgrade-guide |
+| CSS 2026 features | not bundled | Anchor positioning, @starting-style |
+| 2025 trends | `references/2026-trends.md` | Motion, 3D, typography trends |

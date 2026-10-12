@@ -259,15 +259,15 @@ class ConversationMemoryManager:
         """Create summary of messages."""
         try:
             if self.llm:
-            messages_text = "\n".join([
-                f"{m['role']}: {m['content'][:200]}"
-                for m in messages
-            ])
-            # Call LLM for summary
-            # return self.llm(f"Summarize this conversation:\n{messages_text}")
+                messages_text = "\n".join([
+                    f"{m['role']}: {m['content'][:200]}"
+                    for m in messages
+                ])
+                # Call LLM for summary
+                # return self.llm(f"Summarize this conversation:\n{messages_text}")
         
-            # Call LLM for summary
-            # return self.llm(f"Summarize this conversation:\n{messages_text}")
+                # Call LLM for summary
+                # return self.llm(f"Summarize this conversation:\n{messages_text}")
 
         except Exception as e:
             pass

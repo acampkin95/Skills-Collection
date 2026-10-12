@@ -2,6 +2,7 @@
 name: math-calculator
 description: Calculate numbers, costs, budgets, and estimates. Use when user asks to "calculate", "work out", "estimate the cost", "how much is", "what percentage", "how long will it take", or any quantitative analysis.
 user-invocable: true
+version: "1.0.0"
 ---
 
 # Math & Calculation — Quantified Answers

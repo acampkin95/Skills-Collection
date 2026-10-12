@@ -1,6 +1,8 @@
 ---
 name: typescript-advanced
-description: Advanced TypeScript patterns and type-safe abstractions.
+description: "Designs advanced TypeScript types and type-safe abstractions: generics with constraints and defaults, conditional types with infer, mapped and template literal types, branded and opaque types, type guards, discriminated unions, module augmentation, utility types, and legacy decorators. Use when writing generic utilities, building type-safe APIs or IDs, narrowing unions, extending library types, debugging complex type errors, or asking for advanced TypeScript patterns."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Advanced TypeScript Patterns
@@ -385,6 +387,8 @@ app.use((req: express.Request, res, next) => {
 ---
 
 ## Decorators
+
+The examples below use the legacy (experimental) decorator signatures, which need `"experimentalDecorators": true` in `tsconfig.json`. TypeScript 5.0 and later also support standard ECMAScript decorators, which have a different signature (`(value, context)`); check the setting and the signature before copying code. Not re-checked against the TypeScript release notes in this pass.
 
 ### Class Decorators
 

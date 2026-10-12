@@ -1,6 +1,8 @@
 ---
 name: search-implementation
-description: Search engine architecture and full-text search implementation.
+description: "Designs and implements search: choosing between Meilisearch, Algolia, Typesense, PostgreSQL full-text search and Elasticsearch, incremental and bulk indexing, relevance tuning, faceted filters, autocomplete, result pages with no-results handling, caching and search analytics. Use when adding or improving site search, choosing a search engine, building faceted search or autocomplete, tuning search ranking, or indexing database records for search."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Search Implementation Architecture
@@ -213,13 +215,14 @@ const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 export default async function SearchPage({
   searchParams,
 }: {
-  searchParams: { q?: string; category?: string; page?: string };
+  searchParams: Promise<{ q?: string; category?: string; page?: string }>;
 }) {
-  const query = searchParams.q || '';
-  const page = parseInt(searchParams.page || '1', 10);
-
+  // Next.js 15+: searchParams is a Promise and must be awaited
+  const { q, category, page: pageParam } = await searchParams;
+  const query = q || '';
+  const page = parseInt(pageParam || '1', 10);
   const results = await facetedSearch(query, {
-    category: searchParams.category ? [searchParams.category] : undefined,
+    category: category ? [category] : undefined,
   }, page);
 
   return (

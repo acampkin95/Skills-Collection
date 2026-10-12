@@ -1,6 +1,7 @@
 ---
 name: proxy-manager
-version: "1.0"
+risk: high
+version: "1.0.0"
 description: >
   Manage Webshare proxies via the Webshare API: list active proxies, download the
   proxy list, refresh rotating pools, replace broken proxies, read and update
@@ -88,4 +89,5 @@ manually in the dashboard — the API does not expose a headless purchase path.
   req/min. Cache responses locally during a session.
 - **Respect the user's plan.** Before calling refresh/replace/upgrade, confirm
   with the user — these may consume quota or trigger a charge.
+- **Confirmation required:** before any purchase (express-checkout), proxy replacement or refresh, plan or proxy config change, or IP allowlist change, state the exact action and its charge or quota impact, and get the user's explicit confirmation.
 - **Country codes are ISO 3166-1 alpha-2.** Use `ZZ` to mean "any country".

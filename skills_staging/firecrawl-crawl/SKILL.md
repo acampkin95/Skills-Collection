@@ -16,7 +16,7 @@ Bulk extract content from a website. Crawls pages following links up to a depth/
 
 - You need content from many pages on a site (e.g., all `/docs/`)
 - You want to extract an entire site section
-- Step 4 in the [workflow escalation pattern](../firecrawl/SKILL.md): search → scrape → map → **crawl** → interact
+- Step 4 in the [workflow escalation pattern](../firecrawl-cli/SKILL.md): search → scrape → map → **crawl** → interact
 
 ## Quick start
 
@@ -54,10 +54,10 @@ firecrawl crawl <job-id>
 
 ## See also
 
-- [firecrawl](../firecrawl/SKILL.md) — master router for Firecrawl CLI workflows
+- [firecrawl](../firecrawl-cli/SKILL.md) — master router for Firecrawl CLI workflows
 - [firecrawl-scrape](../firecrawl-scrape/SKILL.md) — scrape individual pages
-- [firecrawl-map](../firecrawl-map/SKILL.md) — discover URLs before deciding to crawl
-- [firecrawl-download](../firecrawl-download/SKILL.md) — download site to local files (uses map + scrape)
+- [firecrawl-map](../firecrawl-cli/SKILL.md) — discover URLs before deciding to crawl
+- [firecrawl-download](../firecrawl-cli/SKILL.md) — download site to local files (uses map + scrape)
 
 ## download — Save Site to Local Files
 

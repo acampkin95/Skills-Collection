@@ -1,6 +1,8 @@
 ---
 name: monitoring-observability
-description: Monitoring and observability, for TypeScript applications with Pino structured logging.
+description: "Sets up monitoring and observability for TypeScript and Next.js applications: structured logging with Pino, Sentry error tracking, OpenTelemetry tracing, health check endpoints, correlation IDs, and alert design. Use when adding logging, error tracking, distributed tracing, health endpoints, or alerts to an app, or when asking about Pino, Sentry, OpenTelemetry, or observability."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Monitoring & Observability Skill

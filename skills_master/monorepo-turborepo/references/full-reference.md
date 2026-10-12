@@ -89,7 +89,7 @@ packages:
 
 ```json
 {
-  "$schema": "https://turborepo.com/schema.json",
+  "$schema": "https://turborepo.dev/schema.json",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -190,7 +190,7 @@ Create `apps/web/turbo.json` to override root config for a specific package:
 
 ```json
 {
-  "$schema": "https://turborepo.com/schema.json",
+  "$schema": "https://turborepo.dev/schema.json",
   "extends": ["//"],
   "tasks": {
     "build": {
@@ -332,7 +332,7 @@ turbo run build --filter='./apps/*'
 }
 ```
 
-### Package tsconfig with References
+### Package tsconfig
 
 ```json
 {
@@ -375,8 +375,8 @@ turbo run build --concurrency=4
 # Run with summary
 turbo run build --summarize
 
-# Clean turbo cache
-turbo clean
+# Delete the local cache (Windows: rd /s /q "./.turbo/cache")
+rm -rf ./.turbo/cache
 ```
 
 ---

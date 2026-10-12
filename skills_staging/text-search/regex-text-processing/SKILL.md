@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [text-search](../text-search/SKILL.md) master router.
 name: regex-text-processing
 description: Regular expressions and text processing across all languages — PCRE, ECMAScript, Python re, .NET. Use when regex, regular expression, pattern match, text extraction, sed, awk, find/replace, lookahead, backreference, capture group.
 ---
+> Part of the [text-search](../SKILL.md) router.
+
 
 # Regular Expressions and Text Processing
 

@@ -1,6 +1,7 @@
 ---
 name: legal-matter-ops
-description: Use when managing Australian legal matter operations.
+description: Runs file operations for Australian court matters with WA court practice as the default, covering the intake-to-filing workflow, matter folder structure and versioning, chronology and affidavit templates, eDiscovery and privilege review, digital evidence admissibility, SMS and iMessage forensics, DOCX and PDF output, and internal review controls. Use when organising a legal matter, preparing a court-facing evidence bundle, running eDiscovery or privilege review, or building a versioned matter folder. Does not provide legal advice.
+version: "1.0.0"
 ---
 
 # Legal Matter Operations
@@ -30,6 +31,10 @@ Run production-grade legal file operations for Australian court matters, with WA
 | Coercive control analysis | `references/coercive-control-frameworks.md` |
 | DOCX/PDF generation | `references/docx-pdf-generation.md` |
 | Internal review controls | `references/internal-controls.md` |
+| Large document sets and dataset processing | `references/large-dataset-processing.md`; read when a matter has too much material to review manually |
+| Interpersonal and relationship-matter hardening | `references/interpersonal-hardening.md`; read when a matter involves interpersonal conflict and extra review is needed |
+| Multi-agent system design for matter operations | `references/agent-architecture.md`; read when splitting matter work across agents |
+| Example prompts for this engine | `references/example-prompts.md`; read when shaping a request to this skill |
 
 ## Source Quality Protocol
 
@@ -67,14 +72,10 @@ Every court-facing deliverable should include:
 
 ## Validation
 
-Before treating skill or reference changes as complete, run the local framework validator. Prefer the containerized path when Docker is available so validation is not dependent on host Python state:
+After changing this skill or its references, run the repository validator from the repository root (maintainers only; not needed for matter work):
 
 ```bash
-docker compose -f compose.skills.yml run --rm skills-validator
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
-If Docker is unavailable, run:
-
-```bash
-uv run --project .maintenance/Skills-Framework-Reference skills-ref validate <skill-dir>
-```
+Earlier versions of this skill pointed at a Docker compose file and a `.maintenance/` reference project; neither is present in this repository.

@@ -1,6 +1,8 @@
 ---
 name: quality-control
-description: Code quality control with linting, formatting, and testing integration.
+description: "Sets up code quality control with Biome or ESLint and Prettier for JavaScript and TypeScript, Ruff or Black for Python, pre-commit hooks, Jest, Vitest or Pytest test configuration with coverage thresholds, and CI quality gates. Use when adding linting, formatting, type checking, pre-commit hooks or test coverage to a project, or wiring quality checks into GitHub Actions."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Code Quality Control

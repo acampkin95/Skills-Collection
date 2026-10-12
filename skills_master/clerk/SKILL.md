@@ -1,11 +1,14 @@
 ---
 name: clerk
-description: Clerk v6 authentication platform, for Next.js 16+ with async auth() API, React 19 compatibility.
+description: Clerk authentication for Next.js 16 with the async auth() API used in Clerk v6, proxy.ts middleware, route protection, organisations, webhooks, and React 19 compatibility. Use when adding sign-in, sign-up, or user management with Clerk, protecting Next.js routes or server actions, reading the current user or organisation with auth(), or syncing Clerk users through webhooks.
+version: "1.0.0"
 ---
 
 # Clerk v6 — Authentication for Next.js
 
-Managed authentication and user management platform. **Clerk v6 requires `auth()` to be async** — a critical breaking change from v5.
+Managed authentication and user management platform. The examples in this skill use the **Clerk v6 async `auth()` API**; treat `await auth()` as the pattern to follow.
+
+**Version note (checked 2026-10-12):** the latest `@clerk/nextjs` on npm is 7.9.14. Its peer range is Next.js 15.2.8 or later in the 15 line, or 16.0.10 or later in the 16 line, and it needs Node 20.9.0 or newer. Clerk 7.0.0 removed `<SignedIn>`, `<SignedOut>`, and `<Protect>` in favour of `<Show when>`, removed `initialAuthState` from `useAuth` (pass `initialState` to `<ClerkProvider>`), and requires `CLERK_ENCRYPTION_KEY` when `clerkMiddleware` receives a `secretKey` at runtime. Check the changelog for the version you install. The 7.0.0 text checked did not restate the async `auth()` change.
 
 ## Quick Router
 
@@ -27,8 +30,10 @@ const { userId } = await auth()
 // ✅ clerkClient is also async
 const client = await clerkClient()
 
-// ✅ Auth protection middleware syntax
-export default auth.protect()
+// ✅ Route protection goes inside clerkMiddleware (see Middleware below)
+clerkMiddleware((auth, req) => {
+  if (isProtectedRoute(req)) auth.protect()
+})
 ```
 
 ## Installation & Setup
@@ -79,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 ```typescript
 import { auth } from '@clerk/nextjs'
+import { redirect } from 'next/navigation'
 
 export default async function DashboardPage() {
   const { userId } = await auth()
@@ -144,7 +150,9 @@ export default clerkMiddleware((auth, req) => {
 })
 ```
 
-## Machine-to-Machine Auth (v6.21+)
+## Machine-to-Machine Auth
+
+Not verified: the "v6.21+" introduction version, and the `sessionClaims.metadata.isMachine` check below, were not confirmed against Clerk's machine-token documentation. The Clerk changelog mentions M2M token support in 6.37.x and 6.39.0. Check the current M2M API before using this pattern.
 
 ```typescript
 import { auth } from '@clerk/nextjs/server'
@@ -161,6 +169,8 @@ export async function GET(req: Request) {
 ```
 
 ## Clerk Elements — Custom Auth UI
+
+Not verified against the current Clerk Elements API; confirm the import path and component names before use.
 
 Build fully custom sign-in/sign-up flows without Clerk's prebuilt components:
 
@@ -205,6 +215,8 @@ case 'organization.created':
 |------|---------|
 | `references/next-integration.md` | Next.js 16 App Router setup, middleware, route protection, Server Actions |
 | `references/auth-patterns.md` | OAuth providers, MFA, JWT customization, user metadata, webhooks |
+| `references/organizations-billing-views.md` | Organisation roles, billing, and framework SDK views; read when building multi-tenant or billing features |
+| `references/schema-patterns.md` | Database schema for syncing Clerk users and organisations; read when designing local user tables |
 
 ## Common Issues & Solutions
 

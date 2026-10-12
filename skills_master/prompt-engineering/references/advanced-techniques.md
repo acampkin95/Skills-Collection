@@ -25,7 +25,7 @@ Generate hypothetical document embeddings to improve retrieval:
 async function expandQuery(question: string) {
   // Generate hypothetical answer
   const hypothesis = await client.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-5-5",
     max_tokens: 200,
     messages: [{ role: "user", content: `Write a brief answer to: ${question}` }],
   });
@@ -55,7 +55,7 @@ const scored = candidates.map(c => ({
 For complex reasoning, use adaptive thinking:
 ```ts
 const response = await client.messages.create({
-  model: "claude-opus-4-20250514",
+  model: "claude-opus-5-5",
   max_tokens: 16000,
   thinking: {
     type: "enabled",
@@ -84,7 +84,7 @@ When approaching token limits:
 async function summarizeHistory(messages: Message[]): Promise<string> {
   // Summarize old messages, keep last 3-5 exchanges
   const response = await client.messages.create({
-    model: "claude-haiku-3-5-20241022",
+    model: "claude-haiku-5-5",
     max_tokens: 300,
     system: "Summarize this conversation in bullet points. Keep key facts, decisions.",
     messages: [{ role: "user", content: JSON.stringify(messages) }],

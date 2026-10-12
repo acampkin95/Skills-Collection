@@ -2,6 +2,8 @@
 name: search-deep
 description: Deep research and source-grounded answers. Use when the user asks for "research", "find out", "look up", "what's the latest", or needs verified factual information with sources.
 user-invocable: true
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Deep Research — Verified, Source-Grounded Answers
@@ -50,7 +52,7 @@ Query structure:
 - "site:gov.au [topic]" for Australian government
 - "site:austlii.edu.au [topic]" for Australian law
 - "site:ato.gov.au [topic]" for tax
-- "site:health.gov.au OR site.servicesaustralia.gov.au [topic]"
+- "site:health.gov.au OR site:servicesaustralia.gov.au [topic]"
 - "site:huggingface.co OR site:github.com [topic]" for tech
 ```
 

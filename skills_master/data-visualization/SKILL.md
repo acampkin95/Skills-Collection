@@ -1,6 +1,7 @@
 ---
 name: data-visualization
-description: Data Visualization
+description: Selects chart types and builds data visualizations and dashboards with Recharts and D3, covering data preparation, colour-blind-safe palettes, accessible charts, responsive and real-time layouts, and number formatting. Use when choosing a chart type, building a chart, graph, plot, or dashboard, designing KPI tiles or layouts, picking accessible chart colours, formatting numbers for charts, or implementing a chart with Recharts or D3.
+version: "1.0.0"
 ---
 
 # Data Visualization
@@ -145,9 +146,10 @@ function fillTimeSeries(
   for (let d = new Date(start); d <= end; ) {
     const key = d.toISOString().split('T')[0];
     filled.push({ date: key, value: dataMap.get(key) ?? 0 });
-    if (interval === 'day') d.setDate(d.getDate() + 1);
-    else if (interval === 'week') d.setDate(d.getDate() + 7);
-    else d.setMonth(d.getMonth() + 1);
+    // Use UTC setters so the step matches toISOString() and is not shifted by local time zones or DST
+    if (interval === 'day') d.setUTCDate(d.getUTCDate() + 1);
+    else if (interval === 'week') d.setUTCDate(d.getUTCDate() + 7);
+    else d.setUTCMonth(d.getUTCMonth() + 1);
   }
   return filled;
 }
@@ -252,8 +254,8 @@ const STATUS = {
 ```tsx
 function AccessibleChart({ data, title, description }: Props) {
   return (
-    <figure role="img" aria-label={title} aria-describedby="chart-desc">
-      <figcaption className="sr-only" id="chart-desc">{description}</figcaption>
+    <figure>
+      <figcaption className="sr-only">{description}</figcaption>
       <ResponsiveContainer width="100%" height={400}>
         <BarChart data={data} role="presentation">
           {/* chart content */}
@@ -414,20 +416,11 @@ function HighFrequencyChart() {
 
 ## Performance with Large Datasets
 
-**For detailed patterns, see `references/dashboard-layout.md`** — includes:
-- Data sampling (LTTB algorithm) for 100K+ points
-- Canvas vs SVG decision matrix
-- Web Workers for off-main-thread aggregation
-- Virtualization with @tanstack/react-virtual
-- React ChartJS and Canvas rendering techniques
+Downsample series with more than about 100K points before rendering (for example with the LTTB algorithm), and consider canvas over SVG at high point counts. Web Workers, virtualization, and Chart.js rendering techniques are **not bundled with this skill**.
 
 ## Interactive Chart Patterns
 
-**For Recharts interactive examples, see `references/recharts-patterns.md`** — includes:
-- Zoom/pan with `<Brush>` component
-- Linked/synchronized charts with state management
-- Click-through drill-down navigation
-- Tooltip and highlight patterns
+`references/recharts-patterns.md` covers Brush-based zoom and synchronized charts (`<Brush>` with a shared `syncId`). Click-through drill-down navigation and tooltip-highlight patterns are **not bundled with this skill**.
 
 ## Number Formatting
 

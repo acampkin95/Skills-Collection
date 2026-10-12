@@ -20,7 +20,7 @@ const client = new Anthropic({
 
 ```ts
 const message = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   messages: [
     { role: "user", content: "Explain quantum computing in one paragraph." }
@@ -34,7 +34,7 @@ console.log(message.content[0].text);
 
 ```ts
 const message = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   system: "You are a helpful coding assistant. Always include code examples.",
   messages: [
@@ -47,7 +47,7 @@ const message = await client.messages.create({
 
 ```ts
 const message = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   messages: [
     { role: "user", content: "What is TypeScript?" },
@@ -61,7 +61,7 @@ const message = await client.messages.create({
 
 ```ts
 const stream = client.messages.stream({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   messages: [{ role: "user", content: "Write a poem about coding." }],
 });
@@ -74,7 +74,7 @@ for await (const event of stream) {
 
 // Or use the helper
 const stream2 = client.messages.stream({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   messages: [{ role: "user", content: "Hello" }],
 });
@@ -90,7 +90,7 @@ const finalMessage = await stream2.finalMessage();
 
 ```ts
 const response = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   tools: [
     {
@@ -127,7 +127,7 @@ if (toolUse) {
   const weatherData = await fetchWeather(toolUse.input);
 
   const followUp = await client.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-5-5",
     max_tokens: 1024,
     tools: [/* same tools */],
     messages: [
@@ -153,7 +153,7 @@ if (toolUse) {
 ```ts
 // Force the model to use a specific tool
 const response = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   tool_choice: { type: "tool", name: "extract_data" },
   tools: [{ name: "extract_data", /* ... */ }],
@@ -173,7 +173,7 @@ tool_choice: { type: "auto" }
 
 ```ts
 const message = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   messages: [
     {
@@ -201,7 +201,7 @@ const message = await client.messages.create({
 
 ```ts
 const message = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   messages: [{
     role: "user",
@@ -224,7 +224,7 @@ const message = await client.messages.create({
 ```ts
 // Compare two images or analyze multiple
 const message = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   messages: [{
     role: "user",
@@ -260,7 +260,7 @@ const message = await client.messages.create({
 
 ```ts
 const response = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 16000,
   thinking: {
     type: "enabled",
@@ -292,7 +292,7 @@ for (const block of response.content) {
 ```ts
 // Streaming with extended thinking
 const stream = client.messages.stream({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 16000,
   thinking: { type: "enabled", budget_tokens: 8000 },
   messages: [{ role: "user", content: complexQuestion }],
@@ -320,7 +320,7 @@ for await (const event of stream) {
 
 ```ts
 const response = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   system: [
     {
@@ -385,7 +385,7 @@ const batch = await client.batches.create({
     {
       custom_id: "request-1",
       params: {
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-5-5",
         max_tokens: 1024,
         messages: [{ role: "user", content: "Summarize document 1..." }],
       },
@@ -393,7 +393,7 @@ const batch = await client.batches.create({
     {
       custom_id: "request-2",
       params: {
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-5-5",
         max_tokens: 1024,
         messages: [{ role: "user", content: "Summarize document 2..." }],
       },
@@ -429,9 +429,9 @@ if (result.processing_status === "ended") {
 
 | Model | Best For | Speed | Cost |
 |-------|----------|-------|------|
-| `claude-opus-4-20250514` | Complex reasoning, code generation, analysis | Slow | $$$ |
-| `claude-sonnet-4-20250514` | Balanced: good reasoning + speed | Medium | $$ |
-| `claude-haiku-3-5-20241022` | Fast responses, simple tasks, classification | Fast | $ |
+| `claude-opus-5-5` | Complex reasoning, code generation, analysis | Slow | $$$ |
+| `claude-sonnet-5-5` | Balanced: good reasoning + speed | Medium | $$ |
+| `claude-haiku-5-5` | Fast responses, simple tasks, classification | Fast | $ |
 
 ## Error Handling
 

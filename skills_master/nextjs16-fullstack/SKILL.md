@@ -1,6 +1,8 @@
 ---
 name: nextjs16-fullstack
-description: Next.js 16.0.10+ full-stack development with React 19, Tailwind CSS v4, Zustand v5, TanStack Query.
+description: "Builds full-stack Next.js 16 apps with React 19, Tailwind CSS v4, Zustand v5 and TanStack Query v5: cache components and use cache, async request APIs, Server Actions with validation, React 19 hooks, API route handlers, and file conventions. Use when building or upgrading a Next.js 16 project, adding Server Actions or forms, setting up client state with Zustand or server state with TanStack Query, wiring Tailwind v4, or asking about Next.js 16 caching, revalidation or proxy.ts."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Next.js 16 Full-Stack Development
@@ -13,6 +15,8 @@ Production-ready full-stack patterns for Next.js 16, React 19, and modern toolin
 - CVE-2025-66478 (RCE, CVSS 10.0) — fixed in 16.0.7+
 - CVE-2025-55183 (source exposure) — fixed in 16.0.10+
 - CVE-2025-67779 (DoS) — fixed in 16.0.10+
+
+*Not verified (checked 2026-10-12):* the fixed-version floors above could not be confirmed, because the Vercel bulletin (https://vercel.com/kb/bulletin/security-bulletin-cve-2025-55184-and-cve-2025-55183) was not reachable. Confirm each floor against that bulletin's patched-versions table before relying on it. The Next.js docs index lists 16.2.9 as the newest 16.x tag.
 
 Upgrade immediately: `npm install next@latest`
 
@@ -34,6 +38,8 @@ export async function getStaticData() {
 - Dynamic code executes at request time by default
 - Build on Partial Pre-Rendering foundation
 
+Enable with `cacheComponents: true` in `next.config.ts` (see the nextjs skill's PPR section; the experimental PPR flags are not used in Next.js 16).
+
 ### Turbopack Default
 
 - 2-5x faster production builds
@@ -43,10 +49,14 @@ export async function getStaticData() {
 ### New Caching APIs
 
 ```javascript
-revalidateTag('data', { cacheLife: '1h' });
-updateTag('content');
-refresh();
+import { revalidateTag, updateTag, refresh } from 'next/cache';
+
+revalidateTag('data', 'max');  // second argument is a cacheLife profile; 'max' is recommended
+updateTag('content');          // Server Actions only: expire and refresh immediately
+refresh();                     // Server Actions only: refresh the client router
 ```
+
+Source: https://github.com/vercel/next.js/blob/v16.2.9/docs/01-app/02-guides/upgrading/version-16.mdx and the `revalidateTag`, `updateTag` and `refresh` API pages in the same docs tree (checked 2026-10-12). The single-argument `revalidateTag(tag)` form is deprecated.
 
 ### DevTools MCP (New!)
 
@@ -260,6 +270,8 @@ export function useCreateUser() {
 ## API Routes
 
 ```typescript
+import { NextRequest, NextResponse } from 'next/server'
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const page = parseInt(searchParams.get('page') || '1')
@@ -314,7 +326,7 @@ export default async function Page() {
 1. **Styles not loading**: Check `import './globals.css'` in layout.tsx
 2. **Hydration errors**: Verify `'use client'` on hook/event components
 3. **Dynamic Tailwind classes purged**: Use complete static strings only
-4. **Middleware redirects**: Use middleware.ts for request-level logic
+4. **Request-level redirects**: Use `proxy.ts` for request-level logic on Next.js 16 (exports a function named `proxy`; the pre-16 `middleware.ts` name is renamed). Source: https://github.com/vercel/next.js/blob/v16.2.9/docs/01-app/02-guides/upgrading/version-16.mdx (checked 2026-10-12).
 
 ---
 

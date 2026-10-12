@@ -4,7 +4,7 @@ owui_admin.py — Reusable Open WebUI Admin API client
 
 Usage:
     export OWUI_URL="https://your-webui.example.com"
-    export OWUI_API_KEY="sk-xxxxxxxxxxxxxxxxxxxx"
+    export OWUI_API_KEY="<your-api-key>"
     from owui_admin import OpenWebUIAdmin
     admin = OpenWebUIAdmin(os.environ["OWUI_URL"], os.environ["OWUI_API_KEY"])
     print(admin.list_models())

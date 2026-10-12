@@ -1,6 +1,7 @@
 ---
 name: crawl4ai
-description: "Use this skill when working with crawl4ai, web scraping, async scraping, playwright scraping."
+description: "Scrapes web pages with the crawl4ai Python library, covering async crawling, Playwright-driven JavaScript pages, markdown generation, schema-based and LLM extraction, batch crawls, and session reuse. Use when working with crawl4ai, web scraping, async scraping, Playwright scraping, or extracting structured data from web pages."
+version: "1.0.0"
 ---
 
 # Crawl4AI - Web Scraping Toolkit
@@ -154,6 +155,29 @@ result = await crawler.arun(url, config=config)
 | Production patterns | `best-practices.md` | Security, rate limits |
 | Error recovery | `error-recovery.md` | DLQ patterns, resilience |
 
+## Additional References
+
+Read these only when the condition applies:
+
+- `references/INSTALLATION.md` — when `pip install` or `crawl4ai-setup` fails, or when setting up browsers, Docker, or GPU support.
+- `references/TROUBLESHOOTING.md` — when a crawl fails, times out, returns empty content, or is blocked.
+- `references/QUICKREF.md` — for a quick lookup of configuration options and common calls.
+- `references/SUMMARY.md` — for a one-page summary of the original reference package.
+- `references/README.md` — for the index of the original reference package (overlaps with this file).
+- `references/quality-guidelines.md` — when checking markdown fidelity or extraction accuracy.
+- `references/security-practices.md` — before crawling sites that need credentials, proxies, or sensitive data handling.
+- `references/performance/optimization-guide.md` — for an overview of crawl speed and resource tuning.
+- `references/performance/caching-strategies.md` — when configuring cache modes.
+- `references/performance/concurrent-crawling.md` — when raising concurrency for batch crawls.
+- `references/performance/memory-management.md` — when a long crawl uses too much memory.
+- `references/customization/css-customization.md` — when customizing CSS selection for extraction.
+- `references/customization/extraction-customization.md` — when building or tuning extraction schemas or strategies.
+- `references/customization/headers-customization.md` — when setting request headers.
+- `references/customization/prompt-engineering.md` — when writing LLM extraction prompts.
+- `references/customization/user-agents.md` — when choosing or rotating user agents.
+- `references/docker-compose.yml` — a Docker Compose example for running the crawl4ai service.
+- `tests/README.md` — when running the bundled tests in `tests/`.
+
 ## Quick Scripts
 
 ```bash
@@ -191,4 +215,4 @@ python scripts/knowledge-base-builder.py --seed https://docs.example.com
 
 **Session issues?** Verify `session_id` is consistent across crawls, check cookies in result.
 
-See `references/` for detailed guides on each topic.
+See the Documentation Router and Additional References above for detailed guides on each topic.

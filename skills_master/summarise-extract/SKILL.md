@@ -2,6 +2,8 @@
 name: summarise-extract
 description: Summarise long documents, extract key points, compare texts. Use when the user shares a document, PDF, article, or text and asks to "summarise", "extract key points", "what are the main points", "TL;DR", or "compare these".
 user-invocable: true
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Summarise & Extract — Document Condensation
@@ -117,7 +119,6 @@ def extract_from_document(text: str, doc_type: str) -> dict:
             "data": extract_data_results(text),
             "sources": extract_citations(text)
         }
-}
 ```
 
 ## Summary Output Formats

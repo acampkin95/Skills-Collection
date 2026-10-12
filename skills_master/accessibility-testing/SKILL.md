@@ -1,6 +1,7 @@
 ---
 name: accessibility-testing
-description: Comprehensive accessibility (a11y) testing and WCAG 2.2 compliance automation.
+description: Comprehensive accessibility (a11y) testing and WCAG 2.2 compliance automation for React and Next.js. Use when writing or running axe-core, jest-axe, or Playwright a11y tests, auditing components for WCAG compliance, checking color contrast ratios, verifying keyboard navigation, focus order, ARIA labels, or landmark structure, testing screen reader support, setting up Lighthouse CI accessibility checks, or wiring continuous accessibility testing into CI for ADA and WCAG compliance.
+version: "1.0.0"
 ---
 
 # Accessibility Testing
@@ -80,7 +81,7 @@ Verify: reading order, announcement clarity, interaction flow, live region timin
 | Logical focus order | 2.4.3 |
 | Link purpose clear | 2.4.4 |
 | `<html lang="en">` | 3.1.1 |
-| Valid HTML | 4.1.1 |
+| Valid HTML (Parsing; removed from WCAG 2.2, still checked in WCAG 2.0/2.1 audits) | 4.1.1 |
 | ARIA roles assigned | 4.1.2 |
 
 ### Level AA (Standard)

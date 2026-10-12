@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [content-extraction](../content-extraction/SKILL.md) master router.
 name: deepinfra-ocr
 description: DeepInfra vision-language model OCR for extracting text from PDFs, scanned documents, images, handwriting, tables, forms. Use when OCR, document AI, vision LLM, table extraction, scanned PDF, handwriting recognition.
 ---
+> Part of the [content-extraction](../SKILL.md) router.
+
 
 # DeepInfra OCR — Document Text Extraction
 

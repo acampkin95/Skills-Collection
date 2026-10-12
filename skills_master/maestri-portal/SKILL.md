@@ -1,7 +1,9 @@
 ---
 name: maestri-portal
-description: Automate browser portals in Maestri, — navigate pages, click elements, fill forms, take screenshots.
+description: Automates embedded browser portals on the Maestri canvas by navigating pages, reading accessibility snapshots, clicking and filling form elements, scrolling, taking screenshots and reading console logs. Use when the user wants to browse, test, fill in a form, or inspect a web page shown in a Maestri portal.
 user-invocable: false
+version: "1.0.0"
+risk: medium
 ---
 
 # Maestri Portal Browser Automation
@@ -9,6 +11,8 @@ user-invocable: false
 Portals are embedded browser nodes on the Maestri canvas. You can automate them to navigate pages, click elements, fill forms, take screenshots, and inspect the DOM — all without requiring window focus.
 
 Portal name is always required. Run `maestri list` to see connected portal names.
+
+**Confirmation required:** before submitting a form, signing in, completing a purchase, or deleting or changing data on an external site through a portal, state the exact action and get the user's explicit confirmation.
 
 ## Creating a portal
 

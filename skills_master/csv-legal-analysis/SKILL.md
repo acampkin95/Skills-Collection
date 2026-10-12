@@ -1,6 +1,7 @@
 ---
 name: csv-legal-analysis
-description: Use when analysing CSV, SMS, iMessage, email exports, database extracts, or tabular evidence.
+description: Analyses CSV, SMS, iMessage, email export, and database extract evidence for legal and eDiscovery work, with integrity hashing, profiling, keyword and privilege review, SMS forensics, WA evidence admissibility checks, and evidence-grade output. Use when analysing a CSV or tabular evidence export, reviewing SMS or iMessage data, running eDiscovery or privilege review, building a privilege log or Bates-numbered production, or preparing a chronology from message data. Does not provide legal advice.
+version: "1.0.0"
 ---
 
 # CSV Legal Analysis & eDiscovery
@@ -32,15 +33,15 @@ Systematic analysis of CSV/tabular data for legal evidence, eDiscovery, structur
 
 | Workflow | Use When | Reference File |
 |----------|----------|----------------|
-| **Ingest & Profile** | First contact with any dataset — understand what you have | `analysis-workflows.md` |
-| **Systematic Analysis** | Pattern detection, timelines, entity extraction, statistical review | `analysis-workflows.md` |
-| **eDiscovery Review** | Keyword search, responsiveness coding, privilege review, production | `ediscovery-protocols.md` |
-| **Evidence Production** | Chain of custody, hashing, Bates numbering, court-ready output | `evidence-standards.md` |
-| **SMS/iMessage Forensics** | Mobile messaging analysis, family law, DV evidence | `sms-imessage-analysis.md` |
-| **WA Evidence Law** | Admissibility assessment, WA court requirements, Evidence Act transition and business-record checks | `wa-evidence-law.md` |
-| **Large Dataset Processing** | Datasets >100K rows, DuckDB/Polars, streaming, parallel processing | `large-dataset-processing.md` |
-| **Family Law Evidence** | FCFCOA requirements, affidavit annexures, family violence patterns | `family-law-evidence.md` |
-| **Coercive Control Analysis** | Research-backed pattern detection, ANROWS frameworks, risk assessment | `coercive-control-frameworks.md` |
+| **Ingest & Profile** | First contact with any dataset — understand what you have | `references/analysis-workflows.md` |
+| **Systematic Analysis** | Pattern detection, timelines, entity extraction, statistical review | `references/analysis-workflows.md` |
+| **eDiscovery Review** | Keyword search, responsiveness coding, privilege review, production | `references/ediscovery-protocols.md` |
+| **Evidence Production** | Chain of custody, hashing, Bates numbering, court-ready output | `references/evidence-standards.md` |
+| **SMS/iMessage Forensics** | Mobile messaging analysis, family law, DV evidence | `references/sms-imessage-analysis.md` |
+| **WA Evidence Law** | Admissibility assessment, WA court requirements, Evidence Act transition and business-record checks | `references/wa-evidence-law.md` |
+| **Large Dataset Processing** | Datasets >100K rows, DuckDB/Polars, streaming, parallel processing | `references/large-dataset-processing.md` |
+| **Family Law Evidence** | FCFCOA requirements, affidavit annexures, family violence patterns | `references/family-law-evidence.md` |
+| **Coercive Control Analysis** | Research-backed pattern detection, ANROWS frameworks, risk assessment | `references/coercive-control-frameworks.md` |
 
 ---
 
@@ -51,24 +52,24 @@ Dataset received
 │
 ├─ How many rows?
 │  ├─ <100K rows → Use pandas (standard workflow)
-│  ├─ 100K–1M rows → Use DuckDB or Polars (see large-dataset-processing.md)
+│  ├─ 100K–1M rows → Use DuckDB or Polars (see references/large-dataset-processing.md)
 │  └─ >1M rows → Use DuckDB streaming + Polars lazy eval (MANDATORY)
 │
 ├─ What type of data?
-│  ├─ Email/communications → eDiscovery workflow (ediscovery-protocols.md)
-│  ├─ SMS/iMessage/WhatsApp → SMS forensics pipeline (sms-imessage-analysis.md)
-│  ├─ Financial transactions → Financial analysis (analysis-workflows.md §10, §12)
-│  ├─ Access/audit logs → Access log patterns (analysis-workflows.md §11)
-│  └─ Mixed/unknown → Profile first (analysis-workflows.md §2)
+│  ├─ Email/communications → eDiscovery workflow (references/ediscovery-protocols.md)
+│  ├─ SMS/iMessage/WhatsApp → SMS forensics pipeline (references/sms-imessage-analysis.md)
+│  ├─ Financial transactions → Financial analysis (references/analysis-workflows.md §10, §12)
+│  ├─ Access/audit logs → Access log patterns (references/analysis-workflows.md §11)
+│  └─ Mixed/unknown → Profile first (references/analysis-workflows.md §2)
 │
 ├─ What jurisdiction?
-│  ├─ WA state courts → Check Evidence Act 1906 / Evidence Act 2025 transition and applicable business-record provisions (wa-evidence-law.md)
-│  ├─ Federal Court → Evidence Act 1995, GPN-TECH (ediscovery-protocols.md §14)
-│  ├─ Family Court (FCFCOA) → Family law evidence standards (family-law-evidence.md)
+│  ├─ WA state courts → Check Evidence Act 1906 / Evidence Act 2025 transition and applicable business-record provisions (references/wa-evidence-law.md)
+│  ├─ Federal Court → Evidence Act 1995, GPN-TECH (references/ediscovery-protocols.md §14)
+│  ├─ Family Court (FCFCOA) → Family law evidence standards (references/family-law-evidence.md)
 │  └─ Multiple/unknown → Apply strictest standard
 │
 └─ Is this family law / DV matter?
-   ├─ YES → Read coercive-control-frameworks.md BEFORE analysis
+   ├─ YES → Read references/coercive-control-frameworks.md BEFORE analysis
    ├─ YES + children involved → Enable mandatory reporting flags
    └─ NO → Standard workflow
 ```
@@ -83,7 +84,7 @@ Use a project virtual environment or `uv`/`pipx` where possible. Do not install 
 
 ```python
 # ALWAYS needed
-# pip install pandas chardet hashlib
+# pip install pandas chardet   (hashlib is in the Python standard library)
 
 # For datasets >100K rows (RECOMMENDED for all legal work)
 # pip install duckdb>=0.10.0 polars>=0.20.0 pyarrow>=15.0.0
@@ -152,8 +153,8 @@ def establish_integrity(filepath):
     return record
 ```
 
-→ See `evidence-standards.md` for full chain of custody framework
-→ See `analysis-workflows.md` for CSV loading, encoding detection, profiling
+→ See `references/evidence-standards.md` for full chain of custody framework
+→ See `references/analysis-workflows.md` for CSV loading, encoding detection, profiling
 
 ---
 
@@ -186,8 +187,8 @@ def _profile_duckdb(filepath):
     return conn, row_count
 ```
 
-→ See `analysis-workflows.md` §2 for comprehensive profiling
-→ See `large-dataset-processing.md` for DuckDB/Polars profiling at scale
+→ See `references/analysis-workflows.md` §2 for comprehensive profiling
+→ See `references/large-dataset-processing.md` for DuckDB/Polars profiling at scale
 
 ---
 
@@ -196,29 +197,29 @@ def _profile_duckdb(filepath):
 Based on the data type and matter context, select the appropriate workflow from the reference files. Each reference file contains complete, production-ready code.
 
 ### For eDiscovery / Document Review:
-1. Boolean keyword search with KWIC → `ediscovery-protocols.md` §2
-2. Responsiveness coding → `ediscovery-protocols.md` §3
-3. Privilege detection → `ediscovery-protocols.md` §4
-4. TAR/predictive coding suitability and validation → `ediscovery-protocols.md` §13
-5. Production preparation → `ediscovery-protocols.md` §8
+1. Boolean keyword search with KWIC → `references/ediscovery-protocols.md` §2
+2. Responsiveness coding → `references/ediscovery-protocols.md` §3
+3. Privilege detection → `references/ediscovery-protocols.md` §4
+4. TAR/predictive coding suitability and validation → `references/ediscovery-protocols.md` §13
+5. Production preparation → `references/ediscovery-protocols.md` §8
 
 ### For SMS/Messaging Forensics:
-1. Source detection → `sms-imessage-analysis.md` §2
-2. Canonical mapping → `sms-imessage-analysis.md` §2.2
-3. Participant mapping → `sms-imessage-analysis.md` §3
-4. Classification pipeline → `sms-imessage-analysis.md` §6
-5. Thread summarisation → `sms-imessage-analysis.md` §7
+1. Source detection → `references/sms-imessage-analysis.md` §2
+2. Canonical mapping → `references/sms-imessage-analysis.md` §2.2
+3. Participant mapping → `references/sms-imessage-analysis.md` §3
+4. Classification pipeline → `references/sms-imessage-analysis.md` §6
+5. Thread summarisation → `references/sms-imessage-analysis.md` §7
 
 ### For Family Law / DV Matters:
-1. Read `coercive-control-frameworks.md` FIRST
+1. Read `references/coercive-control-frameworks.md` FIRST
 2. Apply coercive control indicator detection
 3. Enable mandatory reporting flags
-4. Follow FCFCOA affidavit annexure format → `family-law-evidence.md`
+4. Follow FCFCOA affidavit annexure format → `references/family-law-evidence.md`
 
 ### For Financial Analysis:
-1. Transaction analysis → `analysis-workflows.md` §10
-2. Benford's Law screening → `analysis-workflows.md` §12
-3. Currency normalisation → `analysis-workflows.md` §16
+1. Transaction analysis → `references/analysis-workflows.md` §10
+2. Benford's Law screening → `references/analysis-workflows.md` §12
+3. Currency normalisation → `references/analysis-workflows.md` §16
 
 ---
 
@@ -271,8 +272,8 @@ ADMISSIBILITY_CHECKLIST = {
 }
 ```
 
-→ See `wa-evidence-law.md` for full WA admissibility framework
-→ See `family-law-evidence.md` for family court specific requirements
+→ See `references/wa-evidence-law.md` for full WA admissibility framework
+→ See `references/family-law-evidence.md` for family court specific requirements
 
 ---
 
@@ -282,13 +283,13 @@ ADMISSIBILITY_CHECKLIST = {
 
 | Output | Format | Use Case | Reference |
 |--------|--------|----------|-----------|
-| **Evidence bundle** | DOCX/PDF | Court filing, affidavit annexure | `evidence-standards.md` §6, §8 |
-| **Privilege log** | CSV | Discovery production | `ediscovery-protocols.md` §4 |
-| **Production set** | DAT/OPT | Concordance/Relativity import | `ediscovery-protocols.md` §8 |
-| **Timeline** | CSV/PDF | Chronological event reconstruction | `analysis-workflows.md` §4 |
-| **Statistical report** | PDF/MD | Expert evidence, court submission | `evidence-standards.md` §8 |
-| **Coercive control report** | DOCX | Family law affidavit support | `coercive-control-frameworks.md` |
-| **Mandatory reporting flags** | JSON/CSV | Child safety screening | `family-law-evidence.md` |
+| **Evidence bundle** | DOCX/PDF | Court filing, affidavit annexure | `references/evidence-standards.md` §6, §8 |
+| **Privilege log** | CSV | Discovery production | `references/ediscovery-protocols.md` §4 |
+| **Production set** | DAT/OPT | Concordance/Relativity import | `references/ediscovery-protocols.md` §8 |
+| **Timeline** | CSV/PDF | Chronological event reconstruction | `references/analysis-workflows.md` §4 |
+| **Statistical report** | PDF/MD | Expert evidence, court submission | `references/evidence-standards.md` §8 |
+| **Coercive control report** | DOCX | Family law affidavit support | `references/coercive-control-frameworks.md` |
+| **Mandatory reporting flags** | JSON/CSV | Child safety screening | `references/family-law-evidence.md` |
 
 ### Load File Generation (Concordance DAT/OPT)
 
@@ -331,7 +332,7 @@ def generate_concordance_dat(df, output_dir, bates_prefix='PROD'):
     return dat_path
 ```
 
-→ See `ediscovery-protocols.md` for full production workflow including OPT files and Relativity format
+→ See `references/ediscovery-protocols.md` for full production workflow including OPT files and Relativity format
 
 ---
 
@@ -379,14 +380,14 @@ All detailed code, workflows, and legal standards are in the `references/` direc
 
 | File | Contents | Size |
 |------|----------|------|
-| `analysis-workflows.md` | Data loading, profiling, dedup, timelines, entity extraction, statistics, anomaly detection, Benford's Law, network analysis, document clustering, currency normalisation | Core analysis |
-| `ediscovery-protocols.md` | Keyword search, KWIC, responsiveness coding, privilege review, categorisation, custodian mapping, QC sampling, production, TAR, EDRM, load file generation, AI review guidance | eDiscovery |
-| `evidence-standards.md` | Hashing, chain of custody, metadata preservation, audit trails, working copies, production output, privilege logs, evidence-grade reports | Evidence integrity |
-| `sms-imessage-analysis.md` | Source detection, canonical mapping, participant mapping, data model, JSON schemas, classification pipeline, thread summarisation, chronology builder, family law playbook | SMS forensics |
-| `wa-evidence-law.md` | WA Evidence Act 1906 / Evidence Act 2025 transition, Evidence Act 1995 (Cth), WA court practice directions, admissibility decision tree, case law verification rules, Electronic Transactions Act 2011, ISO/IEC 27037 | WA law |
-| `large-dataset-processing.md` | DuckDB, Polars, PyArrow, streaming processing, parallel batch classification, data validation, memory-mapped files, vector similarity, efficient regex | Scale tools |
-| `family-law-evidence.md` | FCFCOA practice directions, Family Law Rules 2021, affidavit annexure standards, s69ZT-69ZX children's evidence, s138 illegally obtained evidence, mandatory reporting, Surveillance Devices Act 1998 (WA) | Family law |
-| `coercive-control-frameworks.md` | Stark framework, ANROWS technology-facilitated abuse research, DASH risk assessment, Duluth model mapping, coercive control indicators in messaging, scoring rubric, WA FVLRA 2020 | DV analysis |
+| `references/analysis-workflows.md` | Data loading, profiling, dedup, timelines, entity extraction, statistics, anomaly detection, Benford's Law, network analysis, document clustering, currency normalisation | Core analysis |
+| `references/ediscovery-protocols.md` | Keyword search, KWIC, responsiveness coding, privilege review, categorisation, custodian mapping, QC sampling, production, TAR, EDRM, load file generation, AI review guidance | eDiscovery |
+| `references/evidence-standards.md` | Hashing, chain of custody, metadata preservation, audit trails, working copies, production output, privilege logs, evidence-grade reports | Evidence integrity |
+| `references/sms-imessage-analysis.md` | Source detection, canonical mapping, participant mapping, data model, JSON schemas, classification pipeline, thread summarisation, chronology builder, family law playbook | SMS forensics |
+| `references/wa-evidence-law.md` | WA Evidence Act 1906 / Evidence Act 2025 transition, Evidence Act 1995 (Cth), WA court practice directions, admissibility decision tree, case law verification rules, Electronic Transactions Act 2011, ISO/IEC 27037 | WA law |
+| `references/large-dataset-processing.md` | DuckDB, Polars, PyArrow, streaming processing, parallel batch classification, data validation, memory-mapped files, vector similarity, efficient regex | Scale tools |
+| `references/family-law-evidence.md` | FCFCOA practice directions, Family Law Rules 2021, affidavit annexure standards, s69ZT-69ZX children's evidence, s138 illegally obtained evidence, mandatory reporting, Surveillance Devices Act 1998 (WA) | Family law |
+| `references/coercive-control-frameworks.md` | Stark framework, ANROWS technology-facilitated abuse research, DASH risk assessment, Duluth model mapping, coercive control indicators in messaging, scoring rubric, WA FVLRA 2020 | DV analysis |
 
 ## Cross-References to Other Skills
 

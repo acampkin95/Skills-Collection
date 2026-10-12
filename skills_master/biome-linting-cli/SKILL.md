@@ -1,13 +1,16 @@
 ---
 name: biome-linting-cli
-description: Biome v2.4 — ultrafast Rust-based all-in-one linter, formatter, and import sorter, for JavaScript.
+description: Biome 2.x — ultrafast Rust-based all-in-one linter, formatter, and import sorter for JavaScript and TypeScript. Use when setting up or running Biome lint and format checks from the CLI, writing or migrating biome.json configuration, replacing ESLint or Prettier with Biome, suppressing violations with biome-ignore comments, or wiring Biome into editors and CI pipelines.
 metadata:
   interface: "cli"
+version: "1.0.0"
 ---
 
-# Biome v2.4 — Unified Linting & Formatting
+# Biome 2 — Unified Linting & Formatting
 
-Biome is a fast, unified formatter and linter for JavaScript, TypeScript, JSX, TSX, JSON, CSS, and GraphQL with 451 rules and Rust-based compilation (10-100x faster than ESLint+Prettier).
+Biome is a fast, unified formatter and linter for JavaScript, TypeScript, JSX, TSX, JSON, CSS, and GraphQL with Rust-based compilation. Vendor-reported speed claims (10-100x faster than ESLint+Prettier) are not independently verified; measure in your own repository.
+
+**Version note (checked 2026-10-12):** the current stable release on the Biome GitHub releases page is `@biomejs/biome` 2.5.15 (published 30 Sep). The feature notes below were written for the 2.4 line (embedded CSS and GraphQL snippets, 15 HTML accessibility rules); 2.5-specific changes were not reviewed. Run `biome migrate --write` after upgrading and check the release notes for your version.
 
 ## Quick Reference
 
@@ -29,6 +32,8 @@ biome init                       # Create biome.json
 | vs ESLint v9 (equivalent rules) | Baseline | ~35-45% faster | ~1.5x |
 | Deep scan (11,493 files) | N/A | 657ms | — |
 
+Figures above are unverified benchmark claims; they are not reproduced in this skill.
+
 ## Installation
 
 ```bash
@@ -39,8 +44,8 @@ bun add -d @biomejs/biome
 
 ## Core Concepts
 
-- **Linter**: 451 rules across correctness, style, suspicious, security, complexity, performance, a11y
-- **Formatter**: Opinionated, Prettier-like defaults (97% compatible)
+- **Linter**: rule groups include correctness, style, suspicious, security, complexity, performance, and accessibility (the exact rule count is not verified)
+- **Formatter**: Opinionated, Prettier-like defaults (the "97% compatible" figure is unverified)
 - **Import Organiser**: Auto-sort and group imports
 - **Single Config**: `biome.json` replaces `.eslintrc` + `.prettierrc`
 - **Zero Dependencies**: Single Rust binary — no npm packages needed
@@ -77,7 +82,7 @@ bun add -d @biomejs/biome
     "indentWidth": 2,
     "lineWidth": 100
   },
-  "organizeImports": { "enabled": true }
+  "assist": { "actions": { "source": { "organizeImports": "on" } } }
 }
 ```
 
@@ -114,17 +119,19 @@ code --install-extension biomejs.biome
 # Automatic migration (handles most breaking changes)
 biome migrate --write
 
-# Key changes: include/ignore → files.includes, style rules warn by default
+# Key changes: files.include/files.ignore → files.includes, style rules warn by default
 # Verify with: git diff biome.json
 ```
 
 ## Monorepo Support
 
+Biome 2 reads the root `biome.json` and exposes the `files.includes` list (negated `!` patterns exclude paths). The `files.ignore` key used by Biome 1 is no longer in the v2 schema.
+
 ```json
 {
   "extends": ["@biomejs/biome/rules/recommended.json"],
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
-  "files": { "ignore": ["node_modules", "dist", ".next"] }
+  "files": { "includes": ["**", "!node_modules", "!dist", "!.next"] }
 }
 ```
 

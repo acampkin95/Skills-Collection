@@ -1,6 +1,8 @@
 ---
 name: monorepo-turborepo
-description: Turborepo monorepo build system and workspace orchestration.
+description: "Sets up a Turborepo monorepo with turbo.json task pipelines, caching, workspace packages for pnpm, npm or bun, shared TypeScript and ESLint configs, --filter task selection, and CI builds. Use when creating or configuring a Turborepo monorepo, defining turbo.json tasks or dependsOn order, sharing internal packages between apps, running builds only for changed packages, or debugging cache misses."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Turborepo Monorepo Skill
@@ -89,7 +91,7 @@ packages:
 
 ```json
 {
-  "$schema": "https://turborepo.com/schema.json",
+  "$schema": "https://turborepo.dev/schema.json",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -190,7 +192,7 @@ Create `apps/web/turbo.json` to override root config for a specific package:
 
 ```json
 {
-  "$schema": "https://turborepo.com/schema.json",
+  "$schema": "https://turborepo.dev/schema.json",
   "extends": ["//"],
   "tasks": {
     "build": {
@@ -332,7 +334,7 @@ turbo run build --filter='./apps/*'
 }
 ```
 
-### Package tsconfig with References
+### Package tsconfig
 
 ```json
 {
@@ -375,8 +377,8 @@ turbo run build --concurrency=4
 # Run with summary
 turbo run build --summarize
 
-# Clean turbo cache
-turbo clean
+# Delete the local cache (Windows: rd /s /q "./.turbo/cache")
+rm -rf ./.turbo/cache
 ```
 
 ---

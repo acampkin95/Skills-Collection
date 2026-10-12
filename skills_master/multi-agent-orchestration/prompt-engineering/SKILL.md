@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [multi-agent-orchestration](../multi-agent-orchestration/SKILL.md) master router.
 name: prompt-engineering
-description: Prompt engineering patterns for LLMs: zero/few-shot, chain-of-thought, ReAct, structured output, system prompts, caching, evaluation, prompt injection defense. Use when writing prompts, system message, CoT, prompt cache, jailbreak defense.
+description: "Prompt engineering patterns for LLMs: zero/few-shot, chain-of-thought, ReAct, structured output, system prompts, caching, evaluation, prompt injection defense. Use when writing prompts, system message, CoT, prompt cache, jailbreak defense."
 ---
+> Part of the [multi-agent-orchestration](../SKILL.md) router.
+
 
 # Prompt Engineering
 

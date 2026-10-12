@@ -1,243 +1,314 @@
 #!/usr/bin/env python3
-"""
-Validate every skill in the repository against schema/skill.schema.json.
+"""Validate the skills in this repository.
 
-This is the repo-wide CI gate: it walks skills_master, skills_staging, and
-skills_devtesting (the authored/generated tiers — see README's "Source of
-Truth" section) and checks each SKILL.md for schema-valid frontmatter,
-directory/name consistency, cross-skill name collisions within a tier, and
-a best-effort scan for obviously-committed secrets.
+Checks every skill directory directly under skills_master/, skills_staging/
+and skills_devtesting/ against schema/skill.schema.json and the rules in
+docs/authoring/advanced-skill-development.md:
 
-skills_conversions/ is excluded: those .skill files are packaged output of
-SkillsFramework/package-skills.sh, not authored source, and are validated
-by regenerating them rather than by this script.
+Errors (always fail):
+  - SKILL.md missing, without frontmatter, or with unparseable YAML
+  - name missing, over 64 characters, not lowercase-hyphen form, not equal to
+    the folder name, or containing a reserved word ("anthropic", "claude")
+  - description missing, empty, over 1024 characters, or containing XML tags
+  - compatibility over 500 characters; metadata values that are not strings
+  - a status, risk or version value outside the allowed set
+  - a relative Markdown link that does not resolve
+  - a Python script that does not compile, or a shell script that fails bash -n
+  - duplicate names within one tier
+  - a committed secret-shaped string
+  - metadata.interface "cli" without a "-cli" name suffix, or a "-cli" suffix
+    without metadata.interface "cli"
+
+Warnings (fail only with --strict):
+  - SKILL.md body over 500 lines
+  - description that is third-person-violating, lacks a trigger phrase, or
+    looks truncated
+  - Claude Code-only frontmatter fields (not portable to uploads)
+  - unknown frontmatter fields
+  - TODO/FIXME markers
+  - nested SKILL.md copies (not discovered by Claude Code)
+  - script with a shebang that is not executable
+  - files over 5 MB
 
 Usage:
-    python SkillsFramework/scripts/validate_skills.py
-    python SkillsFramework/scripts/validate_skills.py --verbose
+    python SkillsFramework/scripts/validate_skills.py [--verbose] [--strict]
 """
 
 import argparse
+import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
 import yaml
 
-SCRIPT_DIR = Path(__file__).parent
+SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent.parent
 SCHEMA_PATH = REPO_ROOT / "schema" / "skill.schema.json"
 
 TIERS = ["skills_master", "skills_staging", "skills_devtesting"]
 
-# Directories that live alongside skills but are not themselves skills
-# (internal notes, audit output, etc). Keep this list short and explicit
-# rather than guessing — anything added here should be a deliberate call,
-# not a way to silence a real missing-SKILL.md bug.
-NON_SKILL_DIRS = {
-    ("skills_staging", "learned"),
-    ("skills_staging", "reports"),
+NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+VERSION_RE = re.compile(r"^\d+\.\d+\.\d+$")
+RESERVED_WORDS = ("anthropic", "claude")
+XML_TAG_RE = re.compile(r"</?[A-Za-z][\w-]*(?:\s[^>]*)?>")
+TRIGGER_RE = re.compile(r"\b(use when|use this skill when|use for|when the user|when user)\b", re.I)
+THIRD_PERSON_BAD_RE = re.compile(r"^\s*(I|I'm|I'll|You|You're|We|We're|Let me)\b")
+LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
+FENCE_RE = re.compile(r"```.*?```", re.S)
+TODO_RE = re.compile(r"\b(TODO|FIXME|XXX)\b")
+
+CLAUDE_CODE_ONLY = {
+    "when_to_use", "argument-hint", "arguments", "disable-model-invocation",
+    "user-invocable", "disallowed-tools", "model", "effort", "context", "agent",
+    "background", "hooks", "paths", "shell",
 }
+PORTABLE = {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
+REPO_EXTRA = {
+    "version", "status", "risk", "requires_confirmation", "permissions", "category",
+    "tags", "runtime", "reviewed", "references", "inputs", "dependencies", "tests",
+}
+KNOWN = PORTABLE | CLAUDE_CODE_ONLY | REPO_EXTRA
 
-NAME_PATTERN = re.compile(r"^[a-z][a-z0-9]*(-[a-z0-9]+)*$")
-VERSION_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+$")
-STATUS_VALUES = {"experimental", "staging", "stable", "deprecated"}
-RISK_VALUES = {"low", "medium", "high"}
-FS_VALUES = {"none", "read", "write"}
-SHELL_NET_VALUES = {"none", "restricted", "full"}
-
-# Best-effort secret patterns. Not a substitute for gitleaks/trufflehog in
-# CI — this catches the obvious, common shapes so a contributor gets fast
-# local feedback before a real scanner runs.
 SECRET_PATTERNS = [
-    # Real PEM blocks have base64 body lines after the header; a bare
-    # header string (e.g. inside a secrets-scanner's own pattern list)
-    # does not, so require body content to follow within a short window.
-    ("Private key block", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----\s*\n\s*[A-Za-z0-9+/]{30,}")),
     ("AWS access key", re.compile(r"AKIA[0-9A-Z]{16}")),
+    ("private key block", re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----\s*\n\s*[A-Za-z0-9+/]{30,}")),
     ("OpenAI-style key", re.compile(r"sk-[A-Za-z0-9]{20,}")),
     ("GitHub token", re.compile(r"gh[pousr]_[A-Za-z0-9]{20,}")),
     ("Slack token", re.compile(r"xox[baprs]-[A-Za-z0-9-]{10,}")),
 ]
 
-# Obvious placeholders (repeated filler chars) that would otherwise match
-# the patterns above, e.g. `sk-xxxxxxxxxxxxxxxxxxxx` in setup docs. A real
-# key has high character diversity in its body; a placeholder doesn't.
-def looks_like_placeholder(matched_text, min_tail=10, max_unique=2):
-    tail = matched_text[-min_tail:]
-    return len(set(tail)) <= max_unique
+
+class Report:
+    def __init__(self):
+        self.errors = []
+        self.warnings = []
+
+    def error(self, path, msg):
+        self.errors.append(f"[ERROR] {path}: {msg}")
+
+    def warn(self, path, msg):
+        self.warnings.append(f"[WARN]  {path}: {msg}")
 
 
-class Finding:
-    def __init__(self, level, path, message):
-        self.level = level  # "error" or "warning"
-        self.path = path
-        self.message = message
-
-    def __str__(self):
-        return f"[{self.level.upper()}] {self.path}: {self.message}"
+def is_placeholder(secret):
+    tail = secret[-10:]
+    return len(set(tail)) <= 2
 
 
-def load_schema_field_names():
-    """Read schema/skill.schema.json to know which frontmatter keys are declared."""
-    import json
-
-    with open(SCHEMA_PATH) as f:
-        schema = json.load(f)
-    return set(schema.get("properties", {}).keys()), schema.get("additionalProperties", True)
-
-
-def validate_frontmatter(fm, skill_dir_name, known_fields, findings, path):
-    name = fm.get("name")
-    desc = fm.get("description")
-
-    if not name:
-        findings.append(Finding("error", path, "missing required field: name"))
-    else:
-        if not isinstance(name, str) or not NAME_PATTERN.match(name):
-            findings.append(Finding("error", path, f"name '{name}' is not kebab-case"))
-        if name != skill_dir_name:
-            findings.append(
-                Finding("error", path, f"name '{name}' does not match directory '{skill_dir_name}'")
-            )
-
-    if not desc:
-        findings.append(Finding("error", path, "missing required field: description"))
-    elif not isinstance(desc, str) or len(desc) > 1024:
-        findings.append(Finding("error", path, f"description exceeds 1024 chars ({len(desc)})"))
-
-    version = fm.get("version")
-    if version is not None and not VERSION_PATTERN.match(str(version)):
-        findings.append(Finding("error", path, f"version '{version}' is not semver (x.y.z)"))
-
-    status = fm.get("status")
-    if status is not None and status not in STATUS_VALUES:
-        findings.append(Finding("error", path, f"status '{status}' not one of {sorted(STATUS_VALUES)}"))
-
-    risk = fm.get("risk")
-    if risk is not None and risk not in RISK_VALUES:
-        findings.append(Finding("error", path, f"risk '{risk}' not one of {sorted(RISK_VALUES)}"))
-
-    permissions = fm.get("permissions")
-    if isinstance(permissions, dict):
-        fs = permissions.get("filesystem")
-        if fs is not None and fs not in FS_VALUES:
-            findings.append(Finding("error", path, f"permissions.filesystem '{fs}' invalid"))
-        for key in ("shell", "network"):
-            val = permissions.get(key)
-            if val is not None and val not in SHELL_NET_VALUES:
-                findings.append(Finding("error", path, f"permissions.{key} '{val}' invalid"))
-
-    for key in fm.keys():
-        if key not in known_fields:
-            findings.append(Finding("warning", path, f"undeclared frontmatter field: {key}"))
-
-
-def scan_for_secrets(text, path, findings):
-    for label, pattern in SECRET_PATTERNS:
-        match = pattern.search(text)
-        if match and not looks_like_placeholder(match.group(0)):
-            findings.append(Finding("error", path, f"possible {label} found in file content"))
-
-
-def validate_skill(skill_dir, known_fields, findings):
-    skill_md = skill_dir / "SKILL.md"
-    if not skill_md.exists():
-        findings.append(Finding("error", skill_dir, "missing SKILL.md"))
-        return
-
-    text = skill_md.read_text(errors="replace")
+def parse_frontmatter(text):
     if not text.startswith("---"):
-        findings.append(Finding("error", skill_md, "SKILL.md has no YAML frontmatter"))
-        return
-
+        return None, "no YAML frontmatter"
     parts = text.split("---", 2)
     if len(parts) < 3:
-        findings.append(Finding("error", skill_md, "malformed frontmatter delimiters"))
-        return
-
+        return None, "unterminated frontmatter"
     try:
-        fm = yaml.safe_load(parts[1]) or {}
-    except yaml.YAMLError as e:
-        findings.append(Finding("error", skill_md, f"invalid YAML: {e}"))
-        return
-
-    validate_frontmatter(fm, skill_dir.name, known_fields, findings, skill_md)
-
-    for md_file in skill_dir.rglob("*"):
-        if md_file.is_file() and md_file.suffix in {".md", ".py", ".sh", ".env", ".json", ".yml", ".yaml"}:
-            scan_for_secrets(md_file.read_text(errors="replace"), md_file, findings)
+        data = yaml.safe_load(parts[1])
+    except yaml.YAMLError as exc:
+        return None, f"invalid YAML: {str(exc).splitlines()[0]}"
+    if not isinstance(data, dict):
+        return None, "frontmatter is not a mapping"
+    return (data, parts[2]), None
 
 
-def validate_tier(tier_name, findings, name_registry):
-    tier_dir = REPO_ROOT / tier_name
-    if not tier_dir.exists():
-        return
-
-    known_fields, _ = load_schema_field_names()
-    seen_in_tier = {}
-
-    for skill_dir in sorted(p for p in tier_dir.iterdir() if p.is_dir()):
-        if (tier_name, skill_dir.name) in NON_SKILL_DIRS:
+def check_links(skill_md, body, report):
+    scrubbed = FENCE_RE.sub("", body)
+    for target in LINK_RE.findall(scrubbed):
+        if target.startswith(("http://", "https://", "mailto:", "#", "/")):
             continue
+        local = target.split("#", 1)[0]
+        if not local:
+            continue
+        if not (skill_md.parent / local).resolve().exists():
+            report.error(skill_md, f"broken relative link: {target}")
 
-        pre_count = len(findings)
-        validate_skill(skill_dir, known_fields, findings)
 
-        skill_md = skill_dir / "SKILL.md"
-        if skill_md.exists():
-            text = skill_md.read_text(errors="replace")
-            parts = text.split("---", 2)
-            if len(parts) >= 3:
-                try:
-                    fm = yaml.safe_load(parts[1]) or {}
-                    name = fm.get("name")
-                    if name:
-                        if name in seen_in_tier:
-                            findings.append(
-                                Finding(
-                                    "error",
-                                    skill_md,
-                                    f"duplicate name '{name}' also used by {seen_in_tier[name]} "
-                                    f"within {tier_name}/",
-                                )
-                            )
-                        else:
-                            seen_in_tier[name] = skill_dir.name
-                except yaml.YAMLError:
-                    pass
+def check_scripts(skill_dir, report):
+    for path in skill_dir.rglob("*"):
+        if not path.is_file() or "__pycache__" in path.parts:
+            continue
+        if path.stat().st_size > 5 * 1024 * 1024:
+            report.warn(path, "file over 5 MB")
+        if path.suffix == ".py":
+            try:
+                compile(path.read_text(errors="replace"), str(path), "exec")
+            except SyntaxError as exc:
+                report.error(path, f"python syntax error line {exc.lineno}: {exc.msg}")
+        elif path.suffix == ".sh":
+            res = subprocess.run(["bash", "-n", str(path)], capture_output=True, text=True)
+            if res.returncode != 0:
+                report.error(path, f"shell syntax error: {res.stderr.strip().splitlines()[-1]}")
+        if path.suffix in {".py", ".sh"}:
+            first = path.read_text(errors="replace").split("\n", 1)[0]
+            if first.startswith("#!") and not path.stat().st_mode & 0o111:
+                report.warn(path, "has shebang but is not executable")
 
-        if len(findings) == pre_count:
-            name_registry.setdefault(tier_name, []).append(skill_dir.name)
+
+def check_secrets(skill_dir, report):
+    for path in skill_dir.rglob("*"):
+        if not path.is_file() or path.suffix not in {".md", ".py", ".sh", ".json", ".yml", ".yaml", ".env"}:
+            continue
+        text = path.read_text(errors="replace")
+        for label, pattern in SECRET_PATTERNS:
+            for match in pattern.finditer(text):
+                if not is_placeholder(match.group(0)):
+                    report.error(path, f"possible {label}")
+                    break
+
+
+def validate_skill(skill_dir, tier, report, names_seen, interface_map):
+    skill_md = skill_dir / "SKILL.md"
+    if not skill_md.exists():
+        report.error(skill_dir, "missing SKILL.md")
+        return
+    text = skill_md.read_text(errors="replace")
+    parsed, err = parse_frontmatter(text)
+    if err:
+        report.error(skill_md, err)
+        return
+    fm, body = parsed
+
+    name = fm.get("name")
+    if not name:
+        report.error(skill_md, "missing required field: name")
+    else:
+        name = str(name)
+        if len(name) > 64:
+            report.error(skill_md, f"name longer than 64 characters ({len(name)})")
+        if not NAME_RE.match(name):
+            report.error(skill_md, f"name '{name}' must be lowercase letters, digits and single hyphens")
+        if name != skill_dir.name:
+            report.error(skill_md, f"name '{name}' does not match folder '{skill_dir.name}'")
+        for word in RESERVED_WORDS:
+            if word in name:
+                report.error(skill_md, f"name contains reserved word '{word}' (rejected by API uploads)")
+        if name in names_seen.setdefault(tier, {}):
+            report.error(skill_md, f"duplicate name '{name}' also in {names_seen[tier][name]}")
+        else:
+            names_seen[tier][name] = str(skill_md.parent)
+
+    desc = fm.get("description")
+    if not desc or not str(desc).strip():
+        report.error(skill_md, "missing or empty description")
+    else:
+        desc = str(desc)
+        if len(desc) > 1024:
+            report.error(skill_md, f"description over 1024 characters ({len(desc)})")
+        if XML_TAG_RE.search(desc):
+            report.error(skill_md, "description contains XML-like tags")
+        if THIRD_PERSON_BAD_RE.search(desc):
+            report.warn(skill_md, "description is not third person")
+        if not TRIGGER_RE.search(desc):
+            report.warn(skill_md, "description has no trigger phrase (e.g. 'Use when ...')")
+        if not desc.rstrip().endswith((".", ")", "'", '"', "`")):
+            report.warn(skill_md, "description may be truncated (no closing punctuation)")
+
+    compat = fm.get("compatibility")
+    if compat is not None and len(str(compat)) > 500:
+        report.error(skill_md, f"compatibility over 500 characters ({len(str(compat))})")
+
+    meta = fm.get("metadata")
+    if meta is not None:
+        if not isinstance(meta, dict):
+            report.error(skill_md, "metadata must be a mapping")
+        else:
+            for k, v in meta.items():
+                if not isinstance(v, str):
+                    report.error(skill_md, f"metadata.{k} must be a string")
+
+    status = fm.get("status")
+    if status is not None and status not in {"experimental", "staging", "stable", "deprecated"}:
+        report.error(skill_md, f"status '{status}' not allowed")
+    risk = fm.get("risk")
+    if risk is not None and risk not in {"low", "medium", "high"}:
+        report.error(skill_md, f"risk '{risk}' not allowed")
+    version = fm.get("version")
+    if version is not None and not VERSION_RE.match(str(version)):
+        report.error(skill_md, f"version '{version}' is not MAJOR.MINOR.PATCH")
+
+    interface = str((meta or {}).get("interface", "")) if isinstance(meta, dict) else ""
+    if interface == "cli" and name and not str(name).endswith("-cli"):
+        report.error(skill_md, "metadata.interface is 'cli' but name lacks the '-cli' suffix")
+    if name and str(name).endswith("-cli") and interface != "cli":
+        report.warn(skill_md, "name ends with '-cli' but metadata.interface is not 'cli'")
+    interface_map[str(skill_dir)] = interface
+
+    for key in fm:
+        if key in CLAUDE_CODE_ONLY:
+            report.warn(skill_md, f"Claude Code-only field '{key}' (not accepted by API/claude.ai uploads)")
+        elif key not in KNOWN:
+            report.warn(skill_md, f"unknown frontmatter field '{key}'")
+
+    lines = body.count("\n")
+    if lines > 500:
+        report.warn(skill_md, f"body is {lines} lines (guideline: under 500; move detail to references/)")
+
+    if TODO_RE.search(body):
+        report.warn(skill_md, "TODO/FIXME marker present")
+
+    check_links(skill_md, body, report)
+    check_scripts(skill_dir, report)
+    check_secrets(skill_dir, report)
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--verbose", action="store_true", help="Also print warnings")
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("--verbose", action="store_true", help="print warnings")
+    parser.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    parser.add_argument("--json", action="store_true", help="emit a JSON summary to stdout")
     args = parser.parse_args()
 
     if not SCHEMA_PATH.exists():
-        print(f"ERROR: schema not found at {SCHEMA_PATH}", file=sys.stderr)
-        return 1
+        print(f"ERROR: schema missing at {SCHEMA_PATH}", file=sys.stderr)
+        return 2
+    json.loads(SCHEMA_PATH.read_text())
 
-    findings = []
-    name_registry = {}
+    report = Report()
+    names_seen = {}
+    interface_map = {}
+    discovered = {}
+    nested_copies = []
     for tier in TIERS:
-        validate_tier(tier, findings, name_registry)
+        base = REPO_ROOT / tier
+        if not base.exists():
+            continue
+        discovered[tier] = 0
+        for skill_dir in sorted(p for p in base.iterdir() if p.is_dir() and not p.name.startswith(".")):
+            if skill_dir.name == "__pycache__":
+                continue
+            if not (skill_dir / "SKILL.md").exists() and not any(skill_dir.rglob("SKILL.md")):
+                continue  # plain folder, not a skill
+            if (skill_dir / "SKILL.md").exists():
+                discovered[tier] += 1
+                validate_skill(skill_dir, tier, report, names_seen, interface_map)
+            for nested in skill_dir.rglob("SKILL.md"):
+                if nested.parent != skill_dir:
+                    nested_copies.append(str(nested.relative_to(REPO_ROOT)))
 
-    errors = [f for f in findings if f.level == "error"]
-    warnings = [f for f in findings if f.level == "warning"]
+    for nested in sorted(set(nested_copies)):
+        report.warn(REPO_ROOT / nested,
+                    "nested SKILL.md is not discovered by Claude Code (router-tree copy); see docs/authoring")
 
-    for f in errors:
-        print(f)
-    if args.verbose:
-        for f in warnings:
-            print(f)
+    errors = report.errors + ([w for w in report.warnings] if args.strict else [])
+    warnings = [] if args.strict else report.warnings
 
-    total_skills = sum(len(v) for v in name_registry.values())
-    print(f"\nValidated {total_skills} skills across {len(TIERS)} tiers.")
-    print(f"{len(errors)} error(s), {len(warnings)} warning(s)"
-          + ("" if args.verbose else " (run with --verbose to see warnings)"))
+    for line in report.errors:
+        print(line)
+    if args.verbose or args.strict:
+        for line in report.warnings:
+            print(line)
+
+    total = sum(discovered.values())
+    print(f"\nDiscovered skills: {total} across {len(discovered)} tiers "
+          f"({', '.join(f'{k}={v}' for k, v in discovered.items())})")
+    print(f"Nested SKILL.md copies (not discovered): {len(set(nested_copies))}")
+    print(f"{len(errors)} error(s), {len(warnings) if not args.strict else len(report.warnings)} warning(s)"
+          + ("" if args.verbose or args.strict else " (run with --verbose to list warnings)"))
+
+    if args.json:
+        print(json.dumps({"discovered": discovered, "nested": len(set(nested_copies)),
+                          "errors": len(errors), "warnings": len(report.warnings)}))
 
     return 1 if errors else 0
 

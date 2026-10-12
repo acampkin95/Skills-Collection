@@ -35,4 +35,4 @@ Use this skill for application integration, not live CLI research.
 
 ## See also
 
-- [firecrawl](../firecrawl/SKILL.md) — master router for Firecrawl CLI workflows
+- [firecrawl](../firecrawl-cli/SKILL.md) — master router for Firecrawl CLI workflows

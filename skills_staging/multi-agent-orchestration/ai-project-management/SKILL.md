@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [multi-agent-orchestration](../multi-agent-orchestration/SKILL.md) master router.
 name: ai-project-management
 description: Autonomous agent orchestration for AI-augmented development. Use when multi-agent coordination, task decomposition, checkpointing, burndown charts, workflow orchestration, autonomous coding sessions.
 ---
+> Part of the [multi-agent-orchestration](../SKILL.md) router.
+
 
 # AI Project Management Skill
 

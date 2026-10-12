@@ -26,8 +26,10 @@ EOF
    ```bash
    python SkillsFramework/scripts/validate_skills.py --verbose
    ```
-3. Move it to `skills_staging/` for review, then promote it to
-   `skills_master/` with `SkillsFramework/scripts/promote-skill-production.py`.
+3. Score its discovery with `evaluating-agent-skills-cli` (labelled prompts, precision and recall)
+   and record at least one execution case.
+4. Move it to `skills_staging/` for review, then promote it to `skills_master/`
+   with `SkillsFramework/scripts/promote-skill-production.py`.
 
 ## Skill metadata requirements
 
@@ -82,3 +84,20 @@ python SkillsFramework/scripts/generate-skill-index.py --format markdown --outpu
 Use GitHub Issues for bugs and skill requests. Do not include real
 credentials, private infrastructure details, or personal data in an issue —
 see [SECURITY.md](SECURITY.md).
+
+## Naming and interface conventions
+
+- A skill's `name` equals its folder name, uses lowercase letters, digits and single hyphens (64 characters at most), and does not contain the reserved words `anthropic` or `claude`. Uploads to the API and claude.ai reject those words.
+- CLI-focused skills end their name with `-cli` and set `metadata.interface: "cli"`. The validator enforces both together.
+- Do not commit a second copy of a skill inside another skill's folder. Claude Code does not discover nested `SKILL.md` files, and copies drift. Link to the top-level skill instead.
+- Keep `SKILL.md` under 500 lines. Move detail into `references/` and link each file from `SKILL.md` with a condition.
+
+## Promotion evidence
+
+Promoting a skill to `skills_master/` requires:
+
+- a clean run of `validate_skills.py` for the skill's directory;
+- recorded discovery results (positive, paraphrased, ambiguous and negative prompts) from `evaluating-agent-skills-cli`;
+- at least one execution case with its outcome recorded.
+
+The authoring rules are in `docs/authoring/advanced-skill-development.md`.

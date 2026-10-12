@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [ci-cd-deployment](../ci-cd-deployment/SKILL.md) master router.
 name: github-actions-ci
 description: GitHub Actions CI/CD pipeline authoring — workflows, jobs, steps, matrix builds, secrets, reusable actions, runners, caching, and deployment. Use when GitHub Actions, workflow YAML, .github/workflows, CI/CD, matrix strategy, reusable workflow, action pinning, OIDC, deployment job, self-hosted runner, artifact upload.
 ---
+> Part of the [ci-cd-deployment](../SKILL.md) router.
+
 
 # GitHub Actions CI/CD Skill
 

@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [cloud-infrastructure](../cloud-infrastructure/SKILL.md) master router.
 name: ovhcloud-dedicated
 description: OVHcloud dedicated server remote administration via API — server lifecycle, IPMI/KVM console, network config, firewall, OS reinstall, boot modes, monitoring, bandwidth, IP management, reverse DNS, hardware RAID, intervention history. Use when OVHcloud, OVH API, OVH IPMI, OVH KVM, OVH server reboot, OVH rescue mode, OVH firewall, OVH reverse DNS.
 ---
+> Part of the [cloud-infrastructure](../SKILL.md) router.
+
 
 # OVHcloud Dedicated Server Management Skill
 

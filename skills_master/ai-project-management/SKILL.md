@@ -1,6 +1,7 @@
 ---
 name: ai-project-management
-description: Multi-agent orchestration with task decomposition, checkpointing, and progress tracking.
+description: Coordinates multi-agent AI software projects with task decomposition, checkpointing, session management, progress tracking, YAML workflow definitions, quality gates, and cost estimation. Use when splitting a large feature into agent subtasks, coordinating autonomous coding agents, saving and resuming long-running agent work, tracking milestones or burndown, or estimating AI project token costs.
+version: "1.0.0"
 ---
 
 ## Overview
@@ -35,68 +36,69 @@ This skill provides comprehensive capabilities for managing AI-driven developmen
 
 ## Usage Examples
 
+The bundled scripts use hyphenated filenames (for example `scripts/agent-coordinator.py`), which Python cannot import directly. Load them with `importlib.util` or copy them to underscore module names (`agent_coordinator.py`) before importing. Each script also has a CLI entry point (`python3 scripts/<name>.py --help`).
+
 ### Starting a Multi-Agent Project
 
 ```python
-from scripts.agent_coordinator import AgentCoordinator
-from scripts.task_decomposer import TaskDecomposer
-from scripts.checkpoint_manager import CheckpointManager
+from agent_coordinator import AgentCoordinator
+from task_decomposer import TaskDecomposer
+from checkpoint_manager import CheckpointManager
 
-# Initialize components
 coordinator = AgentCoordinator()
 decomposer = TaskDecomposer()
-checkpoint_manager = CheckpointManager()
+checkpoints = CheckpointManager()
 
-# Decompose a complex task
-task = "Build a full-stack e-commerce application"
-subtasks = decomposer.decompose(task)
+# Decompose a complex task into subtasks with dependencies
+result = decomposer.decompose("Build a full-stack e-commerce application")
 
-# Create agents for each major component
-for subtask in subtasks:
-    agent = coordinator.create_agent(
+# Create one agent per subtask
+for subtask in result.subtasks:
+    coordinator.create_agent(
         name=subtask.name,
-        capabilities=subtask.required_skills,
-        priority=subtask.priority
+        capabilities=subtask.required_capabilities,
     )
 
-# Start coordinated work
-coordinator.start_all_agents()
+# Save a checkpoint at a natural pause point
+checkpoints.create_checkpoint(
+    name="decomposition-complete",
+    checkpoint_type="task",
+    state={"task_id": result.task_id, "subtask_count": len(result.subtasks)},
+)
 ```
 
 ### Managing Development Sessions
 
 ```python
-from scripts.session_manager import SessionManager
-from scripts.progress_tracker import ProgressTracker
+from session_manager import SessionManager
+from progress_tracker import ProgressTracker, MilestoneStatus
 
-session_mgr = SessionManager()
+sessions = SessionManager()
 progress = ProgressTracker()
 
-# Create a new session
-session_id = session_mgr.create_session(
-    project_name="my-project",
-    context={"goals": ["feature-a", "feature-b"]}
+session = sessions.create_session(
+    name="feature-a-sprint",
+    project="my-project",
+    goals=["feature-a", "feature-b"],
 )
 
-# Track progress
-progress.update_milestone("feature-a", status="completed")
+milestone = progress.create_milestone(name="feature-a", description="Feature A ready for review")
+progress.update_milestone(milestone.id, status=MilestoneStatus.COMPLETED)
 status = progress.get_project_status()
 ```
 
 ### Setting Up Quality Gates
 
 ```python
-from scripts.quality_gate import QualityGate
-from scripts.cost_estimator import CostEstimator
+from cost_estimator import CostEstimator
+from quality_gate import QualityGate, GateType
 
-gate = CostEstimator()
-gate.set_budget(max_tokens=1000000, max_cost=50.00)
+estimator = CostEstimator()
+estimator.set_budget(max_tokens=1_000_000, max_cost=50.00)
 
-# Run quality checks
+gate = QualityGate()
 results = gate.run_checks(
-    min_test_coverage=80,
-    require_security_scan=True,
-    max_complexity=10
+    gate_types=[GateType.TEST_COVERAGE, GateType.SECURITY, GateType.COMPLEXITY],
 )
 ```
 

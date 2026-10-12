@@ -83,7 +83,7 @@ If `firecrawl` is not found after installation:
 
 ## See also
 
-- [firecrawl](../firecrawl/SKILL.md) — master router for Firecrawl CLI workflows
+- [firecrawl](../firecrawl-cli/SKILL.md) — master router for Firecrawl CLI workflows
 
 ## Security: Handling Fetched Content
 

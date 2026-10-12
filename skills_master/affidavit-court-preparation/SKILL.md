@@ -1,6 +1,7 @@
 ---
 name: affidavit-court-preparation
-description: Use when preparing Australian court affidavits, chronologies, disclosure packs, annexures.
+description: Organises evidence and drafts restrained, source-backed Australian court preparation materials, including affidavits, witness statements, chronologies, disclosure schedules, annexure and exhibit lists, hearing notes, and print-ready court bundles. Use when preparing a court affidavit, building a chronology from messages or notes, indexing evidence for an annexure, or getting ready for a hearing. Does not provide legal advice.
+version: "1.0.0"
 ---
 
 # Affidavit & Court Preparation

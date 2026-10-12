@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [content-extraction](../content-extraction/SKILL.md) master router.
 name: tapestry
 description: Content extraction and actionable implementation planning from any source. Use when tapestry, content extraction, action planning, YouTube to implementation, PDF analysis, research to roadmap.
 ---
+> Part of the [content-extraction](../SKILL.md) router.
+
 
 # Tapestry - Content Extraction and Action Planning
 

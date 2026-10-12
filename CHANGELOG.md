@@ -6,6 +6,20 @@
 
 ---
 
+## [Unreleased]
+
+### Changed
+- Renamed CLI-focused skills to end in `-cli` (for example `ripgrep` -> `ripgrep-cli`, `claude-code` -> `configuring-coding-agent-cli`). Names that contained the reserved word `claude` were replaced because API uploads reject it. Update any `/<old-name>` invocations and links.
+- Repaired frontmatter in 47 router-tree skills where a `## Parent router` block had been inserted inside the YAML header, making it unparseable.
+- Fixed broken relative links and two skill scripts that did not compile.
+- Rewrote the validator to check discovery-visible names, reserved words, description limits, relative links, script syntax, and nested copies. It now runs in `--strict` mode as well.
+- Added `docs/authoring/advanced-skill-development.md` and `schema/skill.schema.json` updates.
+- Removed a stray `__pycache__` directory and stale `Scripts/` path references from the README.
+
+### Added (devtesting, experimental)
+- `skill-validation-cli`, `evaluating-agent-skills-cli` (with `scripts/score_triggers.py`), `integrating-agent-skills-api`, `authoring-portable-skills`.
+
+
 ## [2026-06-11] Skills consolidation & format fixes — firecrawl merged, broken refs resolved
 
 **Status:** ✅ Complete

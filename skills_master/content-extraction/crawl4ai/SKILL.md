@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [content-extraction](../content-extraction/SKILL.md) master router.
 name: crawl4ai
 description: Web scraping with crawl4ai — async scraping, JS rendering, LLM extraction, Playwright integration, anti-bot handling. Use when crawl4ai, async crawler, deep crawl, web scraping, headless browser scraping.
 ---
+> Part of the [content-extraction](../SKILL.md) router.
+
 
 # Crawl4AI - Web Scraping Toolkit
 

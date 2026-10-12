@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [code-quality](../code-quality/SKILL.md) master router.
 name: quality-control
 description: Code quality control workflow — linting, formatting, testing integration, quality gates. Use when QA workflow, pre-commit hooks, CI quality gate, linter orchestration, coverage thresholds.
 ---
+> Part of the [code-quality](../SKILL.md) router.
+
 
 # Code Quality Control
 

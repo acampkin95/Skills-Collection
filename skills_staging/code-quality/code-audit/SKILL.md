@@ -1,11 +1,10 @@
 ---
 
-## Parent router
-
-This skill is a leaf of the [code-quality](../code-quality/SKILL.md) master router.
 name: code-audit
 description: Comprehensive security audits, vulnerability scanning (OWASP Top 10, CVEs, secrets), and code quality assessment for production deployments. Use when security review, pen test prep, dependency audit, secrets scan.
 ---
+> Part of the [code-quality](../SKILL.md) router.
+
 
 <essential_principles>
 ## How Code Auditing Works

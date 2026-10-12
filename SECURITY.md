@@ -20,8 +20,8 @@ vulnerability") rather than a public issue.
 ## Never commit
 
 - Real API keys, tokens, SSH keys, or certificates — including in example
-  code. Use obvious placeholders (`sk-xxxxxxxxxxxxxxxxxxxx`,
-  `<your-api-key>`), never a redacted-but-real-shaped value.
+  code. Use obvious placeholders (`<your-api-key>`,
+  `<token>`), never a redacted-but-real-shaped value.
 - Real hostnames, IP addresses, Tailscale/WireGuard configuration, or
   Proxmox/OVH API tokens belonging to actual infrastructure.
 - Docker socket paths or credentials that would grant host-level access.

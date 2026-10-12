@@ -29,7 +29,7 @@ reviewed: "2026-06-04"
 ```bash
 # Required env vars — set once, reference everywhere
 export OWUI_URL="https://your-webui.example.com"   # no trailing slash
-export OWUI_API_KEY="sk-xxxxxxxxxxxxxxxxxxxx"        # Admin API key preferred
+export OWUI_API_KEY="<your-api-key>"        # Admin API key preferred
 ```
 
 **Enable API keys** (first-time setup): Admin Panel → Settings → General → Enable API Keys.  

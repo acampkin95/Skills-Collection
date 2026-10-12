@@ -1,6 +1,7 @@
 ---
 name: deepinfra-ocr
-description: DeepInfra vision-language model OCR, for extracting text from PDFs, scanned documents, images.
+description: Extracts text from PDFs, scanned documents, images, handwritten notes, tables, and forms with DeepInfra vision-language model OCR (olmOCR-2 and related models), including batch processing and PDF-to-Markdown conversion. Use when extracting text from a PDF or scanned document, running OCR on images, converting a PDF to Markdown, or batch-processing a folder of scans with DeepInfra.
+version: "1.0.0"
 ---
 
 # DeepInfra OCR — Document Text Extraction
@@ -28,8 +29,8 @@ text = ocr_url("https://example.com/image.png")
 
 **CLI tools:**
 ```bash
-python scripts/ocr_batch.py ./scans/ -o results.json
-python scripts/pdf_to_markdown.py report.pdf -o report.md --structured --toc
+python ocr_batch.py ./scans/ -o results.json
+python pdf_to_markdown.py report.pdf -o report.md --structured --toc
 ```
 
 ## Configuration
@@ -215,16 +216,16 @@ table_md = ocr_with_prompt(
 
 ```bash
 # Basic conversion
-python scripts/pdf_to_markdown.py document.pdf -o document.md
+python pdf_to_markdown.py document.pdf -o document.md
 
 # With auto-detected headings and table of contents
-python scripts/pdf_to_markdown.py document.pdf -o document.md --structured --toc
+python pdf_to_markdown.py document.pdf -o document.md --structured --toc
 
 # Batch convert folder
-python scripts/pdf_to_markdown.py ./pdfs/ -o ./markdown/
+python pdf_to_markdown.py ./pdfs/ -o ./markdown/
 
 # High quality (slower, 300 DPI)
-python scripts/pdf_to_markdown.py scan.pdf -o scan.md --dpi 300
+python pdf_to_markdown.py scan.pdf -o scan.md --dpi 300
 ```
 
 ## Image Optimization Before OCR
@@ -278,3 +279,8 @@ def optimize_image_for_ocr(image_path: str, output_path: str, dpi: int = 200):
 5. **Structured output**: Use custom prompts for JSON/table extraction
 6. **Image optimization**: Increase DPI, convert to grayscale, normalize contrast before sending
 7. **Batch processing**: Group similar documents together, process with concurrency limits
+
+## Additional References
+
+- `references/ocr-patterns.md` — batch processing, table extraction, and structured output patterns; read when building a batch pipeline or extracting tables or JSON from scans.
+- `API_REFERENCE.md` — request and response details for the DeepInfra API; read when a request fails or when changing model parameters.

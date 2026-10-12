@@ -1,7 +1,8 @@
 ---
 name: code-explain
-description: Explain code, debug errors, write tests. Use when user pastes code, asks what code does, wants to understand an error, or needs help fixing broken code.
+description: Explains pasted code step by step, diagnoses error messages, suggests fixes for broken code, and writes unit tests. Use when the user pastes code and asks what it does, wants to understand or fix an error, asks to "debug this" or "fix this bug", asks how a library or pattern works, or asks for a test to be written for a function.
 user-invocable: true
+version: "1.0.0"
 ---
 
 # Code Explanation & Debugging
@@ -17,6 +18,8 @@ Use this skill when the user pastes code, asks what code does, encounters an err
 - "Write a test for this"
 - "Explain this error"
 - General programming help
+
+Code blocks in this skill are illustrative pseudo-code. Helpers such as `infer_purpose`, `extract_cause`, and `get_fix_example` are placeholders for the agent's own analysis.
 
 ## Code Explanation Framework
 
@@ -242,7 +245,7 @@ anti_patterns = {
         "bare_except": "except: → except Exception as e:",
         "mutable_default": "def f(x=[]): → def f(x=None): x=x or []",
         "shadowing": "Don't use same name for outer/inner variable",
-        "string_concat": "'str' + var → f'str{{var}}' or str.format()"
+        "string_concat": "'str' + var → f'str{var}' or str.format()"
     },
     "typescript": {
         "any_type": "Avoid : any — use specific types or unknown",

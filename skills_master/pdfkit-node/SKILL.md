@@ -1,6 +1,8 @@
 ---
 name: pdfkit-node
-description: PDFKit Node.js PDF generation with text, vector graphics, images, tables, and annotations.
+description: "Generates PDF documents from Node.js or browser JavaScript with PDFKit: multi-page text layout, fonts, images, vector graphics, tables, page numbers, headers and footers, links and annotations, and invoice or report templates. Use when creating a PDF with PDFKit or pdfkit, generating an invoice, receipt or report as PDF from JavaScript or TypeScript, adding a table or image to a PDF in Node.js, or adding annotations or page numbers to a generated PDF."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # PDFKit — Node.js PDF Generation Skill
@@ -342,8 +344,8 @@ When generating court documents, evidence bundles, or legal reports, use with:
 | Related Skill | Use when |
 |---------------|----------|
 | `legal-matter-ops` | Generating print-ready court bundles, evidence reports |
-| `csv-legal-analysis-v2` | Generating statistical analysis reports, evidence-grade PDFs |
+| `csv-legal-analysis` | Generating statistical analysis reports, evidence-grade PDFs |
 | `affidavit-court-preparation` | Generating affidavit bundles, annexure indexes, hearing prep documents |
-| `srl-case-file-manager-wa` | Generating dashboard reports, evidence indexes as PDF |
+| `case-file-manager-wa` | Generating dashboard reports, evidence indexes as PDF |
 | `wa-law-general` | Generating general legal information documents |
 | `reportlab-python` | Python alternative for the same PDF generation tasks |

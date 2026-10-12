@@ -1,8 +1,9 @@
 ---
 name: docker-compose-cli
-description: Docker Compose orchestration.
+description: Docker and Docker Compose orchestration, covering Dockerfile layer ordering and multi-stage builds, compose service definitions, health checks, networks, volumes, profiles, Compose Watch, and common debugging commands. Use when writing or fixing a Dockerfile or docker-compose.yml, adding health checks or depends_on conditions, choosing volumes or networks, using profiles or docker compose watch, or debugging a container that will not start.
 metadata:
   interface: "cli"
+version: "1.0.0"
 ---
 
 # Docker & Docker Compose Skill
@@ -85,7 +86,9 @@ Dockerfile*
 
 Without `.dockerignore`, `COPY . .` sends everything (including `node_modules`, `.git`) to the daemon.
 
-## Docker Compose v3.8 - v5 Essentials
+## Docker Compose Essentials (Compose v5 CLI)
+
+**Version note (checked 2026-10-12):** Compose v5 is the current line. A third-party release tracker lists v5.6.0 (2026-10-02) as the latest, but the GitHub releases page was not reachable from the review environment, so confirm the current version at https://github.com/docker/compose/releases. The examples use the Compose file format without a top-level `version:` key.
 
 ### Service Definition
 
@@ -268,7 +271,7 @@ deploy:
       memory: 256M
 ```
 
-## Compose Watch (2025+)
+## Compose Watch
 
 ```yaml
 services:
@@ -313,7 +316,7 @@ services:
 ```
 
 ```bash
-docker compose up                       # Unprofiied services only
+docker compose up                       # Services without a profile only
 docker compose --profile debug up       # + debug services
 docker compose --profile debug --profile monitoring up  # Both
 ```

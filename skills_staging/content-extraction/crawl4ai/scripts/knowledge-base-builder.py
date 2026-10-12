@@ -742,7 +742,7 @@ async def interactive_mode() -> None:
             print(f"    {r['snippet'][:100]}...")
 
 
-def main() -> None:
+async def main() -> None:
     """CLI entry point for knowledge base builder with multiple operation modes.
 
     Orchestrates knowledge base construction from seed URLs, file lists, or sitemaps,

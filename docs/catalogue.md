@@ -2,7 +2,7 @@
 
 # Skills Repository Index
 
-**Generated:** 2026-10-12 16:02:19
+**Generated:** 2026-10-12 16:03:52
 **Total Skills:** 227
 
 ---
@@ -35,14 +35,14 @@
 | `cloud-api-management-cli` | Manages Cloudflare DNS, firewall, cache, and SSL settings… | 19 | 🔧 scripts |
 | `cloud-infrastructure` | Routes cloud infrastructure requests for Cloudflare DNS and… | 22 | — |
 | `code-audit` | Runs comprehensive security audits, vulnerability scanning… | 11 | 🔧 scripts |
-| `code-explain` | Explain code, debug errors, write tests. Use when user… | 1 | — |
+| `code-explain` | Explains pasted code step by step, diagnoses error… | 1 | — |
 | `code-quality` | Routes code quality requests to Biome linting, SonarScanner… | 32 | — |
-| `compare-decide` | Compare options, weigh trade-offs, make decisions. Use when… | 1 | — |
-| `compliance-gdpr-privacy` | GDPR, CCPA/CPRA, and ePrivacy compliance implementation… | 5 | — |
-| `configuring-coding-agent-cli` | Claude Code CLI configuration, MCP server setup, and… | 10 | 🔧 scripts |
+| `compare-decide` | Compares options, weighs trade-offs against explicit… | 1 | — |
+| `compliance-gdpr-privacy` | Implements GDPR, CCPA/CPRA, and ePrivacy compliance… | 5 | — |
+| `configuring-coding-agent-cli` | Configures the Claude Code CLI, including settings.json… | 10 | 🔧 scripts |
 | `content-extraction` | Routes content extraction requests to crawl4ai for web… | 105 | — |
 | `crawl4ai` | Scrapes web pages with the crawl4ai Python library… | 88 | 📚 examples 🔧 scripts |
-| `creative-strategy` | 2025 brand strategy, creative direction, and marketing… | 16 | — |
+| `creative-strategy` | Develops brand strategy, creative direction, campaign… | 16 | — |
 | `creative-suite` | Routes brand identity and creative strategy requests to… | 26 | — |
 | `crewai-setup` | CrewAI multi-agent framework setup, configuration, and… | 1 | — |
 | `csv-legal-analysis` | Use when analysing CSV, SMS, iMessage, email exports… | 10 | — |
@@ -87,13 +87,13 @@
 | `prompt-engineering` | Prompt Engineering | 7 | — |
 | `proxmox-admin` | Proxmox VE administration, — VM/LXC lifecycle, snapshots… | 10 | 🔧 scripts |
 | `proxy-manager` | Manage Webshare proxies via the Webshare API: list active… | 4 | 🔧 scripts |
-| `pwa-offline-first` | Progressive Web App and offline-first development with… | 5 | — |
+| `pwa-offline-first` | Builds Progressive Web Apps and offline-first features with… | 5 | — |
 | `python-fastapi` | Builds and structures type-safe async Python web APIs with… | 6 | — |
 | `quality-control` | Code quality control with linting, formatting, and testing… | 14 | 🔧 scripts |
-| `realtime-websockets` | Real-time communication with WebSockets and Server-Sent… | 5 | — |
-| `regex-text-processing` | Regular expressions and text processing across all… | 4 | — |
-| `relationship-analysis` | Use when analysing relationship communication patterns from… | 13 | 🔧 scripts |
-| `reportlab-python` | ReportLab Python PDF generation with Canvas drawing and… | 3 | — |
+| `realtime-websockets` | Designs live data synchronisation between a client and… | 5 | — |
+| `regex-text-processing` | Writes, tests and optimises regular expressions and… | 4 | — |
+| `relationship-analysis` | Analyses communication patterns in SMS, iMessage and chat… | 13 | 🔧 scripts |
+| `reportlab-python` | Generates PDF documents in Python with ReportLab: Platypus… | 3 | — |
 | `ripgrep-cli` | Fastest recursive text search tool. | 3 | — |
 | `sanity-nextjs` | Headless CMS integration with Sanity and Next.js. Use this… | 15 | 🔧 scripts |
 | `search-deep` | Deep research and source-grounded answers. Use when the… | 1 | — |

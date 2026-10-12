@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-12T16:02:19.143086",
+  "generated": "2026-10-12T16:03:51.867316",
   "total_skills": 227,
   "summary": {
     "production": 103,
@@ -263,12 +263,12 @@
       {
         "name": "code-explain",
         "display_name": "code-explain",
-        "description": "Explain code, debug errors, write tests. Use when user pastes code, asks what code does, wants to understand an error, or needs help fixing broken code.",
+        "description": "Explains pasted code step by step, diagnoses error messages, suggests fixes for broken code, and writes unit tests. Use when the user pastes code and asks what it does, wants to understand or fix an error, asks to \"debug this\" or \"fix this bug\", asks how a library or pattern works, or asks for a test to be written for a function.",
         "status": "production",
         "path": "skills_master/code-explain",
         "files": 1,
         "subdirs": [],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false
@@ -294,12 +294,12 @@
       {
         "name": "compare-decide",
         "display_name": "compare-decide",
-        "description": "Compare options, weigh trade-offs, make decisions. Use when user asks to \"compare\", \"pros and cons\", \"which is better\", \"help me decide\", \"should I choose A or B\", \"what are the trade-offs\", or needs to evaluate alternatives.",
+        "description": "Compares options, weighs trade-offs against explicit criteria, and helps the user reach a decision with a scored matrix and a recommendation. Use when the user asks to \"compare\", asks for \"pros and cons\", asks \"which is better\", says \"help me decide\", asks \"should I choose A or B\", asks about \"the trade-offs\", or needs to evaluate alternatives.",
         "status": "production",
         "path": "skills_master/compare-decide",
         "files": 1,
         "subdirs": [],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false
@@ -307,14 +307,14 @@
       {
         "name": "compliance-gdpr-privacy",
         "display_name": "compliance-gdpr-privacy",
-        "description": "GDPR, CCPA/CPRA, and ePrivacy compliance implementation with consent management and data protection.",
+        "description": "Implements GDPR, CCPA/CPRA, and ePrivacy compliance, including consent management and cookie banners, data subject access, export, and deletion flows, breach notification, audit logging, and vendor data processing agreements. Use when adding a consent banner, handling a data subject access or deletion request, building privacy controls, designing audit logs, reviewing a breach response, or checking privacy-by-design requirements.",
         "status": "production",
         "path": "skills_master/compliance-gdpr-privacy",
         "files": 5,
         "subdirs": [
           "references"
         ],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false
@@ -322,7 +322,7 @@
       {
         "name": "configuring-coding-agent-cli",
         "display_name": "configuring-coding-agent-cli",
-        "description": "Claude Code CLI configuration, MCP server setup, and multi-agent orchestration (OMC) automation.",
+        "description": "Configures the Claude Code CLI, including settings.json, permissions, hooks, MCP server setup, plugins, subagents, and multi-agent orchestration (OMC) automation. Use when editing Claude Code settings files, adding or troubleshooting MCP servers, setting permission rules or hooks, choosing a model or provider endpoint, setting up subagents or plugins, or resetting a broken Claude Code configuration.",
         "status": "production",
         "path": "skills_master/configuring-coding-agent-cli",
         "files": 10,
@@ -374,7 +374,7 @@
       {
         "name": "creative-strategy",
         "display_name": "creative-strategy",
-        "description": "2025 brand strategy, creative direction, and marketing campaigns with community-first positioning.",
+        "description": "Develops brand strategy, creative direction, campaign briefs, brand voice, and community-first marketing for an audience, including inclusive marketing guidance. Use when planning a brand strategy or campaign brief, writing brand voice or messaging guidelines, setting creative direction, planning influencer or community marketing, or shaping maker or textile marketing.",
         "status": "production",
         "path": "skills_master/creative-strategy",
         "files": 16,
@@ -383,7 +383,7 @@
           "assets",
           "workflows"
         ],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false
@@ -1064,14 +1064,14 @@
       {
         "name": "pwa-offline-first",
         "display_name": "pwa-offline-first",
-        "description": "Progressive Web App and offline-first development with service workers.",
+        "description": "Builds Progressive Web Apps and offline-first features with service workers: install and activate lifecycle, precaching, Cache First, Network First and stale-while-revalidate strategies, web app manifest, install prompts, IndexedDB offline queues, background sync, and iOS Safari limits. Use when making a web app work offline, writing or debugging a service worker, adding an install prompt or manifest, queuing writes while offline, or checking PWA support on iOS.",
         "status": "production",
         "path": "skills_master/pwa-offline-first",
         "files": 5,
         "subdirs": [
           "references"
         ],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false
@@ -1111,14 +1111,14 @@
       {
         "name": "realtime-websockets",
         "display_name": "realtime-websockets",
-        "description": "Real-time communication with WebSockets and Server-Sent Events.",
+        "description": "Designs live data synchronisation between a client and server using WebSockets, Server-Sent Events (SSE) and HTTP polling, including reconnection with backoff, heartbeats, authentication, presence, Socket.IO and horizontal scaling. Use when building live updates, chat, notifications, live dashboards or collaboration features, choosing between WebSocket, SSE and polling, or fixing a dropped or reconnecting real-time connection.",
         "status": "production",
         "path": "skills_master/realtime-websockets",
         "files": 5,
         "subdirs": [
           "references"
         ],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false
@@ -1126,14 +1126,14 @@
       {
         "name": "regex-text-processing",
         "display_name": "regex-text-processing",
-        "description": "Regular expressions and text processing across all languages.",
+        "description": "Writes, tests and optimises regular expressions and text-processing code across languages: pattern syntax, flags, lookarounds, Unicode properties, validation and extraction recipes such as email, URL, CSV and Markdown link parsing, and catastrophic-backtracking fixes. Use when writing or debugging a regex, validating or extracting text with a pattern, parsing a query string or Markdown, transforming text with regular expressions, or asking why a regex is slow.",
         "status": "production",
         "path": "skills_master/regex-text-processing",
         "files": 4,
         "subdirs": [
           "references"
         ],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false
@@ -1141,7 +1141,7 @@
       {
         "name": "relationship-analysis",
         "display_name": "relationship-analysis",
-        "description": "Use when analysing relationship communication patterns from SMS, iMessage, chat exports.",
+        "description": "Analyses communication patterns in SMS, iMessage and chat exports by loading messages into SQLite and computing frequency, response-time and sentiment metrics, then writing pattern reports that keep message IDs and caveats. Use when analysing message exports or chat histories, measuring response times or message frequency, tracking sentiment trends over time, or preparing a communication-pattern summary. Reports observed behaviour, not diagnosis or legal conclusions.",
         "status": "production",
         "path": "skills_master/relationship-analysis",
         "files": 13,
@@ -1149,7 +1149,7 @@
           "references",
           "scripts"
         ],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": true
@@ -1157,14 +1157,14 @@
       {
         "name": "reportlab-python",
         "display_name": "reportlab-python",
-        "description": "ReportLab Python PDF generation with Canvas drawing and Platypus document layout.",
+        "description": "Generates PDF documents in Python with ReportLab: Platypus flowing layouts with paragraphs, styled tables, images, headers and footers, and page templates, plus low-level Canvas drawing for precise positioning. Use when creating a PDF from Python code, building a report, invoice or letter as PDF with ReportLab, styling a table or header in a generated PDF, choosing between Canvas and Platypus, or registering a TrueType font for a PDF.",
         "status": "production",
         "path": "skills_master/reportlab-python",
         "files": 3,
         "subdirs": [
           "references"
         ],
-        "last_modified": "2026-09-22",
+        "last_modified": "2026-10-12",
         "has_examples": false,
         "has_reference": false,
         "has_scripts": false

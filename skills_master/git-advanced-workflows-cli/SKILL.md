@@ -1,8 +1,9 @@
 ---
 name: git-advanced-workflows-cli
-description: Advanced Git workflows with Conventional Commits, semantic versioning.
+description: Guides advanced Git workflows, including Conventional Commits, semantic version bumps, Keep a Changelog entries, interactive rebase and squash, cherry-picks and backports, stash, worktrees, bisect, and reflog recovery. Use when writing commit messages in Conventional Commits format, deciding a semantic version bump, drafting a changelog, squashing or reordering commits, backporting a fix, finding a regression with git bisect, or recovering lost commits.
 metadata:
   interface: "cli"
+version: "1.0.0"
 ---
 
 # Git Advanced Workflows
@@ -276,7 +277,7 @@ git bisect run npm test
 # With custom script
 git bisect run bash -c 'node -e "require(\"./src\").validate()" && echo PASS'
 
-# Exit codes: 0 = good, 1-124 = bad, 125 = skip
+# Exit codes: 0 = good, 125 = skip, 1-127 (except 125) = bad, 128 or higher = abort
 git bisect run ./test-regression.sh
 ```
 

@@ -4,7 +4,7 @@
 
 ```ts
 const response = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   system: `Extract the following information as JSON. 
 Return ONLY valid JSON matching this schema:
@@ -62,7 +62,7 @@ const extractionTool = {
 };
 
 const response = await client.messages.create({
-  model: "claude-sonnet-4-20250514",
+  model: "claude-sonnet-5-5",
   max_tokens: 1024,
   tool_choice: { type: "tool", name: "save_extraction" },
   tools: [extractionTool],
@@ -101,7 +101,7 @@ type Extraction = z.infer<typeof ExtractionSchema>;
 
 async function extractProducts(text: string): Promise<Extraction> {
   const response = await client.messages.create({
-    model: "claude-sonnet-4-20250514",
+    model: "claude-sonnet-5-5",
     max_tokens: 1024,
     system: `Extract products as JSON matching: ${JSON.stringify(ExtractionSchema.shape)}
 Return ONLY valid JSON.`,
@@ -129,7 +129,7 @@ async function extractWithRetry<T>(
       : "Extract as JSON. Return ONLY valid JSON.";
 
     const response = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
+      model: "claude-sonnet-5-5",
       max_tokens: 1024,
       system: systemPrompt,
       messages: [{ role: "user", content: prompt }],
@@ -163,7 +163,7 @@ import { z } from "zod";
 
 // Generate structured object
 const { object } = await generateObject({
-  model: anthropic("claude-sonnet-4-20250514"),
+  model: anthropic("claude-sonnet-5-5"),
   schema: z.object({
     recipe: z.object({
       name: z.string(),
@@ -184,7 +184,7 @@ console.log(object.recipe.ingredients);
 
 // Stream structured object (partial results)
 const { partialObjectStream } = streamObject({
-  model: anthropic("claude-sonnet-4-20250514"),
+  model: anthropic("claude-sonnet-5-5"),
   schema: z.object({
     notifications: z.array(
       z.object({
@@ -211,7 +211,7 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
 const { object } = await generateObject({
-  model: anthropic("claude-sonnet-4-20250514"),
+  model: anthropic("claude-sonnet-5-5"),
   output: "enum",
   enum: ["positive", "negative", "neutral"],
   prompt: `Classify sentiment: "${userInput}"`,
@@ -228,7 +228,7 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 
 const { text, toolResults } = await generateText({
-  model: anthropic("claude-sonnet-4-20250514"),
+  model: anthropic("claude-sonnet-5-5"),
   tools: {
     weather: tool({
       description: "Get the weather for a location",
@@ -256,7 +256,7 @@ function createStructuredExtractor<T>(schema: z.ZodSchema<T>) {
       const jsonSchema = zodToJsonSchema.default(schema);
 
       const response = await client.messages.create({
-        model: "claude-sonnet-4-20250514",
+        model: "claude-sonnet-5-5",
         max_tokens: 2048,
         tool_choice: { type: "tool", name: "output" },
         tools: [{

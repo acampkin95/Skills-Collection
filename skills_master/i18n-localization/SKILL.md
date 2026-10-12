@@ -1,6 +1,7 @@
 ---
 name: i18n-localization
-description: Use this skill when i18n, internationalization, localization, next-intl, translations, locale.
+description: Implements internationalization and localization in Next.js App Router apps with next-intl, covering locale routing, translated messages, ICU plurals and selects, locale-aware date, number, and currency formatting, right-to-left languages, and language switchers. Use when adding i18n or localization, setting up next-intl, translating messages or namespaces, handling plurals or RTL languages, formatting dates or currency per locale, or building a language switcher.
+version: "1.0.0"
 ---
 
 # Internationalization & Localization with next-intl v4
@@ -53,7 +54,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale,
-    messages: (await import(`../../messages/${locale}.json`)).default
+    messages: (await import(`../messages/${locale}.json`)).default
   };
 });
 ```
@@ -76,8 +77,10 @@ export const { Link, redirect, usePathname, useRouter } =
 
 ### 5. Middleware
 
+Next.js 16 and later use `proxy.ts` for this file instead of `middleware.ts`.
+
 ```ts
-// middleware.ts
+// middleware.ts (proxy.ts in Next.js 16+)
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
@@ -276,6 +279,7 @@ Client Components use the synchronous `useTranslations` hook.
 ```tsx
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 export function Counter() {
@@ -376,7 +380,7 @@ import { useRouter, usePathname } from '@/i18n/routing';
 
 const localeLabels: Record<string, string> = {
   en: 'English',
-  fr: 'Francais',
+  fr: 'Français',
   de: 'Deutsch',
   ar: 'العربية',
   ja: '日本語'

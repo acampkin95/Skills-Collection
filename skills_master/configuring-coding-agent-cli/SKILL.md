@@ -1,9 +1,15 @@
 ---
 name: configuring-coding-agent-cli
-description: Claude Code CLI configuration, MCP server setup, and multi-agent orchestration (OMC) automation.
+description: Configures the Claude Code CLI, including settings.json, permissions, hooks, MCP server setup, plugins, subagents, and multi-agent orchestration (OMC) automation. Use when editing Claude Code settings files, adding or troubleshooting MCP servers, setting permission rules or hooks, choosing a model or provider endpoint, setting up subagents or plugins, or resetting a broken Claude Code configuration.
 metadata:
   interface: "cli"
+risk: medium
+version: "1.0.0"
 ---
+
+**Version note:** Claude Code changes often. The command names, settings keys, and feature notes below were not re-verified against current Claude Code documentation on 2026-10-12. Check `claude --help` and the settings reference before relying on a specific key. Read `references/2026-updates.md` for changes in 2026.
+
+**Confirmation required:** the reset commands under Troubleshooting delete Claude Code settings, memory, and project configuration. Back up the files first and get explicit user confirmation before running them.
 
 # Claude Code Development Knowledge
 
@@ -26,8 +32,8 @@ metadata:
 | Alias | Description |
 |-------|-------------|
 | `default` | Recommended model based on account type |
-| `sonnet` | Latest Sonnet 4.5 for daily coding |
-| `opus` | Opus 4.5 for complex reasoning |
+| `sonnet` | Latest Sonnet model for daily coding |
+| `opus` | Latest Opus model for complex reasoning |
 | `haiku` | Fast/efficient for simple tasks |
 | `sonnet[1m]` | Sonnet with 1M token context |
 | `opusplan` | Opus for planning, Sonnet for execution |
@@ -46,19 +52,19 @@ claude mcp add --transport stdio <n> -- <cmd>  # Add local server
 claude mcp remove <n>               # Remove server
 /mcp                                   # Check status/authenticate
 
-# Checkpointing (NEW in 2025)
+# Checkpointing
 /rewind                                # Rewind to previous state
 /compact                               # Reduce context size
 claude doctor                          # Check installation health
 /status                                # Current model and account info
 /config                                # Open settings interface
 
-# Agent features (NEW in 2025)
+# Agent features
 /agents                                # List available subagents
 /subagent <name>                       # Delegate to a subagent
 ```
 
-## 2025 New Features
+## Recent Features (not re-verified 2026-10-12)
 
 ### Checkpointing System
 
@@ -83,12 +89,16 @@ Use this for confident delegation of complex refactoring tasks.
 
 Create specialized AI agents for parallel work:
 
-**Configuration (`~/.claude/agents/reviewer.yaml`):**
-```yaml
+**Configuration (`~/.claude/agents/code-reviewer.md`, Markdown with YAML frontmatter):**
+```markdown
+---
 name: code-reviewer
 description: Reviews code for security, performance, and maintainability
 model: sonnet
 color: purple
+---
+
+Review the changed code for security issues, performance problems, and maintainability.
 ```
 
 **Usage:**
@@ -112,7 +122,7 @@ claude mcp add filesystem  # Add file system access
 claude mcp remove <name>   # Remove a server
 ```
 
-**Popular MCP servers for 2025:**
+**Popular MCP servers (examples; check current availability):**
 - `github` - Repository and PR management
 - `filesystem` - Local file operations
 - `memory` - Cross-session context
@@ -205,8 +215,15 @@ rm -rf ~/.config/configuring-coding-agent-cli/auth.json
 claude  # Re-authenticate
 ```
 
-**Reset all configuration:**
+**Reset all configuration (destructive; back up first and confirm with the user):**
 ```bash
+# Back up everything first
+cp ~/.claude.json ~/claude-backup.json 2>/dev/null
+cp -r ~/.claude ~/claude-backup-dir 2>/dev/null
+cp -r .claude .claude-backup 2>/dev/null
+cp .mcp.json .mcp.json.bak 2>/dev/null
+
+# Then, only after confirmation:
 rm ~/.claude.json
 rm -rf ~/.claude/
 rm -rf .claude/
@@ -288,12 +305,14 @@ Configure pre/post actions for tool executions in settings.json:
 ```json
 {
   "hooks": {
-    "PreToolUse": {
-      "Bash": "echo 'Running command...'"
-    },
-    "PostToolUse": {
-      "Edit": "npm run format"
-    },
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{ "type": "command", "command": "echo 'Running command...'" }]
+    }],
+    "PostToolUse": [{
+      "matcher": "Edit",
+      "hooks": [{ "type": "command", "command": "npm run format" }]
+    }],
     "SessionStart": [{
       "matcher": "startup",
       "hooks": [{

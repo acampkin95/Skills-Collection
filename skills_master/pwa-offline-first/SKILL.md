@@ -1,6 +1,8 @@
 ---
 name: pwa-offline-first
-description: Progressive Web App and offline-first development with service workers.
+description: "Builds Progressive Web Apps and offline-first features with service workers: install and activate lifecycle, precaching, Cache First, Network First and stale-while-revalidate strategies, web app manifest, install prompts, IndexedDB offline queues, background sync, and iOS Safari limits. Use when making a web app work offline, writing or debugging a service worker, adding an install prompt or manifest, queuing writes while offline, or checking PWA support on iOS."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # PWA & Offline-First Development
@@ -282,11 +284,12 @@ async function queueAction(action) {
   });
 }
 
-// Process queue when back online
+// Process queue when back online.
+// Do not await fetch() inside one IndexedDB transaction: IndexedDB commits an
+// idle transaction, so later store calls would fail. Use short transactions instead.
 async function processQueue() {
   const db = await dbPromise;
-  const tx = db.transaction('sync-queue', 'readwrite');
-  const items = await tx.store.getAll();
+  const items = await db.getAll('sync-queue');
 
   for (const item of items) {
     try {
@@ -295,11 +298,10 @@ async function processQueue() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(item.action.body),
       });
-      await tx.store.delete(item.id);
+      await db.delete('sync-queue', item.id);
     } catch {
       if (item.retries < 5) {
-        item.retries++;
-        await tx.store.put(item);
+        await db.put('sync-queue', { ...item, retries: item.retries + 1 });
       }
     }
   }
@@ -310,8 +312,10 @@ async function processQueue() {
 
 ```javascript
 // main.js — Register sync
+// Assumes an IndexedDB object store 'pending-actions' with keyPath 'id' is created in
+// openDB's upgrade() (in addition to the stores above), and `import { openDB } from 'idb'`.
 async function saveDataOffline(data) {
-  await idb.put('pending-actions', { data, timestamp: Date.now() });
+  await idb.put('pending-actions', { id: crypto.randomUUID(), data, timestamp: Date.now() });
   const registration = await navigator.serviceWorker.ready;
   await registration.sync.register('sync-pending-data');
 }
@@ -323,6 +327,7 @@ self.addEventListener('sync', (event) => {
   }
 });
 
+// sw.js — same `idb` helper and 'pending-actions' store as above
 async function syncPendingData() {
   const pendingItems = await idb.getAll('pending-actions');
   for (const item of pendingItems) {

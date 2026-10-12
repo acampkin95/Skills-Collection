@@ -1,6 +1,7 @@
 ---
 name: creative-strategy
-description: 2025 brand strategy, creative direction, and marketing campaigns with community-first positioning.
+description: Develops brand strategy, creative direction, campaign briefs, brand voice, and community-first marketing for an audience, including inclusive marketing guidance. Use when planning a brand strategy or campaign brief, writing brand voice or messaging guidelines, setting creative direction, planning influencer or community marketing, or shaping maker or textile marketing.
+version: "1.0.0"
 ---
 
 <essential_principles>
@@ -9,6 +10,8 @@ description: 2025 brand strategy, creative direction, and marketing campaigns wi
 Every brand is a living story. Build brands that resonate authentically with communities, celebrate diversity, and create genuine connection through bold visual identity and human-centred language.
 
 ## 2025 Creative Strategy Trends
+
+Trend statistics below are from 2025 sources and were not re-verified on 2026-10-12. Treat them as directional.
 
 ### Strategic Branding Shifts
 
@@ -55,7 +58,7 @@ Every brand is a living story. Build brands that resonate authentically with com
 
 **Tools for 2025:**
 - **Canva Magic Studio** - Rapid prototyping, asset generation
-- **Adobe FireFly** - Brand assets, UI optimization
+- **Adobe Firefly** - Brand assets, UI optimization
 - **AI-enhanced design systems** - Automated token management
 
 **AI Role**: Enhance designer creativity, not replace it
@@ -104,10 +107,10 @@ What type of creative strategy work would you like to do?
 |----------|----------|
 | 1, "brand", "identity", "guidelines", "logo", "visual identity" | `workflows/brand-identity.md` |
 | 2, "campaign", "strategy", "marketing", "brief", "creative direction" | `workflows/campaign-strategy.md` |
-| 3, "copy", "copywriting", "content", "voice", "messaging" | `workflows/copywriting.md` |
-| 4, "visual", "design", "colour", "typography", "svg", "graphics" | `workflows/visual-design.md` |
-| 5, "influencer", "creator", "ugc", "community", "partnerships" | `workflows/influencer-strategy.md` |
-| 6, "textile", "maker", "craft", "hobbyist", "handmade" | `workflows/textile-marketing.md` |
+| 3, "copy", "copywriting", "content", "voice", "messaging" | Not bundled as a workflow; use `references/copywriting-guidelines.md` and `references/brand-voice-framework.md` |
+| 4, "visual", "design", "colour", "typography", "svg", "graphics" | Not bundled as a workflow; use `references/colour-theory.md`, `references/typography-mastery.md`, and `references/svg-manipulation.md` |
+| 5, "influencer", "creator", "ugc", "community", "partnerships" | Not bundled as a workflow; use `references/influencer-marketing.md` |
+| 6, "textile", "maker", "craft", "hobbyist", "handmade" | Not bundled as a workflow; use `references/textile-marketing.md` |
 
 **After reading the workflow, follow it exactly.**
 </routing>
@@ -119,6 +122,7 @@ All domain knowledge in `references/`:
 **Visual Design**: colour-theory.md, typography-mastery.md, svg-manipulation.md
 **Audience**: audience-personas.md, inclusive-marketing.md
 **Marketing**: influencer-marketing.md, textile-marketing.md
+**General**: best-practices.md
 </reference_index>
 
 <assets_index>

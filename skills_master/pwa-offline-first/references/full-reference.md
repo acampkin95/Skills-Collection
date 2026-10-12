@@ -393,5 +393,5 @@ if (isIOS && !isStandalone) {
 
 ## References
 
-- [Workbox patterns](references/workbox-patterns.md) — Workbox setup and advanced patterns
-- [Push notifications](references/push-notifications.md) — Web Push implementation, iOS 16.4+ support
+- [Workbox patterns](workbox-patterns.md) — Workbox setup and advanced patterns
+- [Push notifications](push-notifications.md) — Web Push implementation, iOS 16.4+ support

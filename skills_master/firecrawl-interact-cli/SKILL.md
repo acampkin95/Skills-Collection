@@ -1,6 +1,6 @@
 ---
 name: firecrawl-interact-cli
-description: CLI browser control after scraping when clicks, forms, login, or pagination are required.
+description: Controls a live browser session after a Firecrawl scrape with the firecrawl interact command, for clicks, form fills, logins, pagination, and reading data that appears only after interaction. Use when a scraped page needs clicks, form submission, login, or pagination before its data can be read, or when a scrape fails because the content is behind JavaScript interaction.
 allowed-tools:
   - Bash(firecrawl *)
   - Bash(npx firecrawl *)
@@ -81,7 +81,7 @@ firecrawl scrape "https://app.example.com" --profile my-app --no-save-changes
 
 ## See also
 
-- [firecrawl](../firecrawl-cli/SKILL.md) — master router for Firecrawl CLI workflows
-- [firecrawl-scrape](../firecrawl-cli/SKILL.md) — try scrape first, escalate to interact only when needed
-- [firecrawl-search](../firecrawl-cli/SKILL.md) — for web searches (never use interact for searching)
-- [firecrawl-agent](../firecrawl-cli/SKILL.md) — AI-powered extraction (less manual control)
+- [firecrawl-cli](../firecrawl-cli/SKILL.md) — master router for Firecrawl CLI workflows, including the scrape, search, and agent sections
+- Try scrape first and escalate to interact only when needed (see the scrape section of firecrawl-cli)
+- For web searches, use `search` (see the search section of firecrawl-cli); never use interact for searching
+- For AI-powered extraction with less manual control, see the agent section of firecrawl-cli

@@ -1,7 +1,8 @@
 ---
 name: fact-check
-description: Verify claims, check facts, assess truthfulness. Use when user asks "is this true", "verify", "check if", "how do I know", "can I trust this", "is this accurate", or needs to assess the reliability of information.
+description: Verifies claims, checks facts, and assesses the truthfulness and reliability of sources, returning a verdict with evidence and source-quality grades. Use when the user asks "is this true", "verify", "check if", "how do I know", "can I trust this", "is this accurate", or "is this reliable", or needs to assess information they have read or heard.
 user-invocable: true
+version: "1.0.0"
 ---
 
 # Fact-Check — Verify & Assess Truth
@@ -20,6 +21,8 @@ Use this skill when the user needs to verify information, assess reliability of 
 - "What's the evidence for this?"
 - "Fact-check this for me"
 - "Is this reliable?"
+
+Code blocks in this skill are illustrative pseudo-code. Helpers such as `extract_facts`, `ask_user_or_assess`-style checks, and the `...` placeholders stand for the agent's own research and judgment; the scores are a triage aid, not a verdict.
 
 ## Fact-Checking Workflow
 
@@ -116,7 +119,7 @@ def assess_source_credibility(source_url: str) -> dict:
     }
     
     score = 0
-    factors_found = {}
+    factors_found = {}  # Pseudo-code: each factor adds its value to score
     
     for factor, value in credibility_factors.items():
         # Assess and add to score
@@ -124,14 +127,14 @@ def assess_source_credibility(source_url: str) -> dict:
     
     return {
         "score": score,
-        "max_score": 20,
+        "max_score": 19,  # 10 (domain) + 2 (author) + 2 (date) + 2 (sources) + 3 (peer review)
         "grade": grade_credibility(score),
         "factors": factors_found
     }
 
 def grade_credibility(score: float) -> str:
     grades = {
-        (16, 20): "HIGH — Very credible, can rely on this",
+        (16, 19): "HIGH — Very credible, can rely on this",
         (11, 15): "MEDIUM — Credible, verify key claims independently",
         (6, 10): "LOW — Verify carefully, may have bias",
         (0, 5): "VERY LOW — Do not rely on without verification"

@@ -36,7 +36,7 @@ When one partner is anxious and the other avoidant:
 **Definition**: Overwhelming affection to gain control, followed by withdrawal.
 
 **Detection Algorithm**:
-```python
+```text
 daily_love = SUM(has_love_words + has_affection)
 rolling_avg = 3-day rolling average
 spike = daily_love > (rolling_avg * 3)
@@ -55,7 +55,7 @@ spike = daily_love > (rolling_avg * 3)
 **Definition**: Sudden emotional distancing after bonding.
 
 **Detection**:
-```python
+```text
 withdrawal = daily_love < (rolling_avg / 3) AND rolling_avg > 2
 ```
 

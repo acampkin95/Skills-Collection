@@ -43,14 +43,14 @@ CrewAI v1.11.0 supports native providers and LiteLLM fallback. **Not verified:**
 **Native providers** (no extra install): `openai/`, `anthropic/`, `gemini/`, `azure/`, `bedrock/`
 **LiteLLM providers** (need `crewai[litellm]`): `groq/`, `deepinfra/`, `together_ai/`, `ollama/`
 
-**Not verified:** model IDs in the examples below (for example `claude-sonnet-4-20250514` and `gpt-4o`) were not checked against current provider model lists. Confirm the model ID with the provider before use.
+**Model IDs:** `claude-sonnet-5-5` is listed as active in the bundled Claude API model reference (2026-10-12). The other IDs in the examples, such as `gpt-4o`, were not checked against current provider model lists. Confirm each ID with its provider before use.
 
 ```yaml
 # agents.yaml - provider/model format
 researcher:
   llm: deepinfra/meta-llama/Llama-3.3-70B-Instruct-Turbo
   # llm: gemini/gemini-2.0-flash          # Native Google
-  # llm: anthropic/claude-sonnet-4-20250514  # Native Anthropic
+  # llm: anthropic/claude-sonnet-5-5  # Native Anthropic
   # llm: openai/gpt-4o                    # Native OpenAI
   # llm: groq/llama-3.3-70b-versatile     # Via LiteLLM
 ```

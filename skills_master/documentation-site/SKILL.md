@@ -1,6 +1,7 @@
 ---
 name: documentation-site
-description: Documentation site generation with Docusaurus, Nextra, Starlight, and VitePress.
+description: Builds documentation sites with Docusaurus, Nextra, Starlight, or VitePress, covering framework selection, information architecture, navigation, search, versioning, and GitHub Pages or Vercel deployment. Use when creating or restructuring a documentation site, choosing between Docusaurus, Nextra, Starlight, and VitePress, configuring sidebars or search, versioning docs for releases, or deploying docs to GitHub Pages or Vercel.
+version: "1.0.0"
 ---
 
 # Documentation Site Development
@@ -16,7 +17,7 @@ description: Documentation site generation with Docusaurus, Nextra, Starlight, a
 | **Blog** | Built-in | Plugin | Plugin | Manual |
 | **Search** | Algolia/Local | Flexsearch | Pagefind | MiniSearch |
 | **Build speed** | Medium | Medium | Fast | Fast |
-| **Bundle** | ~200KB | ~100KB | ~50KB | ~50KB |
+| **Bundle** | ~200KB | ~100KB | ~50KB | ~50KB (approximate; not verified) |
 | **Best for** | Large projects | Next.js teams | Performance | Vue teams |
 
 ### Quick Decision

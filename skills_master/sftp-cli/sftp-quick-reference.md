@@ -4,9 +4,9 @@ Ultra-fast file transfer commands for Tailscale network.
 
 ## Server Aliases
 ```bash
-vmi02d        # 100.100.42.6 - Production server
-node01        # 100.118.170.115 - Swarm node 1
-node02        # 100.86.129.15 - Swarm node 2
+prod-server        # <prod-ip> - Production server
+swarm-node-1        # <swarm-node-1-ip> - Swarm node 1
+swarm-node-2        # <swarm-node-2-ip> - Swarm node 2
 ```
 
 ## Common Commands
@@ -15,73 +15,73 @@ node02        # 100.86.129.15 - Swarm node 2
 
 **Small update (<100MB):**
 ```bash
-rsync -avz --delete .next/standalone/ vmi02d:/opt/wattlewool/
-ssh vmi02d "pm2 restart wattlewool"
+rsync -avz --delete .next/standalone/ prod-server:/opt/<project>/
+ssh prod-server "pm2 restart <project>"
 ```
 
 **Large update (>100MB):**
 ```bash
-tar czf - .next/standalone | ssh vmi02d "tar xzf - -C /opt/wattlewool/"
-ssh vmi02d "pm2 restart wattlewool"
+tar czf - .next/standalone | ssh prod-server "tar xzf - -C /opt/<project>/"
+ssh prod-server "pm2 restart <project>"
 ```
 
 **Huge update (>500MB) - Parallel:**
 ```bash
 tar czf - .next/standalone | split -b 50M - /tmp/deploy-
-parallel -j 8 scp {} vmi02d:/tmp/ ::: /tmp/deploy-*
-ssh vmi02d "cat /tmp/deploy-* | tar xzf - -C /opt/wattlewool/ && rm /tmp/deploy-*"
-ssh vmi02d "pm2 restart wattlewool"
+parallel -j 8 scp {} prod-server:/tmp/ ::: /tmp/deploy-*
+ssh prod-server "cat /tmp/deploy-* | tar xzf - -C /opt/<project>/ && rm /tmp/deploy-*"
+ssh prod-server "pm2 restart <project>"
 ```
 
 ### Single File Transfers
 
 **Quick copy:**
 ```bash
-scp file.txt vmi02d:/path/to/destination/
+scp file.txt prod-server:/path/to/destination/
 ```
 
 **With progress:**
 ```bash
-rsync -avz --progress file.tar.gz vmi02d:/destination/
+rsync -avz --progress file.tar.gz prod-server:/destination/
 ```
 
 **Resume interrupted:**
 ```bash
-rsync -avz --partial --progress file.tar.gz vmi02d:/destination/
+rsync -avz --partial --progress file.tar.gz prod-server:/destination/
 ```
 
 ### Directory Sync
 
 **Sync directory (delta only):**
 ```bash
-rsync -avz --delete src/ vmi02d:/dest/
+rsync -avz --delete src/ prod-server:/dest/
 ```
 
 **Initial large sync:**
 ```bash
-rsync -avz --progress --stats src/ vmi02d:/dest/
+rsync -avz --progress --stats src/ prod-server:/dest/
 ```
 
 **Many small files (parallel):**
 ```bash
-parallel -j 10 rsync -avz {} vmi02d:/dest/ ::: src/*
+parallel -j 10 rsync -avz {} prod-server:/dest/ ::: src/*
 ```
 
 ### Archive Streaming (No Local Copy)
 
 **Compress and stream:**
 ```bash
-tar czf - directory/ | ssh vmi02d "tar xzf - -C /destination/"
+tar czf - directory/ | ssh prod-server "tar xzf - -C /destination/"
 ```
 
 **With progress:**
 ```bash
-tar czf - directory/ | pv | ssh vmi02d "tar xzf - -C /dest/"
+tar czf - directory/ | pv | ssh prod-server "tar xzf - -C /dest/"
 ```
 
 **Parallel compression:**
 ```bash
-tar cf - directory/ | pigz -p 4 | ssh vmi02d "pigz -d | tar xf - -C /dest/"
+tar cf - directory/ | pigz -p 4 | ssh prod-server "pigz -d | tar xf - -C /dest/"
 ```
 
 ## Performance Tips
@@ -89,15 +89,15 @@ tar cf - directory/ | pigz -p 4 | ssh vmi02d "pigz -d | tar xf - -C /dest/"
 ### Speed Up Connections
 ```bash
 # Establish persistent connection (once)
-ssh -MNf vmi02d
+ssh -MNf prod-server
 
 # All future commands instant (reuses connection)
-scp file1 vmi02d:/path/
-scp file2 vmi02d:/path/
-ssh vmi02d "ls -la"
+scp file1 prod-server:/path/
+scp file2 prod-server:/path/
+ssh prod-server "ls -la"
 
 # Close when done
-ssh -O exit vmi02d
+ssh -O exit prod-server
 ```
 
 ### Large File Strategy
@@ -106,44 +106,44 @@ ssh -O exit vmi02d
 split -b 100M largefile.tar.gz part-
 
 # Upload in parallel
-parallel -j 8 scp {} vmi02d:/tmp/ ::: part-*
+parallel -j 8 scp {} prod-server:/tmp/ ::: part-*
 
 # Reassemble on server
-ssh vmi02d "cat /tmp/part-* > /path/largefile.tar.gz && rm /tmp/part-*"
+ssh prod-server "cat /tmp/part-* > /path/largefile.tar.gz && rm /tmp/part-*"
 ```
 
 ### Already Compressed Files
 ```bash
 # Skip compression for .tar.gz, .zip, etc
-rsync -av --no-compress file.tar.gz vmi02d:/path/
+rsync -av --no-compress file.tar.gz prod-server:/path/
 ```
 
 ## Health Checks
 
 **Server SFTP status:**
 ```bash
-ssh vmi02d /usr/local/bin/sftp-health-check
+ssh prod-server /usr/local/bin/sftp-health-check
 ```
 
 **Active connections:**
 ```bash
-ssh vmi02d "ss -tn state established '( dport = :22 or sport = :22 )'"
+ssh prod-server "ss -tn state established '( dport = :22 or sport = :22 )'"
 ```
 
 **Test bandwidth:**
 ```bash
 # Terminal 1:
-ssh vmi02d "iperf3 -s"
+ssh prod-server "iperf3 -s"
 
 # Terminal 2:
-iperf3 -c vmi02d
+iperf3 -c prod-server
 ```
 
 ## Emergency Recovery
 
 **Resume broken transfer:**
 ```bash
-rsync -avz --partial --append-verify /src vmi02d:/dest
+rsync -avz --partial --append-verify /src prod-server:/dest
 ```
 
 **Verify transferred files:**
@@ -152,15 +152,15 @@ rsync -avz --partial --append-verify /src vmi02d:/dest
 find /src -type f -exec md5sum {} \; > checksums.txt
 
 # Upload and verify
-scp checksums.txt vmi02d:/tmp/
-ssh vmi02d "cd /dest && md5sum -c /tmp/checksums.txt"
+scp checksums.txt prod-server:/tmp/
+ssh prod-server "cd /dest && md5sum -c /tmp/checksums.txt"
 ```
 
 **Long transfer in background:**
 ```bash
 # Start in screen
 screen -S upload
-rsync -avz --progress /large/dir vmi02d:/dest/
+rsync -avz --progress /large/dir prod-server:/dest/
 # Detach: Ctrl-A, D
 
 # Check progress later
@@ -171,19 +171,19 @@ screen -r upload
 
 ```bash
 # Deploy and restart
-rsync -avz .next/standalone/ vmi02d:/opt/wattlewool/ && ssh vmi02d pm2 restart wattlewool
+rsync -avz .next/standalone/ prod-server:/opt/<project>/ && ssh prod-server pm2 restart <project>
 
 # Backup remote to local
-ssh vmi02d "tar czf - /important/data" > backup-$(date +%Y%m%d).tar.gz
+ssh prod-server "tar czf - /important/data" > backup-$(date +%Y%m%d).tar.gz
 
 # Copy between servers
-ssh node01 "tar czf - /data" | ssh vmi02d "tar xzf - -C /backup"
+ssh swarm-node-1 "tar czf - /data" | ssh prod-server "tar xzf - -C /backup"
 
 # Upload multiple files
-parallel scp {} vmi02d:/dest/ ::: *.log
+parallel scp {} prod-server:/dest/ ::: *.log
 
 # Sync with exclusions
-rsync -avz --exclude='*.log' --exclude='node_modules' src/ vmi02d:/dest/
+rsync -avz --exclude='*.log' --exclude='node_modules' src/ prod-server:/dest/
 ```
 
 ## Configuration Locations

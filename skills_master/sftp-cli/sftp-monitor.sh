@@ -4,7 +4,8 @@
 # Watch deployment progress and server metrics in real-time
 ###############################################################################
 
-SERVER="${1:-vmi02d}"
+SERVER="${1:-${SFTP_REMOTE_HOST:-prod-server}}"
+PROJECT="${SFTP_PROJECT:-your-project}"
 REFRESH_RATE="${2:-2}"  # seconds
 
 # Colors
@@ -29,10 +30,10 @@ get_server_stats() {
         free | grep Mem | awk '{print int(\$3/\$2 * 100)}'
 
         # Disk usage
-        df -h /opt/wattlewool 2>/dev/null | tail -1 | awk '{print \$5}' | sed 's/%//'
+        df -h /opt/${PROJECT} 2>/dev/null | tail -1 | awk '{print \$5}' | sed 's/%//'
 
         # PM2 status
-        pm2 jlist 2>/dev/null | jq -r '.[] | select(.name==\"wattlewool\") | .pm2_env.status' | head -1
+        pm2 jlist 2>/dev/null | jq -r '.[] | select(.name==\"${PROJECT}\") | .pm2_env.status' | head -1
 
         # Active SSH connections
         ss -tn state established '( dport = :22 or sport = :22 )' 2>/dev/null | wc -l
@@ -43,13 +44,13 @@ get_server_stats() {
 }
 
 get_pm2_details() {
-    ssh "$SERVER" "pm2 jlist 2>/dev/null | jq -r '.[] | select(.name==\"wattlewool\") |
+    ssh "$SERVER" "pm2 jlist 2>/dev/null | jq -r '.[] | select(.name==\"${PROJECT}\") |
         \"\\(.pm2_env.pm_id),\\(.monit.cpu),\\(.monit.memory),\\(.pm2_env.restart_time),\\(.pm2_env.unstable_restarts)\"
     '"
 }
 
 get_recent_logs() {
-    ssh "$SERVER" "pm2 logs wattlewool --lines 5 --nostream --raw 2>/dev/null | tail -10"
+    ssh "$SERVER" "pm2 logs ${PROJECT} --lines 5 --nostream --raw 2>/dev/null | tail -10"
 }
 
 draw_header() {

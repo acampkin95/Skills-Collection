@@ -1,7 +1,13 @@
 ---
 name: email-notifications
-description: Transactional email sending with Resend, React Email templates.
+description: Sends transactional emails with the Resend API and React Email templates, and designs notification systems with preference-aware multi-channel dispatch, BullMQ queues, delivery webhooks, verification emails, and SPF, DKIM, and DMARC setup. Use when sending transactional or verification emails from Next.js, building React Email templates, handling Resend delivery webhooks, queueing email jobs, or setting up email authentication DNS records.
+risk: medium
+version: "1.0.0"
 ---
+
+**Confirmation required:** do not send live email to real recipients, including test sends to real addresses, without explicit user approval of the recipient list and content.
+
+**Version note (checked 2026-10-12):** the npm `latest` tags are `resend` 6.32.1 and `react-email` 6.11.1 (`previous` 5.2.11). The examples were written for the earlier 5.x React Email line. Check the installed versions before relying on component or prop details. The idempotency-key placement and the SPF/DKIM values below were not verified against the current SDK or Resend documentation.
 
 # Email Notifications Skill
 
@@ -10,13 +16,13 @@ Transactional email sending with Resend, email templating with React Email v5, a
 ## Core Stack
 
 | Layer | Tool | Purpose |
-|-------|------|---------
+|-------|------|---------|
 | Sending | Resend | Transactional email API (email receiving 2025+) |
-| Templates | React Email v5 | JSX email components with Tailwind v4 |
+| Templates | React Email | JSX email components with Tailwind v4 |
 | Queue | BullMQ + Redis | Async email processing |
 | Auth | SPF/DKIM/DMARC | Email authentication |
 
-## Resend SDK Setup (2025+)
+## Resend SDK Setup
 
 ### Installation
 
@@ -54,9 +60,9 @@ const { data, error } = await resend.emails.send({
 });
 ```
 
-## React Email v5 Components (Tailwind v4 Compatible)
+## React Email Components (Tailwind v4 Compatible)
 
-React Email v5 (2025+) supports Tailwind CSS v4 and React 19. Key components from `@react-email/components`:
+React Email (examples written for the 5.x line; confirm component support for your installed version) supports Tailwind CSS v4 and React 19. Key components from `@react-email/components`:
 
 | Component | Purpose |
 |-----------|---------|
@@ -129,7 +135,7 @@ export async function sendWelcomeEmail(userId: string, email: string, name: stri
     to: email,
     subject: `Welcome to the platform, ${name}!`,
     react: WelcomeEmail({ name, actionUrl: `${process.env.NEXT_PUBLIC_APP_URL}/onboarding` }),
-    idempotencyKey: `welcome-${userId}-${Date.now()}`,
+    idempotencyKey: `welcome-${userId}`, // deterministic per user, so retries do not send duplicates
   });
 
   if (error) return { success: false, error: error.message };
@@ -204,7 +210,7 @@ export async function verifyEmail(token: string) {
 
 ### DNS Records
 
-When using Resend, add these DNS records to your domain:
+When using Resend, add the DNS records shown in your Resend domain dashboard. The values below are the shape used in earlier versions of this skill and were not verified against current Resend documentation on 2026-10-12; the dashboard values take precedence.
 
 **SPF** (TXT record on root domain):
 ```

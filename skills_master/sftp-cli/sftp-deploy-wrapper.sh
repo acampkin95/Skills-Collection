@@ -7,6 +7,10 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DEPLOY_SCRIPT="$SCRIPT_DIR/sftp-deploy.sh"
 
+# Target project directory name and SSH host alias (override with environment variables)
+PROJECT="${SFTP_PROJECT:-your-project}"
+REMOTE_HOST="${SFTP_REMOTE_HOST:-prod-server}"
+
 # Colors
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -18,22 +22,22 @@ NC='\033[0m'
 
 deploy_quick() {
     echo -e "${BLUE}Quick Deploy${NC} - No build, rsync only"
-    "$DEPLOY_SCRIPT" --method rsync --restart wattlewool --check
+    "$DEPLOY_SCRIPT" --method rsync --restart "$PROJECT" --check
 }
 
 deploy_full() {
     echo -e "${BLUE}Full Deploy${NC} - Build, deploy, restart, check"
-    "$DEPLOY_SCRIPT" --build --method auto --restart wattlewool --check
+    "$DEPLOY_SCRIPT" --build --method auto --restart "$PROJECT" --check
 }
 
 deploy_fast() {
     echo -e "${BLUE}Fast Deploy${NC} - Tar stream, no build"
-    "$DEPLOY_SCRIPT" --method tar --restart wattlewool --check
+    "$DEPLOY_SCRIPT" --method tar --restart "$PROJECT" --check
 }
 
 deploy_parallel() {
     echo -e "${BLUE}Parallel Deploy${NC} - Fastest for large builds"
-    "$DEPLOY_SCRIPT" --method parallel --restart wattlewool --check
+    "$DEPLOY_SCRIPT" --method parallel --restart "$PROJECT" --check
 }
 
 deploy_dry() {
@@ -44,8 +48,8 @@ deploy_dry() {
 deploy_api() {
     echo -e "${BLUE}API Routes Only${NC} - Deploy just API routes"
     cd .next/standalone/.next/server
-    rsync -avz --delete app/api/ vmi02d:/opt/wattlewool/.next/standalone/.next/server/app/api/
-    ssh vmi02d "pm2 reload wattlewool"
+    rsync -avz --delete app/api/ "$REMOTE_HOST:/opt/$PROJECT/.next/standalone/.next/server/app/api/"
+    ssh "$REMOTE_HOST" "pm2 reload $PROJECT"
     echo -e "${GREEN}✓${NC} API routes deployed"
 }
 

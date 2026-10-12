@@ -7,8 +7,8 @@
 #
 # Options:
 #   -m, --method <rsync|tar|parallel>  Deployment method (default: auto)
-#   -s, --server <alias>                Server alias (default: vmi02d)
-#   -p, --path <path>                   Remote path (default: /opt/wattlewool)
+#   -s, --server <alias>                Server alias (default: prod-server, or SFTP_SERVER)
+#   -p, --path <path>                   Remote path (default: /opt/your-project, or SFTP_REMOTE_PATH)
 #   -b, --build                         Run build before deploy
 #   -r, --restart <service>             Restart service after deploy
 #   -c, --check                         Run health check after deploy
@@ -17,8 +17,8 @@
 #   -h, --help                          Show this help
 #
 # Examples:
-#   ./sftp-deploy.sh --build --restart wattlewool --check
-#   ./sftp-deploy.sh --method parallel --server vmi02d
+#   ./sftp-deploy.sh --build --restart <project> --check
+#   ./sftp-deploy.sh --method parallel --server prod-server
 #   ./sftp-deploy.sh --dry-run --verbose
 #
 ###############################################################################
@@ -34,8 +34,8 @@ CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Default configuration
-SERVER="vmi02d"
-REMOTE_PATH="/opt/wattlewool"
+SERVER="${SFTP_SERVER:-prod-server}"
+REMOTE_PATH="${SFTP_REMOTE_PATH:-/opt/your-project}"
 LOCAL_PATH=".next/standalone"
 DEPLOY_METHOD="auto"
 RUN_BUILD=false
@@ -358,8 +358,8 @@ run_health_check() {
     fi
 
     # Check HTTP endpoint
-    if [ "$SERVER" == "vmi02d" ]; then
-        local url="http://100.100.42.6/"
+    if [ "$SERVER" == "prod-server" ]; then
+        local url="${SFTP_HEALTH_URL:-http://<prod-ip>/}"
         log INFO "Checking HTTP endpoint: $url"
 
         if curl -s -f -m 10 "$url" | grep -q "Demo"; then

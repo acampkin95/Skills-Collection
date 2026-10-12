@@ -1,8 +1,10 @@
 ---
 name: sonar-scanner-cli
-description: SonarScanner CLI setup, configuration, and execution for code quality analysis.
+description: "Sets up and runs the SonarScanner CLI for code quality and security analysis: installation, sonar-project.properties for JavaScript, TypeScript and Python projects, coverage report wiring for Jest and pytest, Docker and CI runs, quality gates, and troubleshooting. Use when installing or running sonar-scanner, configuring sonar-project.properties, connecting SonarQube or SonarCloud, or wiring Sonar analysis into GitHub Actions, GitLab CI or Jenkins."
 metadata:
   interface: "cli"
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # SonarScanner — Code Quality Analysis

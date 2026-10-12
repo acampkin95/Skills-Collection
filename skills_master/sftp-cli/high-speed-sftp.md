@@ -4,7 +4,7 @@ Expert skill for optimized file transfers to/from Tailscale-connected servers us
 
 ## Server Configuration
 
-**Primary Server:** `100.100.42.6` (vmi02d via Tailscale)
+**Primary Server:** `<prod-ip>` (prod-server via Tailscale)
 
 ### Optimizations Applied
 
@@ -33,10 +33,10 @@ Expert skill for optimized file transfers to/from Tailscale-connected servers us
 **For multiple small files (fastest):**
 ```bash
 # Use GNU Parallel with SFTP
-find /path/to/files -type f | parallel -j 10 'scp -C {} root@100.100.42.6:/target/path/'
+find /path/to/files -type f | parallel -j 10 'scp -C {} root@<prod-ip>:/target/path/'
 
 # Alternative: Use rsync with parallel
-parallel -j 10 rsync -avz --progress ::: file1 file2 file3 root@100.100.42.6:/target/
+parallel -j 10 rsync -avz --progress ::: file1 file2 file3 root@<prod-ip>:/target/
 ```
 
 ### 2. Optimized rsync (Best for large files/directories)
@@ -44,24 +44,24 @@ parallel -j 10 rsync -avz --progress ::: file1 file2 file3 root@100.100.42.6:/ta
 **Single large file:**
 ```bash
 # With compression and progress
-rsync -avz --progress --partial /local/file root@100.100.42.6:/remote/path/
+rsync -avz --progress --partial /local/file root@<prod-ip>:/remote/path/
 
 # Without compression (for already compressed files)
-rsync -av --progress --no-compress /local/file.tar.gz root@100.100.42.6:/remote/
+rsync -av --progress --no-compress /local/file.tar.gz root@<prod-ip>:/remote/
 
 # With bandwidth limit (optional)
-rsync -avz --progress --bwlimit=50M /local/file root@100.100.42.6:/remote/
+rsync -avz --progress --bwlimit=50M /local/file root@<prod-ip>:/remote/
 ```
 
 **Directory sync with parallel:**
 ```bash
 # Parallel rsync for directory tree (fastest for many files)
-rsync -av --progress /source/ root@100.100.42.6:/dest/ \
+rsync -av --progress /source/ root@<prod-ip>:/dest/ \
   --rsync-path='rsync --partial-dir=.rsync-partial'
 
 # With parallel file processing
 find /source -type f -print0 | parallel -0 -j 10 \
-  rsync -avz --relative --progress {} root@100.100.42.6:/dest/
+  rsync -avz --relative --progress {} root@<prod-ip>:/dest/
 ```
 
 ### 3. SSH Connection Multiplexing
@@ -69,15 +69,15 @@ find /source -type f -print0 | parallel -0 -j 10 \
 **Establish master connection once:**
 ```bash
 # Start master connection (runs in background)
-ssh -MNf root@100.100.42.6
+ssh -MNf root@<prod-ip>
 
 # All subsequent commands reuse this connection (instant, no auth)
-scp file1 root@100.100.42.6:/path/
-scp file2 root@100.100.42.6:/path/
-ssh root@100.100.42.6 "ls -la /path"
+scp file1 root@<prod-ip>:/path/
+scp file2 root@<prod-ip>:/path/
+ssh root@<prod-ip> "ls -la /path"
 
 # Close master connection when done
-ssh -O exit root@100.100.42.6
+ssh -O exit root@<prod-ip>
 ```
 
 ### 4. Archive and Stream (Large deployments)
@@ -85,13 +85,13 @@ ssh -O exit root@100.100.42.6
 **Stream tar archive directly:**
 ```bash
 # No local archive file needed - streams directly
-tar czf - /source/directory | ssh root@100.100.42.6 "tar xzf - -C /destination/"
+tar czf - /source/directory | ssh root@<prod-ip> "tar xzf - -C /destination/"
 
 # With progress using pv
-tar czf - /source/directory | pv | ssh root@100.100.42.6 "tar xzf - -C /dest/"
+tar czf - /source/directory | pv | ssh root@<prod-ip> "tar xzf - -C /dest/"
 
 # Parallel compression (faster for large data)
-tar cf - /source | pigz | pv | ssh root@100.100.42.6 "pigz -d | tar xf - -C /dest/"
+tar cf - /source | pigz | pv | ssh root@<prod-ip> "pigz -d | tar xf - -C /dest/"
 ```
 
 ### 5. Split Large Files (Most reliable for huge files)
@@ -102,10 +102,10 @@ tar cf - /source | pigz | pv | ssh root@100.100.42.6 "pigz -d | tar xf - -C /des
 split -b 100M largefile.tar.gz largefile-part-
 
 # Transfer chunks in parallel
-parallel -j 5 scp -C {} root@100.100.42.6:/tmp/ ::: largefile-part-*
+parallel -j 5 scp -C {} root@<prod-ip>:/tmp/ ::: largefile-part-*
 
 # Reassemble on server
-ssh root@100.100.42.6 "cat /tmp/largefile-part-* > /path/largefile.tar.gz && rm /tmp/largefile-part-*"
+ssh root@<prod-ip> "cat /tmp/largefile-part-* > /path/largefile.tar.gz && rm /tmp/largefile-part-*"
 ```
 
 ## Performance Monitoring
@@ -113,17 +113,17 @@ ssh root@100.100.42.6 "cat /tmp/largefile-part-* > /path/largefile.tar.gz && rm 
 ### Check Transfer Speed
 ```bash
 # Use iperf3 over SSH to test max throughput
-ssh root@100.100.42.6 "iperf3 -s" &
-iperf3 -c 100.100.42.6
+ssh root@<prod-ip> "iperf3 -s" &
+iperf3 -c <prod-ip>
 
 # Monitor active transfers
-ssh root@100.100.42.6 "watch -n 1 'ss -ti | grep ssh'"
+ssh root@<prod-ip> "watch -n 1 'ss -ti | grep ssh'"
 ```
 
 ### Health Check
 ```bash
 # Run server-side health check
-ssh root@100.100.42.6 "/usr/local/bin/sftp-health-check"
+ssh root@<prod-ip> "/usr/local/bin/sftp-health-check"
 ```
 
 ### Monitor Connection Pool
@@ -132,7 +132,7 @@ ssh root@100.100.42.6 "/usr/local/bin/sftp-health-check"
 ls -la ~/.ssh/control-*
 
 # Show active SSH sessions
-ssh root@100.100.42.6 "netstat -tn | grep :22"
+ssh root@<prod-ip> "netstat -tn | grep :22"
 ```
 
 ## Deployment Workflows
@@ -142,25 +142,25 @@ ssh root@100.100.42.6 "netstat -tn | grep :22"
 # Method 1: Direct rsync (best for initial deploy)
 rsync -avz --progress \
   --exclude='.git' --exclude='node_modules' \
-  .next/standalone/ root@100.100.42.6:/opt/wattlewool/
+  .next/standalone/ root@<prod-ip>:/opt/<project>/
 
 # Method 2: Tar stream (best for updates)
 tar czf - .next/standalone | \
-  ssh root@100.100.42.6 "tar xzf - -C /opt/wattlewool/"
+  ssh root@<prod-ip> "tar xzf - -C /opt/<project>/"
 
 # Method 3: Parallel chunks (best for large builds >500MB)
 tar czf - .next/standalone | split -b 50M - standalone-part-
-parallel -j 8 scp {} root@100.100.42.6:/tmp/ ::: standalone-part-*
-ssh root@100.100.42.6 "cat /tmp/standalone-part-* | tar xzf - -C /opt/wattlewool/ && rm /tmp/standalone-part-*"
+parallel -j 8 scp {} root@<prod-ip>:/tmp/ ::: standalone-part-*
+ssh root@<prod-ip> "cat /tmp/standalone-part-* | tar xzf - -C /opt/<project>/ && rm /tmp/standalone-part-*"
 ```
 
 ### Database Backups
 ```bash
 # Backup PostgreSQL directly to server
-pg_dump -Fc wattlewool | ssh root@100.100.42.6 "cat > /backup/wattlewool-$(date +%Y%m%d).dump"
+pg_dump -Fc <project> | ssh root@<prod-ip> "cat > /backup/<project>-$(date +%Y%m%d).dump"
 
 # Restore from server
-ssh root@100.100.42.6 "cat /backup/latest.dump" | pg_restore -d wattlewool
+ssh root@<prod-ip> "cat /backup/latest.dump" | pg_restore -d <project>
 ```
 
 ## Troubleshooting
@@ -168,7 +168,7 @@ ssh root@100.100.42.6 "cat /backup/latest.dump" | pg_restore -d wattlewool
 ### Connection Timeouts
 ```bash
 # Increase timeout values in ~/.ssh/config
-Host 100.100.42.6
+Host <prod-ip>
     ServerAliveInterval 30
     ServerAliveCountMax 20
     TCPKeepAlive yes
@@ -177,17 +177,17 @@ Host 100.100.42.6
 ### Slow Transfers
 ```bash
 # Disable compression for already-compressed files
-rsync -av --no-compress file.tar.gz root@100.100.42.6:/path/
+rsync -av --no-compress file.tar.gz root@<prod-ip>:/path/
 
 # Use different cipher (faster but less secure - OK for Tailscale)
-scp -c aes128-gcm@openssh.com file root@100.100.42.6:/path/
+scp -c aes128-gcm@openssh.com file root@<prod-ip>:/path/
 ```
 
 ### Connection Drops
 ```bash
 # Use screen/tmux for long transfers
 screen -S transfer
-rsync -avz --progress --partial /large/dir root@100.100.42.6:/dest/
+rsync -avz --progress --partial /large/dir root@<prod-ip>:/dest/
 # Detach: Ctrl-A, D
 # Reattach: screen -r transfer
 ```
@@ -198,8 +198,8 @@ rsync -avz --progress --partial /large/dir root@100.100.42.6:/dest/
 find /source -type f -exec md5sum {} \; > /tmp/local-checksums.txt
 
 # Upload and verify
-scp /tmp/local-checksums.txt root@100.100.42.6:/tmp/
-ssh root@100.100.42.6 "cd /dest && md5sum -c /tmp/local-checksums.txt"
+scp /tmp/local-checksums.txt root@<prod-ip>:/tmp/
+ssh root@<prod-ip> "cd /dest && md5sum -c /tmp/local-checksums.txt"
 ```
 
 ## Quick Reference
@@ -208,22 +208,22 @@ ssh root@100.100.42.6 "cd /dest && md5sum -c /tmp/local-checksums.txt"
 
 ```bash
 # Transfer directory (medium size)
-rsync -avz --progress /src/ root@100.100.42.6:/dest/
+rsync -avz --progress /src/ root@<prod-ip>:/dest/
 
 # Transfer large file (>1GB)
-tar czf - /file | ssh root@100.100.42.6 "tar xzf - -C /dest/"
+tar czf - /file | ssh root@<prod-ip> "tar xzf - -C /dest/"
 
 # Transfer many small files
-parallel -j 10 scp -C {} root@100.100.42.6:/dest/ ::: /src/*
+parallel -j 10 scp -C {} root@<prod-ip>:/dest/ ::: /src/*
 
 # Transfer with resume capability
-rsync -avz --partial --progress /src root@100.100.42.6:/dest/
+rsync -avz --partial --progress /src root@<prod-ip>:/dest/
 
 # Check server health
-ssh root@100.100.42.6 /usr/local/bin/sftp-health-check
+ssh root@<prod-ip> /usr/local/bin/sftp-health-check
 
 # Test connection speed
-iperf3 -c 100.100.42.6
+iperf3 -c <prod-ip>
 ```
 
 ## Configuration Files
@@ -236,7 +236,7 @@ iperf3 -c 100.100.42.6
 
 ### Client: `~/.ssh/config`
 ```
-Host 100.100.42.6
+Host <prod-ip>
     ServerAliveInterval 60
     ServerAliveCountMax 10
     Compression yes
@@ -276,6 +276,6 @@ Host 100.100.42.6
 ---
 
 **Created:** 2026-01-19
-**Server:** 100.100.42.6 (vmi02d)
+**Server:** <prod-ip> (prod-server)
 **Network:** Tailscale private network
 **Status:** Active and optimized

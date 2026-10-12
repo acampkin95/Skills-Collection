@@ -101,7 +101,7 @@ EOF
 ls -t /tmp/deploy-*.log 2>/dev/null | tail -n +11 | xargs rm -f 2>/dev/null || true
 
 # Remove old backups on server (keep last 5)
-ssh vmi02d "ls -dt /opt/wattlewool.backup-* 2>/dev/null | tail -n +6 | xargs rm -rf" 2>/dev/null || true
+ssh "${SFTP_REMOTE_HOST:-prod-server}" "ls -dt /opt/${SFTP_PROJECT:-your-project}.backup-* 2>/dev/null | tail -n +6 | xargs rm -rf" 2>/dev/null || true
 
 echo "[HOOK] Cleanup completed"
 EOF

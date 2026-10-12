@@ -35,7 +35,7 @@ High-speed SFTP transfer utilities and deployment automation for Tailscale-conne
 chmod +x sftp-deploy.sh sftp-deploy-wrapper.sh sftp-deploy-hooks.sh sftp-monitor.sh
 
 # Configure your target server
-export SFTP_HOST="100.100.42.6"
+export SFTP_HOST="<prod-ip>"
 export SFTP_USER="root"
 ```
 

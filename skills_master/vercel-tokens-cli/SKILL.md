@@ -5,6 +5,8 @@ metadata:
   interface: "cli"
   author: vercel
   version: "1.0.0"
+risk: high
+reviewed: "2026-10-12"
 ---
 
 # Vercel CLI with Tokens
@@ -18,15 +20,15 @@ Before running any Vercel CLI commands, identify where the token is coming from.
 ### A) `VERCEL_TOKEN` is already set in the environment
 
 ```bash
-printenv VERCEL_TOKEN
+test -n "$VERCEL_TOKEN" && echo "VERCEL_TOKEN is set"
 ```
 
-If this returns a value, you're ready. Skip to Step 2.
+If this reports that the token is set, you're ready. Skip to Step 2. Do not print the token value.
 
 ### B) Token is in a `.env` file under `VERCEL_TOKEN`
 
 ```bash
-grep '^VERCEL_TOKEN=' .env 2>/dev/null
+grep -c '^VERCEL_TOKEN=' .env 2>/dev/null   # prints a count only; never print the matching line
 ```
 
 If found, export it:
@@ -306,7 +308,8 @@ Full details: https://vercel.com/docs/plans/pro-plan
 - **Do not modify `.vercel/` files directly.** The CLI manages this directory. Reading them (e.g. to verify `orgId`) is fine.
 - **Do not curl/fetch deployed URLs to verify.** Just return the link to the user.
 - **Use `--format json`** when structured output will help with follow-up steps.
-- **Use `-y`** on commands that prompt for confirmation to avoid interactive blocking.
+- **Use `-y` only after the user has confirmed the action.** It skips the CLI's confirmation prompt, so it must not replace asking the user.
+- **Confirmation required** before any paid plan change, production deployment, destructive command (remove, delete, downgrade), or git push. State the exact action and its effect first.
 
 ## Troubleshooting
 

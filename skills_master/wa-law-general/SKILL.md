@@ -1,6 +1,8 @@
 ---
 name: wa-law-general
-description: Use when answering Western Australian legal information questions about WA court hierarchy.
+description: "Provides general information about the Western Australian court system and legal services: the court hierarchy (Magistrates, District and Supreme Courts, State Administrative Tribunal), legislation, filing fees and eLodgment, and where to get legal help. Use when a question asks which WA court or tribunal handles a matter, how WA courts are organised, or where to find legal services. General information only, not legal advice."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Western Australian Law — General Reference
@@ -264,14 +266,10 @@ Recommend independent legal advice when user:
 After editing this skill or its references, run:
 
 ```bash
-docker compose -f compose.skills.yml run --rm skills-validator
+python3 SkillsFramework/scripts/validate_skills.py --verbose
 ```
 
-Fallback:
-
-```bash
-uv run --project .maintenance/Skills-Framework-Reference skills-ref validate wa-law-general
-```
+Run from the repository root. The earlier Docker and `uv` validation commands referred to files that are not in this repository.
 
 ## Cross-References to Other Skills
 

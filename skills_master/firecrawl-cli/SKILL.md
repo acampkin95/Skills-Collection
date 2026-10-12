@@ -14,6 +14,8 @@ metadata:
 
 Comprehensive guide for Firecrawl CLI workflows and SDK integration. Covers search, scrape, crawl, map, parse, interact, and autonomous extraction.
 
+**Version note (checked 2026-10-12):** the examples pin `firecrawl-cli@1.18.5`. The npm `latest` tag is `firecrawl-cli` 1.26.3. The flags below were not re-verified against 1.26.3, so run `firecrawl --help` after upgrading and update the pin only after checking the options used here.
+
 ## Quick Start: Two Paths
 
 **Path 1: CLI (Testing, Research, One-Offs)**

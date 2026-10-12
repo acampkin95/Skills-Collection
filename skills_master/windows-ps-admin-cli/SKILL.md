@@ -1,8 +1,10 @@
 ---
 name: windows-ps-admin-cli
-description: Windows 11 PowerShell scripting, automation, and system administration.
+description: "Writes, reviews and runs Windows 11 PowerShell scripts for automation and system administration: script structure and standards, process and service management, registry and environment variables, elevation checks, execution policy and security, PSRemoting over WinRM, and NVIDIA GPU settings. Use when writing or debugging a PowerShell script, administering a Windows 11 machine, managing processes, files, registry or environment variables, or setting up remote management with PowerShell."
 metadata:
   interface: "cli"
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Windows 11 PowerShell & Administration

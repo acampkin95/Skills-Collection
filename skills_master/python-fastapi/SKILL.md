@@ -1,6 +1,8 @@
 ---
 name: python-fastapi
-description: FastAPI is a modern Python web framework, for building fast.
+description: "Builds and structures type-safe async Python web APIs with FastAPI: Pydantic v2 schemas, Depends() dependency injection, async SQLAlchemy sessions, routers, lifespan events, middleware, background tasks, WebSockets, pytest testing, and uvicorn or gunicorn deployment, with automatic OpenAPI docs. Use when creating or structuring a FastAPI app, writing routes or routers, adding Pydantic models or dependencies, wiring a database session, or deploying a FastAPI service."
+version: "1.0.0"
+reviewed: "2026-10-12"
 ---
 
 # Python FastAPI Development
@@ -89,7 +91,7 @@ class UserResponse(BaseModel):
 ```python
 # app/dependencies.py
 from typing import Annotated, AsyncGenerator
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, Header, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import async_session_factory
@@ -106,8 +108,8 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 DbSession = Annotated[AsyncSession, Depends(get_db)]
 
 async def get_current_user(
-    authorization: str = Header(...),
-    db: AsyncSession = Depends(get_db),
+    authorization: Annotated[str, Header()],
+    db: Annotated[AsyncSession, Depends(get_db)],
 ):
     token = authorization.removeprefix("Bearer ")
     user = await verify_token(token, db)
@@ -126,16 +128,19 @@ CurrentUser = Annotated[User, Depends(get_current_user)]
 ```python
 # app/routers/users.py
 from fastapi import APIRouter, HTTPException, Query, status
+from sqlalchemy import select
 
 from app.dependencies import DbSession, CurrentUser
+from app.models import User  # SQLAlchemy model (app/models/)
 from app.schemas.user import UserCreate, UserResponse
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/", response_model=list[UserResponse])
 async def list_users(db: DbSession, skip: int = Query(0, ge=0)):
-    users = await db.query(User).offset(skip).limit(20).all()
-    return users
+    # AsyncSession has no .query(); use select() with execute() (SQLAlchemy 2.0)
+    result = await db.execute(select(User).offset(skip).limit(20))
+    return result.scalars().all()
 
 @router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def create_user(data: UserCreate, db: DbSession):
@@ -291,7 +296,7 @@ gunicorn app.main:app \
 dependencies = [
     "fastapi>=0.129",
     "uvicorn[standard]>=0.30",
-    "pydantic>=2.7",
+    "pydantic[email]>=2.7",  # EmailStr needs email-validator
     "pydantic-settings>=2.5",
     "sqlalchemy[asyncio]>=2.0",
     "asyncpg>=0.30",
